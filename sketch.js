@@ -1,10 +1,14 @@
 function setup() {
-  createCanvas(400, 400);
+  createCanvas(windowWidth, windowHeight);
 }
 
 function draw() {
   background(220);
-  textSize(width/15);
+  textSize(windowWidth/15);
   textAlign(CENTER);
-  text("This site will contain \nmy project.", width/2, height * .48);
+  text("This site will contain \nmy project.", windowWidth / 2, windowHeight * .48);
+}
+
+function windowResized(){
+  resizeCanvas(windowWidth, windowHeight);
 }
