@@ -7,7 +7,9 @@ let textGap;
 var sketchFont;
 
 function preload(){
-  sketchFont = loadFont('SpaceMono-Regular.ttf');
+  // Went with Ubuntu Mono since it's one of the most equally spaced fonts I found.
+  // From Google Fonts: https://fonts.google.com/specimen/Ubuntu+Mono?query=ubuntu&classification=Monospace
+  sketchFont = loadFont('UbuntuMono-Regular.ttf'); 
 }
 
 function setup() {
@@ -16,12 +18,12 @@ function setup() {
   textAnchorY = windowHeight/2;
   sizeOfText = windowWidth/15;
   widthOfText = sizeOfText/2;
-  textGap = sizeOfText / 9; // divide by 20 for default monospace, 9 for SpaceMono.
+  textGap = 0; // divide by 20 for default monospace, 9 for SpaceMono, 0 value for Ubuntu (not needed)
 
   textFont(sketchFont);
   textSize(sizeOfText);
 
-  let startingString = "InitialScramble";
+  let startingString = "Type your scramble here:";
   for(let i = 0; i < startingString.length; i++){
     charsArray.push(new TextChar(startingString.charAt(i)));
   }
