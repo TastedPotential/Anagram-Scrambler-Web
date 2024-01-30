@@ -1,24 +1,25 @@
 class TextManager{
 
-    constructor(inputFont){
+    constructor(inputFont, inputTextSizeFactor){
         this.charsArray = [];
         this.textAnchorX = windowWidth/2;;
         this.textAnchorY = windowHeight/2;
-        this.sizeOfText = windowWidth/15;
+        this.textSizeFactor = inputTextSizeFactor;
+        this.sizeOfText = windowWidth/this.textSizeFactor;
         this.widthOfText = this.sizeOfText/2;
         this.textGap = 0; // divide by 20 for default monospace, 9 for SpaceMono, 0 value for Sometype (not needed)
         this.sketchFont = inputFont;
 
-        let startingString = "Type your scramble here:";
+        let startingString = "Enter a word to scramble:";
         for(let i = 0; i < startingString.length; i++){
           this.charsArray.push(new TextChar(startingString.charAt(i)));
         }
     }
 
     updateProperties(){
-        this.textAnchorX = windowWidth/2;;
+        this.textAnchorX = windowWidth/2;
         this.textAnchorY = windowHeight/2;
-        this.sizeOfText = windowWidth/15;
+        this.sizeOfText = windowWidth/this.textSizeFactor;
         this.widthOfText = this.sizeOfText/2;
     }
 
