@@ -16,8 +16,7 @@ class TextChar{
         this.distanceFromLockCenter = 0;
         this.shakeDistanceMax = 0;
         this.shakeDirection = 1;
-        this.shakeSpeed = windowWidth / 30;
-    
+        this.shakeSpeed = windowWidth / 30;    
     }
-
+    
 }

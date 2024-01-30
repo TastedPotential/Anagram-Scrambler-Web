@@ -26,3 +26,10 @@ function windowResized(){
   mainManager.updateProperties();
 }
 
+function keyReleased(){
+  print(keyCode);
+  if(keyCode == 32){
+    mainManager.scrambleCharsArray();
+  }
+}
+

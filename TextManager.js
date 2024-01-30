@@ -10,7 +10,7 @@ class TextManager{
         this.textGap = 0; // divide by 20 for default monospace, 9 for SpaceMono, 0 value for Sometype (not needed)
         this.sketchFont = inputFont;
 
-        let startingString = "Enter a word to scramble:";
+        let startingString = "startingScramble";
         for(let i = 0; i < startingString.length; i++){
           this.charsArray.push(new TextChar(startingString.charAt(i)));
         }
@@ -34,6 +34,16 @@ class TextManager{
       
         for(let i = 0; i < this.charsArray.length; i++){
           text(this.charsArray[i].savedChar, this.textAnchorX - windowCenterTextOffsetX + (i * this.widthOfText) + i * this.textGap, this.textAnchorY + yOffset);
+        }
+    }
+
+    scrambleCharsArray(){
+        let lowestIndex = 0;
+        let randomIndex = 0;
+        for(let i = lowestIndex; i < this.charsArray.length; i++){
+            randomIndex = floor(random(lowestIndex, this.charsArray.length));
+            this.charsArray.splice(0, 0, this.charsArray[randomIndex]);
+            this.charsArray.splice(randomIndex+1, 1);
         }
     }
 }
