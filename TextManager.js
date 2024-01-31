@@ -1,11 +1,11 @@
 class TextManager{
 
-    constructor(inputFont, inputTextSizeFactor){
+    constructor(inputFont, inputTextSizePercentage){
         this.charsArray = [];
         this.textAnchorX = windowWidth/2;;
         this.textAnchorY = windowHeight/2;
-        this.textSizeFactor = inputTextSizeFactor;
-        this.sizeOfText = windowWidth/this.textSizeFactor;
+        this.textSizePercentage = inputTextSizePercentage;
+        this.sizeOfText = windowWidth * this.textSizePercentage;
         this.widthOfText = this.sizeOfText/2;
         this.textGap = this.widthOfText / 6; // divide by 6 for CourierPrime 20 for default monospace, 9 for SpaceMono, 0 value for Sometype (not needed)
         
@@ -25,7 +25,7 @@ class TextManager{
     updateProperties(){
         this.textAnchorX = windowWidth/2;
         this.textAnchorY = windowHeight/2;
-        this.sizeOfText = windowWidth/this.textSizeFactor;
+        this.sizeOfText = windowWidth * this.textSizePercentage;
         this.widthOfText = this.sizeOfText/2;
         this.textGap = this.widthOfText / 6;
         this.updateTextBoxWidth();

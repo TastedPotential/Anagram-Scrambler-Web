@@ -1,6 +1,12 @@
 let textManager;
 let buttonsManager;
 
+// Mobile vs desktop detection adapted from
+// https://www.geeksforgeeks.org/how-to-detect-whether-the-website-is-being-opened-in-a-mobile-device-or-a-desktop-in-javascript/
+let userDetails;
+let mobileDeviceRegExp;
+let usingMobileDevice;
+
 function preload(){
   // Ultimately returned to CourierPrime for its readability and monospace width.
   // I added a bit of spacing to make up for some characters touching/overlapping.
@@ -10,10 +16,31 @@ function preload(){
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  textManager = new TextManager(sketchFont, 20);
+
+  // Chunk for testing. Store details from the userAgent, create a regular expression that has the strings of various
+  // mobile devices that could be in the userAgent's details, and then use test() to get a boolean on whether or not
+  // the program is being viewed on mobile or desktop.
+  userDetails = navigator.userAgent;
+  mobileDeviceRegExp = /android|iphone|kindle|ipad/i;
+  usingMobileDevice = mobileDeviceRegExp.test(userDetails);
+
+  // These values will be the percentage of the screen's width to determine the size of said elements.
+  let textSizePercentOfScreen = 1/20;
+  let buttonSizePercentOfScreen = 1/20;
+  if(usingMobileDevice){
+    print("On Mobile");
+    textSizePercentOfScreen = 1/15;
+    buttonSizePercentOfScreen = 1/10;
+  }
+  else{
+    print("On Desktop");
+  }
+
+
+  textManager = new TextManager(sketchFont, textSizePercentOfScreen);
   textFont(textManager.sketchFont);
   textSize(textManager.sizeOfText);
-  buttonsManager = new ButtonsManager(textManager, 20);
+  buttonsManager = new ButtonsManager(textManager, buttonSizePercentOfScreen);
 }
 
 function draw() {
