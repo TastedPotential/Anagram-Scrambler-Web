@@ -1,8 +1,7 @@
 let textManager;
 let buttonsManager;
 
-// Mobile vs desktop detection adapted from
-// https://www.geeksforgeeks.org/how-to-detect-whether-the-website-is-being-opened-in-a-mobile-device-or-a-desktop-in-javascript/
+
 let userDetails;
 let mobileDeviceRegExp;
 let usingMobileDevice;
@@ -17,7 +16,10 @@ function preload(){
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
-  // Chunk for testing. Store details from the userAgent, create a regular expression that has the strings of various
+  // Mobile vs desktop detection adapted from
+  // https://www.geeksforgeeks.org/how-to-detect-whether-the-website-is-being-opened-in-a-mobile-device-or-a-desktop-in-javascript/
+  // and https://editor.p5js.org/ronikaufman/sketches/yaVtDVBK5
+  // Chunk for determining mobile vs desktop. Store details from the userAgent, create a regular expression that has the strings of various
   // mobile devices that could be in the userAgent's details, and then use test() to get a boolean on whether or not
   // the program is being viewed on mobile or desktop.
   userDetails = navigator.userAgent;
@@ -27,13 +29,14 @@ function setup() {
   // These values will be the percentage of the screen's width to determine the size of said elements.
   let textSizePercentOfScreen = 1/20;
   let buttonSizePercentOfScreen = 1/20;
+
   if(usingMobileDevice){
-    print("On Mobile");
+    //print("On Mobile");
     textSizePercentOfScreen = 1/15;
     buttonSizePercentOfScreen = 1/10;
   }
   else{
-    print("On Desktop");
+    //print("On Desktop");
   }
 
 
@@ -67,6 +70,9 @@ function keyReleased(){
 function mouseReleased(){
   if(buttonsManager.scrambleButton.clickedOn()){
     textManager.scrambleCharsArray();
+    //print(textManager.get)
+
+    textManager.textInput.value(textManager.getCharsArrayAsString());
   }
 
 }
