@@ -12,15 +12,20 @@ class TextManager{
         
         this.sketchFont = inputFont;
 
-        let startingString = "startingScramble";
+        let startingString = "type your scramble here";
         for(let i = 0; i < startingString.length; i++){
           this.charsArray.push(new TextChar(startingString.charAt(i)));
         }
         this.textBoxWidth = (this.charsArray.length * this.widthOfText) + ((this.charsArray.length - 1) * this.textGap);
         this.textInput = createInput("type your scramble here");
         this.textInput.position(this.textAnchorX - this.textBoxWidth/2, this.textAnchorY - this.sizeOfText * 2);
-        let sizeString = this.sizeOfText * .75 + "px";
+        let sizeString = this.sizeOfText.toString() + "px";
         this.textInput.style('font-size', sizeString);
+        this.textInput.style('font-family', 'CourierPrime-Regular');
+        this.textInput.style('background-color', 'rgb(220,220,220)');
+        this.textInput.style('border', '0');
+        this.textInput.style('font-kerning', 'none');
+        this.textInput.style('letter-spacing', '-1.4px');
     }
 
     updateTextBoxWidth(){

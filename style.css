@@ -6,3 +6,10 @@ html, body {
 canvas {
   display: block;
 }
+
+@font-face{
+  font-family: 'CourierPrime-Regular', monospace;
+  src: local("fonts/CourierPrime-Regular.ttf"),
+  url("fonts/CourierPrime-Regular.ttf"),
+  url('https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap');
+}
