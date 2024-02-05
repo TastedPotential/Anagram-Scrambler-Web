@@ -51,7 +51,8 @@ function draw() {
   textSize(textManager.sizeOfText);
   textFont(textManager.sketchFont);
   textManager.drawText(0);
-  buttonsManager.drawButtons();  
+  buttonsManager.drawButtons();
+
 }
 
 function windowResized(){
