@@ -23,30 +23,55 @@ class Button{
             circle(this.posX, this.posY, this.diameter);
 
             stroke(255,255,255);
+            
             strokeWeight(this.diameter/12);
-            let lineLength = this.diameter * 0.7;
-            let triDiv = 12;
+            let lineLength = this.diameter * 0.6;
+            let triDiv = 10;
+            let arcGap = 20;
             angleMode(DEGREES);
-
-            push();            
+            
+            // Bottom arc arrow
+            push();
             translate(this.posX, this.posY);
-            rotate(45);
-            translate(-lineLength/2, 0);    
-            line(0, 0, lineLength, 0);
-            translate(lineLength,0);
+            noFill();
+            arc(0,0, lineLength, lineLength, arcGap, 180-arcGap);            
+            translate(lineLength /2, tan(arcGap) * lineLength /2);
+            rotate(-45);
             fill(255,255,255);
             triangle(-lineLength/triDiv, -lineLength/triDiv, 0, 0, -lineLength/triDiv, lineLength/triDiv);
             pop();
 
-            push();            
+            // Top Arc Arrow
+            push();
             translate(this.posX, this.posY);
-            rotate(-45);
-            translate(-lineLength/2, 0);    
-            line(0, 0, lineLength, 0);
-            translate(lineLength,0);
-            fill(255,255,255);            
+            noFill();
+            arc(0,0, lineLength, lineLength, 180 + arcGap, -arcGap);            
+            translate(-lineLength /2, -(tan(arcGap) * lineLength /2));
+            rotate(135);
+            fill(255,255,255);
             triangle(-lineLength/triDiv, -lineLength/triDiv, 0, 0, -lineLength/triDiv, lineLength/triDiv);
             pop();
+
+
+            // push();            
+            // translate(this.posX, this.posY);
+            // rotate(45);
+            // translate(-lineLength/2, 0);    
+            // line(0, 0, lineLength, 0);
+            // translate(lineLength,0);
+            // fill(255,255,255);
+            // triangle(-lineLength/triDiv, -lineLength/triDiv, 0, 0, -lineLength/triDiv, lineLength/triDiv);
+            // pop();
+
+            // push();            
+            // translate(this.posX, this.posY);
+            // rotate(-45);
+            // translate(-lineLength/2, 0);    
+            // line(0, 0, lineLength, 0);
+            // translate(lineLength,0);
+            // fill(255,255,255);            
+            // triangle(-lineLength/triDiv, -lineLength/triDiv, 0, 0, -lineLength/triDiv, lineLength/triDiv);
+            // pop();
             
             
 
