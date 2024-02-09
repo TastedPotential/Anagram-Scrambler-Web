@@ -76,7 +76,10 @@ function mouseReleased(){
   }
   else if(buttonsManager.editButton.clickedOn()){
     textManager.textInput.elt.focus();
-    textManager.textInput.elt.select();
+    if(!usingMobileDevice){
+      textManager.textInput.elt.select();
+    }
+    
   }
 
 }
