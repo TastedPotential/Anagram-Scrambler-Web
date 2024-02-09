@@ -2,13 +2,13 @@ class TextManager{
 
     constructor(inputFont, inputTextSizePercentage){
         this.charsArray = [];
-        this.textAnchorX = windowWidth/2;;
-        this.textAnchorY = windowHeight/4;
         this.textSizePercentage = inputTextSizePercentage;
         this.sizeOfText = windowWidth * this.textSizePercentage;
         this.widthOfText = this.sizeOfText/2;
         this.textGap = this.widthOfText / 6; // divide by 6 for CourierPrime 20 for default monospace, 9 for SpaceMono, 0 value for Sometype (not needed)
         
+        this.textAnchorX = windowWidth/2;;
+        this.textAnchorY = this.sizeOfText * 2; // Place the main display text 2 text-heights down from the top of the screen.        
         
         this.sketchFont = inputFont;
 
@@ -25,6 +25,7 @@ class TextManager{
         //this.textBoxWidth = (this.charsArray.length * this.widthOfText) + (this.charsArray.length * this.textGap);
         this.textInputBoxWidth = (this.charsArray.length * this.widthOfText) + (this.charsArray.length * this.textGap);
 
+        // Info on Input Elements here: https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement
         this.textInput = createInput("type your scramble here");
         this.textInput.position(this.textAnchorX - this.textBoxWidth/2 - this.textGap/2, this.textAnchorY - this.sizeOfText * 2);
         this.textInput.size(this.textInputBoxWidth + this.widthOfText/4);
@@ -50,7 +51,7 @@ class TextManager{
       //background(220);
       // Update the main display scramble text.
       this.textAnchorX = windowWidth/2;
-      this.textAnchorY = windowHeight/2;
+      this.textAnchorY = this.sizeOfText * 2;
       this.sizeOfText = windowWidth * this.textSizePercentage;
       this.widthOfText = this.sizeOfText/2;
       this.textGap = this.widthOfText / 6;
@@ -72,7 +73,8 @@ class TextManager{
 
       for(let i = 0; i < this.charsArray.length; i++){      
         noStroke();
-        fill(0,0,0);  
+        fill(0,0,0);
+        textAlign(LEFT, BASELINE);
         text(this.charsArray[i].savedChar, this.textAnchorX - windowCenterTextOffsetX + (i * this.widthOfText) + (i * this.textGap), this.textAnchorY + yOffset);
 
         stroke(0,0,0);

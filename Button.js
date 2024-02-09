@@ -17,20 +17,16 @@ class Button{
 
     drawButton(){
         noStroke();
-
         if(this.buttonType === "scramble"){
             fill(255, 0, 0);
             circle(this.posX, this.posY, this.diameter);
-
-            stroke(255,255,255);
-            
+            stroke(255,255,255);            
             strokeWeight(this.diameter/12);
             let lineLength = this.diameter * 0.6;
             let triDiv = 10;
             // Will adjust the parts that are covered by the triangles by 5 degrees to have clean lines.
             let arcGap = 20;    
-            angleMode(DEGREES);
-            
+            angleMode(DEGREES);            
             // Bottom arc arrow
             push();
             translate(this.posX, this.posY);
@@ -41,7 +37,6 @@ class Button{
             fill(255,255,255);
             triangle(-lineLength/triDiv, -lineLength/triDiv, 0, 0, -lineLength/triDiv, lineLength/triDiv);
             pop();
-
             // Top Arc Arrow
             push();
             translate(this.posX, this.posY);
@@ -52,9 +47,13 @@ class Button{
             fill(255,255,255);
             triangle(-lineLength/triDiv, -lineLength/triDiv, 0, 0, -lineLength/triDiv, lineLength/triDiv);
             pop();
-            
-
         }
-
+        if(this.buttonType === "edit"){
+            fill(0,0,255);
+            circle(this.posX, this.posY, this.diameter);
+            fill(255);
+            textAlign(CENTER, CENTER);
+            text("E", this.posX, this.posY - this.diameter/10);
+        }
     }
 }

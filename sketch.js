@@ -59,6 +59,7 @@ function windowResized(){
   resizeCanvas(windowWidth, windowHeight);
   textManager.updateProperties();
   buttonsManager.updateProperties(textManager);
+  print("window was resized");
 }
 
 function keyReleased(){  
@@ -71,9 +72,11 @@ function keyReleased(){
 function mouseReleased(){
   if(buttonsManager.scrambleButton.clickedOn()){
     textManager.scrambleCharsArray();
-    //print(textManager.get)
-
     textManager.textInput.value(textManager.getCharsArrayAsString());
+  }
+  else if(buttonsManager.editButton.clickedOn()){
+    textManager.textInput.elt.focus();
+    textManager.textInput.elt.select();
   }
 
 }
