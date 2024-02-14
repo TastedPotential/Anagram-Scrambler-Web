@@ -5,7 +5,8 @@ class ButtonsManager{
 
         this.buttonOffsetX = inputTextManager.sizeOfText;
         this.buttonOffsetY = inputTextManager.sizeOfText / 4;
-        if(isMobileDevice == true){
+        this.usingMobile = isMobileDevice;
+        if(this.usingMobile == true){
             this.buttonOffsetX = -inputTextManager.sizeOfText;
             this.buttonOffsetY = -inputTextManager.sizeOfText;
         }
@@ -22,13 +23,17 @@ class ButtonsManager{
     }
 
     updateProperties(inputTextManager){
-        this.buttonDiameter = windowWidth * this.buttonDiameterFactor;        
-        this.scrambleButton.posX = inputTextManager.textAnchorX - inputTextManager.textBoxWidth / 2 - inputTextManager.sizeOfText;
-        this.scrambleButton.posY = inputTextManager.textAnchorY - inputTextManager.sizeOfText / 4;
+        this.buttonDiameter = windowWidth * this.buttonDiameterFactor;
+        if(this.usingMobile == true){
+            this.buttonOffsetX = -inputTextManager.sizeOfText;
+            this.buttonOffsetY = -inputTextManager.sizeOfText;
+        }
+        this.scrambleButton.posX = inputTextManager.textAnchorX - inputTextManager.textBoxWidth / 2 - this.buttonOffsetX;
+        this.scrambleButton.posY = inputTextManager.textAnchorY - this.buttonOffsetY;
         this.scrambleButton.diameter = this.buttonDiameter;
 
-        this.editButton.posX = inputTextManager.textAnchorX + inputTextManager.textBoxWidth / 2 + inputTextManager.sizeOfText;
-        this.editButton.posY = inputTextManager.textAnchorY - inputTextManager.sizeOfText / 4;
+        this.editButton.posX = inputTextManager.textAnchorX + inputTextManager.textBoxWidth / 2 + this.buttonOffsetX;
+        this.editButton.posY = inputTextManager.textAnchorY - this.buttonOffsetY;
         this.editButton.diameter = this.buttonDiameter;
     }
 }
