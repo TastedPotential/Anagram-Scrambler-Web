@@ -24,10 +24,14 @@ class ButtonsManager{
 
     updateProperties(inputTextManager){
         this.buttonDiameter = windowWidth * this.buttonDiameterFactor;
+
+        this.buttonOffsetX = inputTextManager.sizeOfText;
+        this.buttonOffsetY = inputTextManager.sizeOfText / 4;
         if(this.usingMobile == true){
             this.buttonOffsetX = -inputTextManager.sizeOfText;
             this.buttonOffsetY = -inputTextManager.sizeOfText;
         }
+        
         this.scrambleButton.posX = inputTextManager.textAnchorX - inputTextManager.textBoxWidth / 2 - this.buttonOffsetX;
         this.scrambleButton.posY = inputTextManager.textAnchorY - this.buttonOffsetY;
         this.scrambleButton.diameter = this.buttonDiameter;
