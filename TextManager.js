@@ -27,7 +27,8 @@ class TextManager{
 
         // Info on Input Elements here: https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement
         this.textInput = createInput("type your scramble here");
-        this.textInput.position(this.textAnchorX - this.textBoxWidth/2 - this.textGap/2, this.textAnchorY - this.sizeOfText * 2);
+        this.textInputOffsetY = this.sizeOfText * .82;
+        this.textInput.position(this.textAnchorX - this.textBoxWidth/2 - this.textGap/2, this.textAnchorY - this.textInputOffsetY);
         this.textInput.size(this.textInputBoxWidth + this.widthOfText/4);
 
         let sizeString = this.sizeOfText.toString() + "px";
@@ -40,6 +41,7 @@ class TextManager{
         this.textInput.style('letter-spacing', '-1px');
         this.textInput.style('word-spacing', '-0.03em');
         this.textInput.style('white-space', '0em');
+        this.textInput.hide();
 
     }
 
@@ -59,7 +61,7 @@ class TextManager{
       this.textInputBoxWidth = (this.charsArray.length * this.widthOfText) + (this.charsArray.length * this.textGap);
 
       // Update the text input box
-      this.textInput.position(this.textAnchorX - this.textBoxWidth/2 - this.textGap/2, this.textAnchorY - this.sizeOfText * 2);
+      this.textInput.position(this.textAnchorX - this.textBoxWidth/2 - this.textGap/2, this.textAnchorY - this.textInputOffsetY);
       this.textInput.size(this.textInputBoxWidth + this.widthOfText/4);
       let sizeString = this.sizeOfText.toString() + "px";
       this.textInput.style('font-size', sizeString);

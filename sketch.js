@@ -73,13 +73,18 @@ function mouseReleased(){
   if(buttonsManager.scrambleButton.clickedOn()){
     textManager.scrambleCharsArray();
     textManager.textInput.value(textManager.getCharsArrayAsString());
+    textManager.textInput.hide();
   }
   else if(buttonsManager.editButton.clickedOn()){
+    textManager.textInput.show();
     textManager.textInput.elt.focus();
     if(!usingMobileDevice){
       textManager.textInput.elt.select();
     }
     
+  }
+  else{
+    textManager.textInput.hide();
   }
 
 }
