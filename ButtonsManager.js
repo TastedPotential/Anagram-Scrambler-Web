@@ -1,11 +1,19 @@
 class ButtonsManager{
-    constructor(inputTextManager, inButtonSizePercentage){
+    constructor(inputTextManager, inButtonSizePercentage, isMobileDevice){
         this.buttonDiameterFactor = inButtonSizePercentage;
         this.buttonDiameter = windowWidth * this.buttonDiameterFactor;
-        this.scrambleButton = new Button(inputTextManager.textAnchorX - inputTextManager.textBoxWidth / 2 - inputTextManager.sizeOfText,
-        inputTextManager.textAnchorY - inputTextManager.sizeOfText / 4, this.buttonDiameter, "scramble");
-        this.editButton = new Button(inputTextManager.textAnchorX + inputTextManager.textBoxWidth / 2 + inputTextManager.sizeOfText,
-        inputTextManager.textAnchorY - inputTextManager.sizeOfText / 4, this.buttonDiameter, "edit");   
+
+        this.buttonOffsetX = inputTextManager.sizeOfText;
+        this.buttonOffsetY = inputTextManager.sizeOfText / 4;
+        if(isMobileDevice == true){
+            this.buttonOffsetX = -inputTextManager.sizeOfText;
+            this.buttonOffsetY = -inputTextManager.sizeOfText;
+        }
+
+        this.scrambleButton = new Button(inputTextManager.textAnchorX - inputTextManager.textBoxWidth / 2 - this.buttonOffsetX,
+        inputTextManager.textAnchorY - this.buttonOffsetY, this.buttonDiameter, "scramble");
+        this.editButton = new Button(inputTextManager.textAnchorX + inputTextManager.textBoxWidth / 2 + this.buttonOffsetX,
+        inputTextManager.textAnchorY - this.buttonOffsetY, this.buttonDiameter, "edit");   
     }
 
     drawButtons(){

@@ -43,7 +43,7 @@ function setup() {
   textManager = new TextManager(sketchFont, textSizePercentOfScreen);
   textFont(textManager.sketchFont);
   textSize(textManager.sizeOfText);
-  buttonsManager = new ButtonsManager(textManager, buttonSizePercentOfScreen);
+  buttonsManager = new ButtonsManager(textManager, buttonSizePercentOfScreen, usingMobileDevice);
 }
 
 function draw() {
