@@ -78,14 +78,26 @@ function mouseReleased(){
   else if(buttonsManager.editButton.clickedOn()){
     textManager.textInput.show();
     textManager.textInput.elt.focus();
+    //TODO
+    // Determine if it's a better UX to have the text all selected when clicking the edit button, or instead
+    // allow the user to select all at their discretion.
     if(!usingMobileDevice){
-      textManager.textInput.elt.select();
+      //textManager.textInput.elt.select();
     }
     
   }
-  else{
-    textManager.textInput.hide();
+  else if(textManager.textInputClickedOn()){
+    print("clicked in the textInput box");
   }
+  else{
+    print("didn't click on any elements");
+    textManager.textInput.hide();  
+  }
+      
+    //document.getElementById('textInputID').style.display = 'none';
+  
+
+  
 
 }
 

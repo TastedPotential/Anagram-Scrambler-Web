@@ -41,6 +41,7 @@ class TextManager{
         this.textInput.style('letter-spacing', '-1px');
         this.textInput.style('word-spacing', '-0.03em');
         this.textInput.style('white-space', '0em');
+        this.textInput.id('textInputID');
         this.textInput.hide();
 
     }
@@ -102,5 +103,15 @@ class TextManager{
         outString += charsElement.savedChar;
       }
       return outString;
+    }
+
+    textInputClickedOn(){
+      let inputRect = document.getElementById('textInputID').getBoundingClientRect();
+      if(inputRect.left == 0){
+        return false;
+      }
+      else if(mouseX >= inputRect.left && mouseX <= inputRect.right && mouseY >= inputRect.top && mouseY <= inputRect.bottom){
+        return true;
+      }
     }
 }
