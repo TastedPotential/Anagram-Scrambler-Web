@@ -6,6 +6,7 @@ class TextManager{
         this.sizeOfText = windowWidth * this.textSizePercentage;
         this.widthOfText = this.sizeOfText/2;
         this.textGap = this.widthOfText / 6; // divide by 6 for CourierPrime 20 for default monospace, 9 for SpaceMono, 0 value for Sometype (not needed)
+        this.editingText = false;
         
         this.textAnchorX = windowWidth/2;;
         this.textAnchorY = this.sizeOfText * 2; // Place the main display text 2 text-heights down from the top of the screen.        
@@ -34,7 +35,7 @@ class TextManager{
         let sizeString = this.sizeOfText.toString() + "px";
         this.textInput.style('font-size', sizeString);
         this.textInput.style('font-family', 'CourierPrime-Regular');
-        this.textInput.style('background-color', 'rgb(220,220,220)');
+        this.textInput.style('background-color', 'rgb(255, 251, 161)');
         this.textInput.style('border', '1');
         //this.textInsdput.style('font-kerning', 'none');
         //this.textInput.style('letter-spacing', '-1.4px');
@@ -112,6 +113,14 @@ class TextManager{
       }
       else if(mouseX >= inputRect.left && mouseX <= inputRect.right && mouseY >= inputRect.top && mouseY <= inputRect.bottom){
         return true;
+      }
+    }
+
+    // Erases the array and sets its contents to the input string's characters.
+    setCharsArray(inString){
+      this.charsArray.splice(0);  // This clears the array.
+      for(let i = 0; i < inString.length; i++){
+        this.charsArray.push(new TextChar(inString.charAt(i)));
       }
     }
 }

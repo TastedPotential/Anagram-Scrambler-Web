@@ -15,7 +15,7 @@ function preload(){
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-
+  background(255, 251, 161);
   // Mobile vs desktop detection adapted from
   // https://www.geeksforgeeks.org/how-to-detect-whether-the-website-is-being-opened-in-a-mobile-device-or-a-desktop-in-javascript/
   // and https://editor.p5js.org/ronikaufman/sketches/yaVtDVBK5
@@ -47,12 +47,11 @@ function setup() {
 }
 
 function draw() {
-  background(220);
+  background(255, 251, 161);
   textSize(textManager.sizeOfText);
   textFont(textManager.sketchFont);
   textManager.drawText(0);
   buttonsManager.drawButtons();
-
 }
 
 function windowResized(){
@@ -62,10 +61,24 @@ function windowResized(){
   print("window was resized");
 }
 
-function keyReleased(){  
+function keyReleased(){
   // For spacebar pressed.
   if(keyCode == 32){
     textManager.scrambleCharsArray();
+  }
+  if(keyCode == ENTER || keyCode == RETURN){
+    if(textManager.editingText)
+    {
+      textManager.setCharsArray(textManager.textInput.elt.value);
+      textManager.textInput.hide();
+      textManager.editingText = false;
+    }
+    else{
+      textManager.textInput.show();
+      textManager.textInput.elt.focus();
+      textManager.editingText = true;
+    }
+    
   }
 }
 
@@ -78,6 +91,7 @@ function mouseReleased(){
   else if(buttonsManager.editButton.clickedOn()){
     textManager.textInput.show();
     textManager.textInput.elt.focus();
+    textManager.editingText = true;
     //TODO
     // Determine if it's a better UX to have the text all selected when clicking the edit button, or instead
     // allow the user to select all at their discretion.
@@ -87,11 +101,12 @@ function mouseReleased(){
     
   }
   else if(textManager.textInputClickedOn()){
-    print("clicked in the textInput box");
+    //print("clicked in the textInput box");
   }
   else{
-    print("didn't click on any elements");
-    textManager.textInput.hide();  
+    //print("didn't click on any elements");
+    textManager.textInput.hide();
+    textManager.editingText = false;
   }
       
     //document.getElementById('textInputID').style.display = 'none';

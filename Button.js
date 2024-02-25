@@ -18,7 +18,7 @@ class Button{
     drawButton(){
         noStroke();
         if(this.buttonType === "scramble"){
-            fill(255, 0, 0);
+            fill(227, 45, 45);
             circle(this.posX, this.posY, this.diameter);
             stroke(255,255,255);            
             strokeWeight(this.diameter/12);
@@ -49,7 +49,7 @@ class Button{
             pop();
         }
         if(this.buttonType === "edit"){
-            fill(0,0,255);
+            fill(47, 47, 214);
             circle(this.posX, this.posY, this.diameter);
             fill(255);
             textAlign(CENTER, CENTER);
