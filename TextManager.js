@@ -7,6 +7,7 @@ class TextManager{
         this.widthOfText = this.sizeOfText/2;
         this.textGap = this.widthOfText / 6; // divide by 6 for CourierPrime 20 for default monospace, 9 for SpaceMono, 0 value for Sometype (not needed)
         this.editingText = false;
+        this.defaultMessage = true; // This changes after the user adds ANY characters to be scrambled. It is reset if the user deletes all text in the input box.
         
         this.textAnchorX = windowWidth/2;;
         this.textAnchorY = this.sizeOfText * 2; // Place the main display text 2 text-heights down from the top of the screen.        
@@ -119,17 +120,35 @@ class TextManager{
     // Erases the array and sets its contents to the input string's characters.
     setCharsArray(inString){
       this.charsArray.splice(0);  // This clears the array.
-      for(let i = 0; i < inString.length; i++){
-        this.charsArray.push(new TextChar(inString.charAt(i)));
+      // Reset the string to the default message if nothing was entered in the text input box.
+      if(inString == ""){
+        let startingString = "type your scramble here";
+        for(let i = 0; i < startingString.length; i++){
+          this.charsArray.push(new TextChar(startingString.charAt(i)));
+        }
+        this.defaultMessage = true;
       }
+      else{
+        for(let i = 0; i < inString.length; i++){
+          this.charsArray.push(new TextChar(inString.charAt(i)));
+        }
+      }      
     }
 
     setTextInputValue(){
       // Learned that fullstring needed to be initialized as an empty string otherwise the first character was "undefined".
-      let fullstring = "";  
-      for(let i = 0; i < this.charsArray.length; i++){
-        fullstring += this.charsArray[i].savedChar;
+      let fullstring = "";
+      if(this.defaultMessage){
+        this.defaultMessage = false;
       }
+      else{
+        this.defaultMessage = false;
+        for(let i = 0; i < this.charsArray.length; i++){
+          fullstring += this.charsArray[i].savedChar;
+        }
+      }
+
+      
       this.textInput.value(fullstring);
     }
 }

@@ -107,6 +107,7 @@ function mouseReleased(){
   }
   else{
     //print("didn't click on any elements");
+    textManager.setCharsArray(textManager.textInput.elt.value);
     textManager.textInput.hide();
     textManager.editingText = false;
   }
