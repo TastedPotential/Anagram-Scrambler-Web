@@ -123,4 +123,13 @@ class TextManager{
         this.charsArray.push(new TextChar(inString.charAt(i)));
       }
     }
+
+    setTextInputValue(){
+      // Learned that fullstring needed to be initialized as an empty string otherwise the first character was "undefined".
+      let fullstring = "";  
+      for(let i = 0; i < this.charsArray.length; i++){
+        fullstring += this.charsArray[i].savedChar;
+      }
+      this.textInput.value(fullstring);
+    }
 }

@@ -74,6 +74,7 @@ function keyReleased(){
       textManager.editingText = false;
     }
     else{
+      textManager.setTextInputValue();
       textManager.textInput.show();
       textManager.textInput.elt.focus();
       textManager.editingText = true;
@@ -89,6 +90,7 @@ function mouseReleased(){
     textManager.textInput.hide();
   }
   else if(buttonsManager.editButton.clickedOn()){
+    textManager.setTextInputValue();
     textManager.textInput.show();
     textManager.textInput.elt.focus();
     textManager.editingText = true;
