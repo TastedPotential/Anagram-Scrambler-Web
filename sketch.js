@@ -65,6 +65,8 @@ function keyReleased(){
   // For spacebar pressed.
   if(keyCode == 32){
     textManager.scrambleCharsArray();
+    textManager.textInput.value(textManager.getCharsArrayAsString());
+    textManager.textInput.hide();
   }
   if(keyCode == ENTER || keyCode == RETURN){
     if(textManager.editingText)
@@ -83,17 +85,49 @@ function keyReleased(){
   }
 }
 
-function mouseReleased(){
+function mousePressed(){
   if(buttonsManager.scrambleButton.clickedOn()){
-    textManager.scrambleCharsArray();
-    textManager.textInput.value(textManager.getCharsArrayAsString());
-    textManager.textInput.hide();
+    buttonsManager.scrambleButton.startedClickOnThis = true;
   }
   else if(buttonsManager.editButton.clickedOn()){
-    textManager.setTextInputValue();
-    textManager.textInput.show();
-    textManager.textInput.elt.focus();
-    textManager.editingText = true;
+    buttonsManager.editButton.startedClickOnThis = true;
+  }
+  else if(textManager.textInputClickedOn()){
+    textManager.startedClickOnTextInput = true;
+  }
+}
+
+function mouseReleased(){
+  // If a click was started inside the textInput box, but then let go anywhere else, don't change anything.
+  // This allows for the user to drag and select text while editing, then is able to let go anywhere outside the box without issues.
+  if(textManager.startedClickOnTextInput){
+    // Set all buttons that were clicked on back to false. There's probably a cleaner way to do this.
+    textManager.startedClickOnTextInput = false;
+    buttonsManager.scrambleButton.startedClickOnThis = false;
+    buttonsManager.editButton.startedClickOnThis = false;
+    return;
+  }
+ 
+  if(buttonsManager.scrambleButton.clickedOn() && buttonsManager.scrambleButton.startedClickOnThis){
+    textManager.setCharsArray(textManager.textInput.elt.value);
+    textManager.scrambleCharsArray();
+    textManager.textInput.value(textManager.getCharsArrayAsString());
+    // textManager.textInput.hide();
+    // textManager.editingText = false;
+  }
+  else if(buttonsManager.editButton.clickedOn() && buttonsManager.editButton.startedClickOnThis){
+    if(textManager.editingText)
+    {
+      textManager.setCharsArray(textManager.textInput.elt.value);
+      textManager.textInput.hide();
+      textManager.editingText = false;
+    }
+    else{
+      textManager.setTextInputValue();
+      textManager.textInput.show();
+      textManager.textInput.elt.focus();
+      textManager.editingText = true;
+    }
     //TODO
     // Determine if it's a better UX to have the text all selected when clicking the edit button, or instead
     // allow the user to select all at their discretion.
@@ -111,6 +145,10 @@ function mouseReleased(){
     textManager.textInput.hide();
     textManager.editingText = false;
   }
+
+  // Set all buttons that were clicked on back to false. There's probably a cleaner way to do this.
+  buttonsManager.scrambleButton.startedClickOnThis = false;
+  buttonsManager.editButton.startedClickOnThis = false;
       
     //document.getElementById('textInputID').style.display = 'none';
   

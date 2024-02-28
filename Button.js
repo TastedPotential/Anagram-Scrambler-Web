@@ -4,15 +4,18 @@ class Button{
         this.posY = inY;
         this.diameter = inDiameter;
         // to be a string of either: "shuffle, edit, save, copy"
-        this.buttonType = buttonType;   
+        this.buttonType = buttonType;
+        this.startedClickOnThis = false;
     }
 
     clickedOn(){
         if(dist(mouseX, mouseY, this.posX, this.posY) <= this.diameter / 2){
             return true;
         }
-        else
+        else{
             return false;
+        }
+            
     }
 
     drawButton(){

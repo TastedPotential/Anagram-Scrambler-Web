@@ -8,7 +8,8 @@ class TextManager{
         this.textGap = this.widthOfText / 6; // divide by 6 for CourierPrime 20 for default monospace, 9 for SpaceMono, 0 value for Sometype (not needed)
         this.editingText = false;
         this.defaultMessage = true; // This changes after the user adds ANY characters to be scrambled. It is reset if the user deletes all text in the input box.
-        
+        this.startedClickOnTextInput = false;
+
         this.textAnchorX = windowWidth/2;;
         this.textAnchorY = this.sizeOfText * 2; // Place the main display text 2 text-heights down from the top of the screen.        
         
