@@ -78,7 +78,10 @@ class TextManager{
 
       for(let i = 0; i < this.charsArray.length; i++){      
         noStroke();
-        fill(0,0,0);
+        if(this.defaultMessage)
+          fill(0,0,0, 128);
+        else
+          fill(0,0,0);
         textAlign(LEFT, BASELINE);
         text(this.charsArray[i].savedChar, this.textAnchorX - windowCenterTextOffsetX + (i * this.widthOfText) + (i * this.textGap), this.textAnchorY + yOffset);
 
