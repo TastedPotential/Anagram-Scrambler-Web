@@ -52,12 +52,39 @@ class Button{
             pop();
         }
         if(this.buttonType === "edit"){
+            /*
             fill(47, 47, 214);
             circle(this.posX, this.posY, this.diameter);
             fill(255);
             textAlign(CENTER, CENTER);
             textSize(this.diameter * 0.85);
             text("E", this.posX, this.posY - this.diameter/10);
+            */
+            fill(47, 47, 214);
+            circle(this.posX, this.posY, this.diameter);
+            fill(255);
+            angleMode(DEGREES);
+            push();
+            translate(this.posX, this.posY);
+            rectMode(CENTER);
+            rotate(315);
+            rect(0,0, this.diameter * .52, this.diameter * .15);
+            triangle(-this.diameter * .44, 0, -this.diameter * .30, this.diameter * .075, -this.diameter * .30, -this.diameter * .075);
+            rect(this.diameter * .358, 0, this.diameter * .12, this.diameter * .15, 0, this.diameter * .05, this.diameter * .05, 0);
+            stroke(47, 47, 214);
+            strokeWeight(this.diameter/35);
+            // graphite line
+            line(-this.diameter * .37, this.diameter * .075, -this.diameter * .37, -this.diameter * .075);
+
+            // mid line
+            //line(-this.diameter * .25, 0, this.diameter * .25, 0);
+
+            strokeWeight(this.diameter/40);
+            // double mid lines
+            //line(-this.diameter * .25, this.diameter * .0325, this.diameter * .25, this.diameter * .0325);
+            //line(-this.diameter * .25, -this.diameter * .0325, this.diameter * .25, -this.diameter * .0325);
+
+            
         }
     }
 }
