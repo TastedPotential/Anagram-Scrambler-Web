@@ -56,6 +56,7 @@ class Button{
             circle(this.posX, this.posY, this.diameter);
             fill(255);
             textAlign(CENTER, CENTER);
+            textSize(this.diameter * 0.85);
             text("E", this.posX, this.posY - this.diameter/10);
         }
     }

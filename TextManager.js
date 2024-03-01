@@ -76,6 +76,7 @@ class TextManager{
       // This centers the main text horizontally on the screen.
       this.updateTextBoxWidth();      
       let windowCenterTextOffsetX = this.textBoxWidth / 2;    
+      textSize(this.sizeOfText);
 
       for(let i = 0; i < this.charsArray.length; i++){      
         noStroke();
@@ -86,10 +87,12 @@ class TextManager{
         textAlign(LEFT, BASELINE);
         text(this.charsArray[i].savedChar, this.textAnchorX - windowCenterTextOffsetX + (i * this.widthOfText) + (i * this.textGap), this.textAnchorY + yOffset);
 
+        /*
         stroke(0,0,0);
         strokeWeight(1);
         line(this.textAnchorX - windowCenterTextOffsetX + (i * this.widthOfText) + i * this.textGap,
         0, this.textAnchorX - windowCenterTextOffsetX + (i * this.widthOfText) + i * this.textGap, windowHeight);
+        */
       }
     }
 

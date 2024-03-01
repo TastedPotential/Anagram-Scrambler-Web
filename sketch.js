@@ -33,7 +33,7 @@ function setup() {
   if(usingMobileDevice){
     //print("On Mobile");
     textSizePercentOfScreen = 1/15;
-    buttonSizePercentOfScreen = 1/10;
+    buttonSizePercentOfScreen = 1/8;
   }
   else{
     //print("On Desktop");
@@ -63,7 +63,7 @@ function windowResized(){
 
 function keyReleased(){
   // For spacebar pressed.
-  if(keyCode == 32){
+  if(keyCode == 32 && textManager.editingText == false){
     textManager.scrambleCharsArray();
     textManager.textInput.value(textManager.getCharsArrayAsString());
     textManager.textInput.hide();
@@ -138,6 +138,7 @@ function mouseReleased(){
   }
   else if(textManager.textInputClickedOn()){
     //print("clicked in the textInput box");
+    // Don't hide the text input box if the clicks are inside the box, such as when editing text. So don't go to the next check.
   }
   else{
     //print("didn't click on any elements");

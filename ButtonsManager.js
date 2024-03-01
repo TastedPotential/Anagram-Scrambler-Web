@@ -6,9 +6,10 @@ class ButtonsManager{
         this.buttonOffsetX = inputTextManager.sizeOfText;
         this.buttonOffsetY = inputTextManager.sizeOfText / 4;
         this.usingMobile = isMobileDevice;
+
         if(this.usingMobile == true){
             this.buttonOffsetX = -inputTextManager.sizeOfText;
-            this.buttonOffsetY = -inputTextManager.sizeOfText;
+            this.buttonOffsetY = -inputTextManager.sizeOfText * 1.75;
         }
 
         this.scrambleButton = new Button(inputTextManager.textAnchorX - inputTextManager.textBoxWidth / 2 - this.buttonOffsetX,
