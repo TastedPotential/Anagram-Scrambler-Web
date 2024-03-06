@@ -6,7 +6,7 @@ class TextManager{
         this.sizeOfText = windowWidth * this.textSizePercentage;
         this.widthOfText = this.sizeOfText/2;
         this.textGap = this.widthOfText / 6; // divide by 6 for CourierPrime 20 for default monospace, 9 for SpaceMono, 0 value for Sometype (not needed)
-        this.editingText = false;
+        this.editingText = true;
         this.defaultMessage = true; // This changes after the user adds ANY characters to be scrambled. It is reset if the user deletes all text in the input box.
         this.startedClickOnTextInput = false;
 
@@ -28,11 +28,20 @@ class TextManager{
         //this.textBoxWidth = (this.charsArray.length * this.widthOfText) + (this.charsArray.length * this.textGap);
         this.textInputBoxWidth = (this.charsArray.length * this.widthOfText) + (this.charsArray.length * this.textGap);
 
+        
+
         // Info on Input Elements here: https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement
-        this.textInput = createInput("type your scramble here");
+        this.textInput = createInput(startingString);
         this.textInputOffsetY = this.sizeOfText * .82;
-        this.textInput.position(this.textAnchorX - this.textBoxWidth/2 - this.textGap/2, this.textAnchorY - this.textInputOffsetY);
-        this.textInput.size(this.textInputBoxWidth + this.widthOfText/4);
+        //this.textInput.size(this.textInputBoxWidth + this.widthOfText/4);
+        //this.textInput.size(windowWidth - this.widthOfText * 4);
+        this.textInput.size(this.textInputBoxWidth + this.widthOfText/4, this.sizeOfText);
+        //print("textSize is:" + this.sizeOfText);
+        //print(this.textInput.size());
+        this.textInput.elt.style.setProperty("text-align", "center");
+        //this.textInput.position("center");
+        this.textInput.position(this.textAnchorX - (this.textInputBoxWidth + this.widthOfText/4) / 2, this.textAnchorY - this.textInputOffsetY);
+        
 
         let sizeString = this.sizeOfText.toString() + "px";
         this.textInput.style('font-size', sizeString);
@@ -45,7 +54,7 @@ class TextManager{
         this.textInput.style('word-spacing', '-0.03em');
         this.textInput.style('white-space', '0em');
         this.textInput.id('textInputID');
-        this.textInput.hide();
+        //this.textInput.hide();
 
     }
 
@@ -65,10 +74,17 @@ class TextManager{
       this.textInputBoxWidth = (this.charsArray.length * this.widthOfText) + (this.charsArray.length * this.textGap);
 
       // Update the text input box
-      this.textInput.position(this.textAnchorX - this.textBoxWidth/2 - this.textGap/2, this.textAnchorY - this.textInputOffsetY);
-      this.textInput.size(this.textInputBoxWidth + this.widthOfText/4);
+      //this.textInput.position(this.textAnchorX - this.textBoxWidth/2 - this.textGap/2, this.textAnchorY - this.textInputOffsetY);
+      this.textInput.position(this.textAnchorX - (this.textInputBoxWidth + this.widthOfText/4) / 2, this.textAnchorY - this.textInputOffsetY);
+      //this.textInput.size(this.textInputBoxWidth + this.widthOfText/4);
+      //this.textInput.size(windowWidth - this.widthOfText * 4);
+      //this.textInput.size(windowWidth * 2);      
+      this.textInput.size(this.textInputBoxWidth + this.widthOfText/4, this.sizeOfText);
+      
+      //this.textInput.position("center");
       let sizeString = this.sizeOfText.toString() + "px";
       this.textInput.style('font-size', sizeString);
+      
 
     }
     
@@ -154,8 +170,6 @@ class TextManager{
           fullstring += this.charsArray[i].savedChar;
         }
       }
-
-      
       this.textInput.value(fullstring);
     }
 }
