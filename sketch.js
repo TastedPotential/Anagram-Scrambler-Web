@@ -74,6 +74,9 @@ function keyReleased(){
       textManager.setCharsArray(textManager.textInput.elt.value);
       textManager.textInput.hide();
       textManager.editingText = false;
+      if(textManager.textInput.elt.value == ''){
+        textManager.defaultMessage = true;
+      }
     }
     else{
       textManager.setTextInputValue();
@@ -105,6 +108,12 @@ function mouseReleased(){
     textManager.startedClickOnTextInput = false;
     buttonsManager.scrambleButton.startedClickOnThis = false;
     buttonsManager.editButton.startedClickOnThis = false;
+
+    if(textManager.defaultMessage){
+      textManager.clearInputTextValue();
+      textManager.defaultMessage = false;
+    }
+
     return;
   }
  
@@ -139,10 +148,18 @@ function mouseReleased(){
   else if(textManager.textInputClickedOn()){
     //print("clicked in the textInput box");
     // Don't hide the text input box if the clicks are inside the box, such as when editing text. So don't go to the next check.
+    // If the click is on te default text, make the default text disappear when the user starts typing.
+    if(textManager.defaultMessage){
+      textManager.clearInputTextValue();
+      textManager.defaultMessage = false;
+    }
   }
   else{
     //print("didn't click on any elements");
     textManager.setCharsArray(textManager.textInput.elt.value);
+    if(textManager.textInput.elt.value == ''){
+      textManager.defaultMessage = true;
+    }
     textManager.textInput.hide();
     textManager.editingText = false;
   }

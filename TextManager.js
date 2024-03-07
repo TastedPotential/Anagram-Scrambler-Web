@@ -46,6 +46,7 @@ class TextManager{
         let sizeString = this.sizeOfText.toString() + "px";
         this.textInput.style('font-size', sizeString);
         this.textInput.style('font-family', 'CourierPrime-Regular');
+        this.textInput.style('color', 'rgba(0,0,0, 0.5)');  // Set font color to black and 50% opacity for default text.
         this.textInput.style('background-color', 'rgb(255, 251, 161)');
         this.textInput.style('border', '1');
         //this.textInsdput.style('font-kerning', 'none');
@@ -171,5 +172,12 @@ class TextManager{
         }
       }
       this.textInput.value(fullstring);
+      this.textInput.style('color', 'rgba(0,0,0, 1)');  // Set font color to black and 100% opacity for default text.
+    }
+
+    clearInputTextValue(){
+      let emptyString = "";
+      this.textInput.value(emptyString);
+      this.textInput.style('color', 'rgba(0,0,0, 1)');  // Set font color to black and 100% opacity for default text.
     }
 }
