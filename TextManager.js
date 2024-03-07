@@ -96,6 +96,8 @@ class TextManager{
       this.updateTextBoxWidth();      
       let windowCenterTextOffsetX = this.textBoxWidth / 2;    
       textSize(this.sizeOfText);
+      if(this.editingText)
+        return;
 
       for(let i = 0; i < this.charsArray.length; i++){      
         noStroke();

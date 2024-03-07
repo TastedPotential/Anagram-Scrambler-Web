@@ -35,9 +35,12 @@ class ButtonsManager{
 
         this.buttonOffsetX = inputTextManager.sizeOfText;
         this.buttonOffsetY = inputTextManager.sizeOfText / 4;
+
+        let saveButtonOffsetX = inputTextManager.sizeOfText * 1.25;
         if(this.usingMobile == true){
             this.buttonOffsetX = -inputTextManager.sizeOfText;
             this.buttonOffsetY = -inputTextManager.sizeOfText;
+            saveButtonOffsetX = -inputTextManager.textBoxWidth / 2 - this.buttonOffsetX;   // this will place it in the middle on mobile.
         }
         
         this.scrambleButton.posX = inputTextManager.textAnchorX - inputTextManager.textBoxWidth / 2 - this.buttonOffsetX;
@@ -48,7 +51,7 @@ class ButtonsManager{
         this.editButton.posY = inputTextManager.textAnchorY - this.buttonOffsetY;
         this.editButton.diameter = this.buttonDiameter;
 
-        this.saveButton.posX = inputTextManager.textAnchorX;
+        this.saveButton.posX = inputTextManager.textAnchorX - inputTextManager.textBoxWidth / 2 - this.buttonOffsetX - saveButtonOffsetX;
         this.saveButton.posY = inputTextManager.textAnchorY - this.buttonOffsetY;
         this.saveButton.diameter = this.buttonDiameter;
     }
