@@ -7,20 +7,27 @@ class ButtonsManager{
         this.buttonOffsetY = inputTextManager.sizeOfText / 4;
         this.usingMobile = isMobileDevice;
 
+        let saveButtonOffsetX = inputTextManager.sizeOfText * 1.25;
         if(this.usingMobile == true){
             this.buttonOffsetX = -inputTextManager.sizeOfText;
-            this.buttonOffsetY = -inputTextManager.sizeOfText * 1.75;
+            this.buttonOffsetY = -inputTextManager.sizeOfText * 3;
+            saveButtonOffsetX = -inputTextManager.textBoxWidth / 2 - this.buttonOffsetX;   // this will place it in the middle on mobile.
         }
 
         this.scrambleButton = new Button(inputTextManager.textAnchorX - inputTextManager.textBoxWidth / 2 - this.buttonOffsetX,
         inputTextManager.textAnchorY - this.buttonOffsetY, this.buttonDiameter, "scramble");
         this.editButton = new Button(inputTextManager.textAnchorX + inputTextManager.textBoxWidth / 2 + this.buttonOffsetX,
-        inputTextManager.textAnchorY - this.buttonOffsetY, this.buttonDiameter, "edit");   
+        inputTextManager.textAnchorY - this.buttonOffsetY, this.buttonDiameter, "edit");
+        
+        this.saveButton = new Button(inputTextManager.textAnchorX - inputTextManager.textBoxWidth / 2 - this.buttonOffsetX - saveButtonOffsetX,
+        inputTextManager.textAnchorY - this.buttonOffsetY, this.buttonDiameter, "save");
+
     }
 
     drawButtons(){
         this.scrambleButton.drawButton();
         this.editButton.drawButton();
+        this.saveButton.drawButton();
     }
 
     updateProperties(inputTextManager){
@@ -40,5 +47,9 @@ class ButtonsManager{
         this.editButton.posX = inputTextManager.textAnchorX + inputTextManager.textBoxWidth / 2 + this.buttonOffsetX;
         this.editButton.posY = inputTextManager.textAnchorY - this.buttonOffsetY;
         this.editButton.diameter = this.buttonDiameter;
+
+        this.saveButton.posX = inputTextManager.textAnchorX;
+        this.saveButton.posY = inputTextManager.textAnchorY - this.buttonOffsetY;
+        this.saveButton.diameter = this.buttonDiameter;
     }
 }

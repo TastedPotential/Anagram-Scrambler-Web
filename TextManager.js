@@ -10,6 +10,8 @@ class TextManager{
         this.defaultMessage = true; // This changes after the user adds ANY characters to be scrambled. It is reset if the user deletes all text in the input box.
         this.startedClickOnTextInput = false;
 
+        this.savedScramblesArray = [];
+
         this.textAnchorX = windowWidth/2;;
         this.textAnchorY = this.sizeOfText * 2; // Place the main display text 2 text-heights down from the top of the screen.        
         

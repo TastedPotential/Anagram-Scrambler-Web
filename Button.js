@@ -83,8 +83,26 @@ class Button{
             // double mid lines
             //line(-this.diameter * .25, this.diameter * .0325, this.diameter * .25, this.diameter * .0325);
             //line(-this.diameter * .25, -this.diameter * .0325, this.diameter * .25, -this.diameter * .0325);
+            pop();
 
             
+        }
+        if(this.buttonType === "save"){
+            fill(116, 50, 191);
+            circle(this.posX, this.posY, this.diameter);
+            fill(255);
+            push();
+            translate(this.posX, this.posY);
+            angleMode(DEGREES);
+            rotate(270);
+            rectMode(CENTER);
+            rect(this.diameter * .10, 0, this.diameter * .60, this.diameter * .15);
+            triangle(-this.diameter * .28, 0, -this.diameter * .08, this.diameter * .20, -this.diameter * .08   , -this.diameter * .20);
+            stroke(255);
+            strokeWeight(this.diameter/20);
+            line(-this.diameter * .35, this.diameter * .20, -this.diameter * .35, -this.diameter * .20,);
+            pop();
+
         }
     }
 }
