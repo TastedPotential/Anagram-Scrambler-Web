@@ -115,6 +115,13 @@ class TextManager{
         0, this.textAnchorX - windowCenterTextOffsetX + (i * this.widthOfText) + i * this.textGap, windowHeight);
         */
       }
+
+      for(let i = 0; i < this.savedScramblesArray.length; i++){
+        noStroke();
+        fill(18, 21, 99);
+        textAlign(CENTER, BASELINE);
+        text(this.savedScramblesArray[i], this.textAnchorX, this.textAnchorY + this.sizeOfText * (2 + i));
+      }
     }
 
     scrambleCharsArray(){
@@ -183,5 +190,14 @@ class TextManager{
       let emptyString = "";
       this.textInput.value(emptyString);
       this.textInput.style('color', 'rgba(0,0,0, 1)');  // Set font color to black and 100% opacity for default text.
+    }
+
+    saveScramble(){
+      if(this.editingText){
+        this.savedScramblesArray.push(this.textInput.value());
+      }
+      else{
+        this.savedScramblesArray.push(this.getCharsArrayAsString());
+      }      
     }
 }

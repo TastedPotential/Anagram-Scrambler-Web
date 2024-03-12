@@ -62,12 +62,14 @@ function windowResized(){
 }
 
 function keyReleased(){
+  //print(keyCode);
   // For spacebar pressed.
   if(keyCode == 32 && textManager.editingText == false){
     textManager.scrambleCharsArray();
     textManager.textInput.value(textManager.getCharsArrayAsString());
     textManager.textInput.hide();
   }
+
   if(keyCode == ENTER || keyCode == RETURN){
     if(textManager.editingText)
     {
@@ -83,8 +85,12 @@ function keyReleased(){
       textManager.textInput.show();
       textManager.textInput.elt.focus();
       textManager.editingText = true;
-    }
-    
+    }    
+  }
+
+  // If INSERT is pressed
+  if(keyCode == 45){
+    textManager.saveScramble();
   }
 }
 
@@ -144,6 +150,9 @@ function mouseReleased(){
       //textManager.textInput.elt.select();
     }
     
+  }
+  else if(buttonsManager.saveButton.clickedOn()){
+    textManager.saveScramble();
   }
   else if(textManager.textInputClickedOn()){
     //print("clicked in the textInput box");
