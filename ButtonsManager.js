@@ -23,12 +23,16 @@ class ButtonsManager{
         this.saveButton = new Button(inputTextManager.textAnchorX - inputTextManager.textBoxWidth / 2 - this.buttonOffsetX - saveButtonOffsetX,
         inputTextManager.textAnchorY - this.buttonOffsetY, this.buttonDiameter, "save");
 
+        this.savedScrambleDeletionButtonsArray = [];
+        this.savedScrambleTextButtonsArray = [];
+
     }
 
     drawButtons(){
         this.scrambleButton.drawButton();
         this.editButton.drawButton();
-        this.saveButton.drawButton();
+        this.saveButton.drawButton();        
+        this.drawSavedScrambleTextButtons();
     }
 
     updateProperties(inputTextManager){
@@ -55,5 +59,20 @@ class ButtonsManager{
         this.saveButton.posX = inputTextManager.textAnchorX - inputTextManager.textBoxWidth / 2 - this.buttonOffsetX - saveButtonOffsetX;
         this.saveButton.posY = inputTextManager.textAnchorY - this.buttonOffsetY;
         this.saveButton.diameter = this.buttonDiameter;
+
+        //TODO
+        // Update savedScrambleTextButtonsArray and savedScrambleDeletionButtonsArray sizes.
+    }
+
+    drawSavedScrambleDeletionButtons(){
+        for(let i = 0; i < this.savedScrambleDeletionButtonsArray.length; i++){
+            this.savedScrambleDeletionButtonsArray[i].drawButton();
+        }
+    }
+
+    drawSavedScrambleTextButtons(){
+        for(let i = 0; i < this.savedScrambleTextButtonsArray.length; i++){
+            this.savedScrambleTextButtonsArray[i].drawButton();
+        }
     }
 }

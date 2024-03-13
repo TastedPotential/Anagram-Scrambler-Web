@@ -6,10 +6,28 @@ class Button{
         // to be a string of either: "shuffle, edit, save, copy"
         this.buttonType = buttonType;
         this.startedClickOnThis = false;
+        this.savedScrambleText = '';
+        this.textHeight = '';
     }
 
     clickedOn(){
-        if(dist(mouseX, mouseY, this.posX, this.posY) <= this.diameter / 2){
+
+        // Check for square buttons
+        if(this.buttonType === "savedScrambleText"){
+            //let textHeight = (this.diameter / this.savedScrambleText.length);
+
+            if(mouseX <= this.posX + this.diameter / 2 && mouseX >= this.posX - this.diameter / 2
+            && mouseY <= this.posY + this.textHeight / 2 && mouseY >= this.posY - this.textHeight / 2){
+                print("clicked on the saved text:" + this.savedScrambleText);
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+
+        // Check for circular buttons
+        else if(dist(mouseX, mouseY, this.posX, this.posY) <= this.diameter / 2){
             return true;
         }
         else{
@@ -51,7 +69,7 @@ class Button{
             triangle(-lineLength/triDiv, -lineLength/triDiv, 0, 0, -lineLength/triDiv, lineLength/triDiv);
             pop();
         }
-        if(this.buttonType === "edit"){
+        else if(this.buttonType === "edit"){
             /*
             fill(47, 47, 214);
             circle(this.posX, this.posY, this.diameter);
@@ -87,7 +105,7 @@ class Button{
 
             
         }
-        if(this.buttonType === "save"){
+        else if(this.buttonType === "save"){
             fill(116, 50, 191);
             circle(this.posX, this.posY, this.diameter);
             fill(255);
@@ -103,6 +121,29 @@ class Button{
             line(-this.diameter * .35, this.diameter * .20, -this.diameter * .35, -this.diameter * .20,);
             pop();
 
+        }
+
+        else if(this.buttonType === "savedScrambleDeletion"){
+            stroke(196, 22, 45, 128);
+            angleMode(DEGREES);
+            push();
+            rotate(45);
+            line(this.posX - this.diameter/2, 0, this.posX - this.diameter/2, 0);
+            rotate(90);
+            line(this.posX - this.diameter/2, 0, this.posX - this.diameter/2, 0);
+            pop();
+        }
+
+        else if(this.buttonType === "savedScrambleText"){
+            noStroke();
+            fill(18, 21, 99);
+            textAlign(CENTER, CENTER);
+            text(this.savedScrambleText, this.posX, this.posY);
+            stroke(18, 21, 99);
+            strokeWeight(1);
+            noFill();
+            rectMode(CENTER);
+            rect(this.posX, this.posY, this.diameter, this.textHeight);
         }
     }
 }

@@ -96,6 +96,19 @@ class TextManager{
       this.updateTextBoxWidth();      
       let windowCenterTextOffsetX = this.textBoxWidth / 2;    
       textSize(this.sizeOfText);
+
+      // Loop to draw saved scrambles.
+      /*
+      for(let i = 0; i < this.savedScramblesArray.length; i++){
+        noStroke();
+        fill(18, 21, 99);
+        textAlign(CENTER, BASELINE);
+        text(this.savedScramblesArray[i], this.textAnchorX, this.textAnchorY + this.sizeOfText * (2 + i));
+        // This is a nice spot to draw the saveg scramble deletion buttons.
+        inButtonsManager.drawSavedScrambleDeletionButtons();
+      }
+      */
+      
       if(this.editingText)
         return;
 
@@ -116,12 +129,7 @@ class TextManager{
         */
       }
 
-      for(let i = 0; i < this.savedScramblesArray.length; i++){
-        noStroke();
-        fill(18, 21, 99);
-        textAlign(CENTER, BASELINE);
-        text(this.savedScramblesArray[i], this.textAnchorX, this.textAnchorY + this.sizeOfText * (2 + i));
-      }
+      
     }
 
     scrambleCharsArray(){
@@ -192,12 +200,28 @@ class TextManager{
       this.textInput.style('color', 'rgba(0,0,0, 1)');  // Set font color to black and 100% opacity for default text.
     }
 
-    saveScramble(){
+    saveScramble(inButtonsManager){
       if(this.editingText){
-        this.savedScramblesArray.push(this.textInput.value());
+        //this.savedScramblesArray.push(this.textInput.value());
+        let textButtonDiameter = this.textInput.value().length * this.widthOfText + (this.textInput.value().length - 1) * this.textGap;
+
+        inButtonsManager.savedScrambleTextButtonsArray.push(
+          new Button(this.textAnchorX, this.textAnchorY + this.sizeOfText * (3 + inButtonsManager.savedScrambleTextButtonsArray.length),
+          textButtonDiameter, "savedScrambleText")
+        );
+        inButtonsManager.savedScrambleTextButtonsArray[inButtonsManager.savedScrambleTextButtonsArray.length -1].savedScrambleText = this.textInput.value();
+        inButtonsManager.savedScrambleTextButtonsArray[inButtonsManager.savedScrambleTextButtonsArray.length -1].textHeight = this.sizeOfText;
       }
       else{
-        this.savedScramblesArray.push(this.getCharsArrayAsString());
+        //this.savedScramblesArray.push(this.getCharsArrayAsString());
+        let textButtonDiameter = this.getCharsArrayAsString().length * this.widthOfText + (this.getCharsArrayAsString().length - 1) * this.textGap;
+
+        inButtonsManager.savedScrambleTextButtonsArray.push(
+          new Button(this.textAnchorX, this.textAnchorY + this.sizeOfText * (3 + inButtonsManager.savedScrambleTextButtonsArray.length),
+          textButtonDiameter, "savedScrambleText")
+        );
+        inButtonsManager.savedScrambleTextButtonsArray[inButtonsManager.savedScrambleTextButtonsArray.length -1].savedScrambleText = this.getCharsArrayAsString();
+        inButtonsManager.savedScrambleTextButtonsArray[inButtonsManager.savedScrambleTextButtonsArray.length -1].textHeight = this.sizeOfText;
       }      
     }
 }

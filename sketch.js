@@ -90,7 +90,7 @@ function keyReleased(){
 
   // If INSERT is pressed
   if(keyCode == 45){
-    textManager.saveScramble();
+    textManager.saveScramble(buttonsManager);
   }
 }
 
@@ -152,7 +152,7 @@ function mouseReleased(){
     
   }
   else if(buttonsManager.saveButton.clickedOn()){
-    textManager.saveScramble();
+    textManager.saveScramble(buttonsManager);
   }
   else if(textManager.textInputClickedOn()){
     //print("clicked in the textInput box");
@@ -164,6 +164,16 @@ function mouseReleased(){
     }
   }
   else{
+
+    //Check savedScrambleTextButtonsArray to see if any of those buttons were clicked.
+    for(let i = 0; i < buttonsManager.savedScrambleTextButtonsArray.length; i++){
+      if(buttonsManager.savedScrambleTextButtonsArray[i].clickedOn()){
+        //TODO
+        // Copy text to clipboard
+        return;
+      }
+    }
+
     //print("didn't click on any elements");
     textManager.setCharsArray(textManager.textInput.elt.value);
     if(textManager.textInput.elt.value == ''){
