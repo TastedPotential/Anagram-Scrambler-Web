@@ -14,11 +14,9 @@ class Button{
 
         // Check for square buttons
         if(this.buttonType === "savedScrambleText"){
-            //let textHeight = (this.diameter / this.savedScrambleText.length);
-
             if(mouseX <= this.posX + this.diameter / 2 && mouseX >= this.posX - this.diameter / 2
             && mouseY <= this.posY + this.textHeight / 2 && mouseY >= this.posY - this.textHeight / 2){
-                print("clicked on the saved text:" + this.savedScrambleText);
+                navigator.clipboard.writeText(this.savedScrambleText);
                 return true;
             }
             else{

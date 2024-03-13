@@ -1,6 +1,6 @@
 class TextManager{
 
-    constructor(inputFont, inputTextSizePercentage){
+    constructor(inputFont, inputTextSizePercentage, inUsingMobile){
         this.charsArray = [];
         this.textSizePercentage = inputTextSizePercentage;
         this.sizeOfText = windowWidth * this.textSizePercentage;
@@ -16,6 +16,7 @@ class TextManager{
         this.textAnchorY = this.sizeOfText * 2; // Place the main display text 2 text-heights down from the top of the screen.        
         
         this.sketchFont = inputFont;
+        this.usingMobile = inUsingMobile;
 
         let startingString = "type your scramble here";
         for(let i = 0; i < startingString.length; i++){
@@ -201,12 +202,17 @@ class TextManager{
     }
 
     saveScramble(inButtonsManager){
+      let savedTextYOffset = 2;
+      if(this.usingMobile){
+        savedTextYOffset = 6;
+      }
+
       if(this.editingText){
         //this.savedScramblesArray.push(this.textInput.value());
         let textButtonDiameter = this.textInput.value().length * this.widthOfText + (this.textInput.value().length - 1) * this.textGap;
 
         inButtonsManager.savedScrambleTextButtonsArray.push(
-          new Button(this.textAnchorX, this.textAnchorY + this.sizeOfText * (3 + inButtonsManager.savedScrambleTextButtonsArray.length),
+          new Button(this.textAnchorX, this.textAnchorY + this.sizeOfText * (savedTextYOffset + inButtonsManager.savedScrambleTextButtonsArray.length),
           textButtonDiameter, "savedScrambleText")
         );
         inButtonsManager.savedScrambleTextButtonsArray[inButtonsManager.savedScrambleTextButtonsArray.length -1].savedScrambleText = this.textInput.value();
@@ -217,7 +223,7 @@ class TextManager{
         let textButtonDiameter = this.getCharsArrayAsString().length * this.widthOfText + (this.getCharsArrayAsString().length - 1) * this.textGap;
 
         inButtonsManager.savedScrambleTextButtonsArray.push(
-          new Button(this.textAnchorX, this.textAnchorY + this.sizeOfText * (3 + inButtonsManager.savedScrambleTextButtonsArray.length),
+          new Button(this.textAnchorX, this.textAnchorY + this.sizeOfText * (savedTextYOffset + inButtonsManager.savedScrambleTextButtonsArray.length),
           textButtonDiameter, "savedScrambleText")
         );
         inButtonsManager.savedScrambleTextButtonsArray[inButtonsManager.savedScrambleTextButtonsArray.length -1].savedScrambleText = this.getCharsArrayAsString();
