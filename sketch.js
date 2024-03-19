@@ -1,10 +1,10 @@
 let textManager;
 let buttonsManager;
-
-
 let userDetails;
 let mobileDeviceRegExp;
 let usingMobileDevice;
+let bgColor = 'rgb(55, 67, 117)';
+let textColor = 'rgb(253, 253, 249)';
 
 function preload(){
   // Ultimately returned to CourierPrime for its readability and monospace width.
@@ -15,7 +15,8 @@ function preload(){
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  background(255, 251, 161);
+  //background(255, 251, 161);
+  background(bgColor);
   // Mobile vs desktop detection adapted from
   // https://www.geeksforgeeks.org/how-to-detect-whether-the-website-is-being-opened-in-a-mobile-device-or-a-desktop-in-javascript/
   // and https://editor.p5js.org/ronikaufman/sketches/yaVtDVBK5
@@ -40,14 +41,15 @@ function setup() {
   }
 
 
-  textManager = new TextManager(sketchFont, textSizePercentOfScreen, usingMobileDevice);
+  textManager = new TextManager(sketchFont, textSizePercentOfScreen, usingMobileDevice, bgColor, textColor);
   textFont(textManager.sketchFont);
   textSize(textManager.sizeOfText);
   buttonsManager = new ButtonsManager(textManager, buttonSizePercentOfScreen, usingMobileDevice);
 }
 
 function draw() {
-  background(255, 251, 161);
+  //background(255, 251, 161);
+  background(bgColor);
   textSize(textManager.sizeOfText);
   textFont(textManager.sketchFont);
   textManager.drawText(0);

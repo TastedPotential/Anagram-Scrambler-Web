@@ -6,6 +6,8 @@ class Button{
         // to be a string of either: "shuffle, edit, save, copy"
         this.buttonType = buttonType;
         this.startedClickOnThis = false;
+        this.buttonFillColor = 'rgb(253, 253, 249)';
+        this.buttonIconColor = 'rgb(55, 67, 117)';
         this.savedScrambleText = '';
         this.textHeight = '';
     }
@@ -36,9 +38,10 @@ class Button{
     drawButton(){
         noStroke();
         if(this.buttonType === "scramble"){
-            fill(227, 45, 45);
+            //fill(227, 45, 45);
+            fill(this.buttonFillColor);
             circle(this.posX, this.posY, this.diameter);
-            stroke(255,255,255);            
+            stroke(this.buttonIconColor);            
             strokeWeight(this.diameter/12);
             let lineLength = this.diameter * 0.6;
             let triDiv = 10;
@@ -52,7 +55,7 @@ class Button{
             arc(0,0, lineLength, lineLength, arcGap + 5, 180-arcGap);            
             translate(lineLength /2, tan(arcGap) * lineLength /2);
             rotate(-45);
-            fill(255,255,255);
+            fill(this.buttonIconColor);
             triangle(-lineLength/triDiv, -lineLength/triDiv, 0, 0, -lineLength/triDiv, lineLength/triDiv);
             pop();
             // Top Arc Arrow
@@ -62,7 +65,7 @@ class Button{
             arc(0,0, lineLength, lineLength, 180 + arcGap + 5, -arcGap);            
             translate(-lineLength /2, -(tan(arcGap) * lineLength /2));
             rotate(135);
-            fill(255,255,255);
+            fill(this.buttonIconColor);
             triangle(-lineLength/triDiv, -lineLength/triDiv, 0, 0, -lineLength/triDiv, lineLength/triDiv);
             pop();
         }
@@ -75,7 +78,8 @@ class Button{
             textSize(this.diameter * 0.85);
             text("E", this.posX, this.posY - this.diameter/10);
             */
-            fill(47, 47, 214);
+            //fill(47, 47, 214);
+            fill(this.buttonFillColor);
             circle(this.posX, this.posY, this.diameter);
             fill(255);
             angleMode(DEGREES);
@@ -83,10 +87,12 @@ class Button{
             translate(this.posX, this.posY);
             rectMode(CENTER);
             rotate(315);
+            fill(this.buttonIconColor);
             rect(0,0, this.diameter * .52, this.diameter * .15);
             triangle(-this.diameter * .44, 0, -this.diameter * .30, this.diameter * .075, -this.diameter * .30, -this.diameter * .075);
             rect(this.diameter * .358, 0, this.diameter * .12, this.diameter * .15, 0, this.diameter * .05, this.diameter * .05, 0);
-            stroke(47, 47, 214);
+
+            stroke(this.buttonFillColor);
             strokeWeight(this.diameter/35);
             // graphite line
             line(-this.diameter * .37, this.diameter * .075, -this.diameter * .37, -this.diameter * .075);
@@ -103,9 +109,10 @@ class Button{
             
         }
         else if(this.buttonType === "save"){
-            fill(116, 50, 191);
+            //fill(116, 50, 191);
+            fill(this.buttonFillColor);
             circle(this.posX, this.posY, this.diameter);
-            fill(255);
+            fill(this.buttonIconColor);
             push();
             translate(this.posX, this.posY);
             angleMode(DEGREES);
@@ -113,7 +120,7 @@ class Button{
             rectMode(CENTER);
             rect(this.diameter * .10, 0, this.diameter * .60, this.diameter * .15);
             triangle(-this.diameter * .28, 0, -this.diameter * .08, this.diameter * .20, -this.diameter * .08   , -this.diameter * .20);
-            stroke(255);
+            stroke(this.buttonIconColor);
             strokeWeight(this.diameter/20);
             line(-this.diameter * .35, this.diameter * .20, -this.diameter * .35, -this.diameter * .20,);
             pop();
@@ -133,14 +140,18 @@ class Button{
 
         else if(this.buttonType === "savedScrambleText"){
             noStroke();
-            fill(18, 21, 99);
+            //fill(18, 21, 99);
+            fill(this.buttonFillColor);
             textAlign(CENTER, CENTER);
             text(this.savedScrambleText, this.posX, this.posY);
-            stroke(18, 21, 99);
-            strokeWeight(1);
-            noFill();
-            rectMode(CENTER);
-            rect(this.posX, this.posY, this.diameter, this.textHeight);
+            
+            // This is a "hitbox" rectangle for debugging purposes.
+            // stroke(18, 21, 99);
+            // strokeWeight(1);
+            // noFill();
+            // rectMode(CENTER);
+            // rect(this.posX, this.posY, this.diameter, this.textHeight);
+            
         }
     }
 }

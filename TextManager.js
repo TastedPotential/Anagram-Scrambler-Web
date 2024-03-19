@@ -1,6 +1,6 @@
 class TextManager{
 
-    constructor(inputFont, inputTextSizePercentage, inUsingMobile){
+    constructor(inputFont, inputTextSizePercentage, inUsingMobile, textBoxBGColor, inTextColor){
         this.charsArray = [];
         this.textSizePercentage = inputTextSizePercentage;
         this.sizeOfText = windowWidth * this.textSizePercentage;
@@ -17,6 +17,7 @@ class TextManager{
         
         this.sketchFont = inputFont;
         this.usingMobile = inUsingMobile;
+        this.textColor = inTextColor;
 
         let startingString = "type your scramble here";
         for(let i = 0; i < startingString.length; i++){
@@ -49,8 +50,10 @@ class TextManager{
         let sizeString = this.sizeOfText.toString() + "px";
         this.textInput.style('font-size', sizeString);
         this.textInput.style('font-family', 'CourierPrime-Regular');
-        this.textInput.style('color', 'rgba(0,0,0, 0.5)');  // Set font color to black and 50% opacity for default text.
-        this.textInput.style('background-color', 'rgb(255, 251, 161)');
+        //this.textInput.style('color', 'rgba(0,0,0, 0.5)');  // Set font color to black and 50% opacity for default text.
+        this.textInput.style('color', this.textColor);
+        //this.textInput.style('background-color', 'rgb(255, 251, 161)');
+        this.textInput.style('background-color', textBoxBGColor);
         this.textInput.style('border', '1');
         //this.textInsdput.style('font-kerning', 'none');
         //this.textInput.style('letter-spacing', '-1.4px');
@@ -116,9 +119,9 @@ class TextManager{
       for(let i = 0; i < this.charsArray.length; i++){      
         noStroke();
         if(this.defaultMessage)
-          fill(0,0,0, 128);
+          fill(this.textColor);
         else
-          fill(0,0,0);
+          fill(this.textColor);
         textAlign(LEFT, BASELINE);
         text(this.charsArray[i].savedChar, this.textAnchorX - windowCenterTextOffsetX + (i * this.widthOfText) + (i * this.textGap), this.textAnchorY + yOffset);
 
@@ -192,13 +195,13 @@ class TextManager{
         }
       }
       this.textInput.value(fullstring);
-      this.textInput.style('color', 'rgba(0,0,0, 1)');  // Set font color to black and 100% opacity for default text.
+      this.textInput.style('color', this.textColor);
     }
 
     clearInputTextValue(){
       let emptyString = "";
       this.textInput.value(emptyString);
-      this.textInput.style('color', 'rgba(0,0,0, 1)');  // Set font color to black and 100% opacity for default text.
+      this.textInput.style('color', this.textColor);
     }
 
     saveScramble(inButtonsManager){
