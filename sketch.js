@@ -168,8 +168,8 @@ function mouseReleased(){
     //Check savedScrambleTextButtonsArray to see if any of those buttons were clicked.
     for(let i = 0; i < buttonsManager.savedScrambleTextButtonsArray.length; i++){
       if(buttonsManager.savedScrambleTextButtonsArray[i].clickedOn()){
-        //TODO
         // Copy text to clipboard
+        navigator.clipboard.writeText(buttonsManager.savedScrambleTextButtonsArray[i].savedScrambleText);
         return;
       }
     }

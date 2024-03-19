@@ -207,27 +207,22 @@ class TextManager{
         savedTextYOffset = 6;
       }
 
-      if(this.editingText){
-        //this.savedScramblesArray.push(this.textInput.value());
-        let textButtonDiameter = this.textInput.value().length * this.widthOfText + (this.textInput.value().length - 1) * this.textGap;
+      // Set the width of the text button depending on whether text is being edited or not.
+      let textButtonWidth = this.getCharsArrayAsString().length * this.widthOfText + (this.getCharsArrayAsString().length - 1) * this.textGap;
+      if(this.editingText)
+        textButtonWidth = this.textInput.value().length * this.widthOfText + (this.textInput.value().length - 1) * this.textGap;
+      // Add the text button to the savedTextButtonsArray
+      inButtonsManager.savedScrambleTextButtonsArray.push(
+        new Button(this.textAnchorX, this.textAnchorY + this.sizeOfText * (savedTextYOffset + inButtonsManager.savedScrambleTextButtonsArray.length),
+        textButtonWidth, "savedScrambleText")
+      );
+      inButtonsManager.savedScrambleTextButtonsArray[inButtonsManager.savedScrambleTextButtonsArray.length - 1].textHeight = this.sizeOfText;
+      // Set the saved scramble text depending on whether text is being edited or not.
+      if(this.editingText)  
+        inButtonsManager.savedScrambleTextButtonsArray[inButtonsManager.savedScrambleTextButtonsArray.length - 1].savedScrambleText = this.textInput.value();
+      else
+        inButtonsManager.savedScrambleTextButtonsArray[inButtonsManager.savedScrambleTextButtonsArray.length - 1].savedScrambleText = this.getCharsArrayAsString();
 
-        inButtonsManager.savedScrambleTextButtonsArray.push(
-          new Button(this.textAnchorX, this.textAnchorY + this.sizeOfText * (savedTextYOffset + inButtonsManager.savedScrambleTextButtonsArray.length),
-          textButtonDiameter, "savedScrambleText")
-        );
-        inButtonsManager.savedScrambleTextButtonsArray[inButtonsManager.savedScrambleTextButtonsArray.length -1].savedScrambleText = this.textInput.value();
-        inButtonsManager.savedScrambleTextButtonsArray[inButtonsManager.savedScrambleTextButtonsArray.length -1].textHeight = this.sizeOfText;
-      }
-      else{
-        //this.savedScramblesArray.push(this.getCharsArrayAsString());
-        let textButtonDiameter = this.getCharsArrayAsString().length * this.widthOfText + (this.getCharsArrayAsString().length - 1) * this.textGap;
-
-        inButtonsManager.savedScrambleTextButtonsArray.push(
-          new Button(this.textAnchorX, this.textAnchorY + this.sizeOfText * (savedTextYOffset + inButtonsManager.savedScrambleTextButtonsArray.length),
-          textButtonDiameter, "savedScrambleText")
-        );
-        inButtonsManager.savedScrambleTextButtonsArray[inButtonsManager.savedScrambleTextButtonsArray.length -1].savedScrambleText = this.getCharsArrayAsString();
-        inButtonsManager.savedScrambleTextButtonsArray[inButtonsManager.savedScrambleTextButtonsArray.length -1].textHeight = this.sizeOfText;
-      }      
+      // Add the corresponding deletion button
     }
 }
