@@ -24,6 +24,17 @@ class Button{
                 return false;
             }
         }
+        // Square check for deletion buttons.
+        else if(this.buttonType === "savedScrambleDeletion"){
+            if(mouseX <= this.posX + this.diameter / 2 && mouseX >= this.posX - this.diameter / 2
+            && mouseY <= this.posY + (this.diameter / 4) + (this.diameter / 2)
+            && mouseY >= this.posY + (this.diameter / 4) - (this.diameter / 2)){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
 
         // Check for circular buttons
         else if(dist(mouseX, mouseY, this.posX, this.posY) <= this.diameter / 2){
@@ -44,7 +55,7 @@ class Button{
             stroke(this.buttonIconColor);            
             strokeWeight(this.diameter/12);
             let lineLength = this.diameter * 0.6;
-            let triDiv = 10;
+            let triDiv = 12;
             // Will adjust the parts that are covered by the triangles by 5 degrees to have clean lines.
             let arcGap = 20;    
             angleMode(DEGREES);            
@@ -121,20 +132,22 @@ class Button{
             rect(this.diameter * .10, 0, this.diameter * .60, this.diameter * .15);
             triangle(-this.diameter * .28, 0, -this.diameter * .08, this.diameter * .20, -this.diameter * .08   , -this.diameter * .20);
             stroke(this.buttonIconColor);
-            strokeWeight(this.diameter/20);
+            strokeWeight(this.diameter/16);
             line(-this.diameter * .35, this.diameter * .20, -this.diameter * .35, -this.diameter * .20,);
             pop();
 
         }
 
         else if(this.buttonType === "savedScrambleDeletion"){
-            stroke(196, 22, 45, 128);
+            //stroke(196, 22, 45, 128);
+            stroke(184, 59, 50);
             angleMode(DEGREES);
             push();
-            rotate(45);
-            line(this.posX - this.diameter/2, 0, this.posX - this.diameter/2, 0);
-            rotate(90);
-            line(this.posX - this.diameter/2, 0, this.posX - this.diameter/2, 0);
+            translate(this.posX, this.posY + this.diameter/4);
+            //rotate(45);
+            line(-this.diameter/2, this.diameter/2, this.diameter/2, -this.diameter/2);
+            //rotate(90);
+            line(-this.diameter/2, -this.diameter/2, this.diameter/2, this.diameter/2);
             pop();
         }
 

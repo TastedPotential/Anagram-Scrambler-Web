@@ -227,5 +227,24 @@ class TextManager{
         inButtonsManager.savedScrambleTextButtonsArray[inButtonsManager.savedScrambleTextButtonsArray.length - 1].savedScrambleText = this.getCharsArrayAsString();
 
       // Add the corresponding deletion button
+      // Make width of deletion square buttons equal to ~2 tect characters.
+      inButtonsManager.savedScrambleDeletionButtonsArray.push(
+        new Button(this.textAnchorX + (textButtonWidth / 2) + (this.widthOfText * 1.5), 
+        this.textAnchorY + this.sizeOfText * (savedTextYOffset + inButtonsManager.savedScrambleDeletionButtonsArray.length),
+        this.widthOfText, "savedScrambleDeletion")        
+      );
     }
+
+    // Called after a button is deleted, setting the remaining buttons Y (and X) positions accordingly.
+    updateButtonPositions(inButtonsManager){
+      let savedTextYOffset = 2;
+      if(this.usingMobile){
+        savedTextYOffset = 6;
+      }
+
+      for(let i  = 0; i < inButtonsManager.savedScrambleTextButtonsArray.length; i++){
+        inButtonsManager.savedScrambleTextButtonsArray[i].posY = this.textAnchorY + this.sizeOfText * (savedTextYOffset + i);
+        inButtonsManager.savedScrambleDeletionButtonsArray[i].posY = this.textAnchorY + this.sizeOfText * (savedTextYOffset + i);
+      }
+  }
 }

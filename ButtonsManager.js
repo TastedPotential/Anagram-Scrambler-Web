@@ -33,6 +33,7 @@ class ButtonsManager{
         this.editButton.drawButton();
         this.saveButton.drawButton();        
         this.drawSavedScrambleTextButtons();
+        this.drawSavedScrambleDeletionButtons();
     }
 
     updateProperties(inputTextManager){

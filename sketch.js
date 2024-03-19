@@ -176,6 +176,17 @@ function mouseReleased(){
       }
     }
 
+    //Check savedScrambleDeletionButtonsArray to see if any of those buttons were clicked.
+    for(let i = 0; i < buttonsManager.savedScrambleDeletionButtonsArray.length; i++){
+      if(buttonsManager.savedScrambleDeletionButtonsArray[i].clickedOn()){
+        // Delete that specific saved scramble entry from the saved scrambles array
+        buttonsManager.savedScrambleDeletionButtonsArray.splice(i, 1);
+        buttonsManager.savedScrambleTextButtonsArray.splice(i, 1);
+        textManager.updateButtonPositions(buttonsManager);
+        return;
+      }
+    }
+
     //print("didn't click on any elements");
     textManager.setCharsArray(textManager.textInput.elt.value);
     if(textManager.textInput.elt.value == ''){
