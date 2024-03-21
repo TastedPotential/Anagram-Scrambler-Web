@@ -265,16 +265,15 @@ class TextManager{
           return;  // Only do the multiple saved scramble columns on desktop.
 
       let savedScrambleXOffset = windowWidth / 4;
-      // Set the width of the text button depending on whether text is being edited or not.
-      let textButtonWidth = this.getCharsArrayAsString().length * this.widthOfText + (this.getCharsArrayAsString().length - 1) * this.textGap;
-      if(this.editingText)
-        textButtonWidth = this.textInput.value().length * this.widthOfText + (this.textInput.value().length - 1) * this.textGap;
-
       let savedScrambleYOffset = 2;
 
       // If scrambles are added beyond 6, split the saved scrambles into two columns.
       if(inButtonsManager.savedScrambleTextButtonsArray.length > 6){
         for(let i = 0; i < inButtonsManager.savedScrambleTextButtonsArray.length; i++){
+          // Set the width of the text button based on the saved Scramble's text.
+          let savedScrambleTextLength = inButtonsManager.savedScrambleTextButtonsArray[i].savedScrambleText.length;
+          let textButtonWidth = savedScrambleTextLength * this.widthOfText + (savedScrambleTextLength - 1) * this.textGap;
+
           if(i < 6){
             inButtonsManager.savedScrambleTextButtonsArray[i].posX = this.textAnchorX - savedScrambleXOffset;
             inButtonsManager.savedScrambleTextButtonsArray[i].posY = this.textAnchorY + this.sizeOfText * (savedScrambleYOffset + i);
@@ -294,6 +293,10 @@ class TextManager{
       // This is the xPosition reset when removing saved scrambles (aka returning to one column).
       else if(inButtonsManager.savedScrambleTextButtonsArray.length <= 6){
         for(let i = 0; i < inButtonsManager.savedScrambleTextButtonsArray.length; i++){
+          // Set the width of the text button based on the saved Scramble's text.
+          let savedScrambleTextLength = inButtonsManager.savedScrambleTextButtonsArray[i].savedScrambleText.length;
+          let textButtonWidth = savedScrambleTextLength * this.widthOfText + (savedScrambleTextLength - 1) * this.textGap;
+
           inButtonsManager.savedScrambleTextButtonsArray[i].posX = this.textAnchorX;
           inButtonsManager.savedScrambleTextButtonsArray[i].posY = this.textAnchorY + this.sizeOfText * (savedScrambleYOffset + i);
 
