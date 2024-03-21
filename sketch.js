@@ -181,8 +181,9 @@ function mouseReleased(){
       if(buttonsManager.savedScrambleDeletionButtonsArray[i].clickedOn()){
         // Delete that specific saved scramble entry from the saved scrambles array
         buttonsManager.savedScrambleDeletionButtonsArray.splice(i, 1);
-        buttonsManager.savedScrambleTextButtonsArray.splice(i, 1);
+        buttonsManager.savedScrambleTextButtonsArray.splice(i, 1);        
         textManager.updateButtonPositions(buttonsManager);
+        textManager.adjustSavedButtonsXOffset(buttonsManager);    
         return;
       }
     }

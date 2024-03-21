@@ -75,5 +75,5 @@ class ButtonsManager{
         for(let i = 0; i < this.savedScrambleTextButtonsArray.length; i++){
             this.savedScrambleTextButtonsArray[i].drawButton();
         }
-    }
+    }   
 }

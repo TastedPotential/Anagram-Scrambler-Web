@@ -205,6 +205,12 @@ class TextManager{
     }
 
     saveScramble(inButtonsManager){
+      // Max number of saved scrambles is 12.
+      if(inButtonsManager.savedScrambleTextButtonsArray.length >= 12){
+        // Maybe add some visual indication to the user that the max saves has been hit.
+        return;
+      }    
+
       let savedTextYOffset = 2;
       if(this.usingMobile){
         savedTextYOffset = 6;
@@ -214,6 +220,7 @@ class TextManager{
       let textButtonWidth = this.getCharsArrayAsString().length * this.widthOfText + (this.getCharsArrayAsString().length - 1) * this.textGap;
       if(this.editingText)
         textButtonWidth = this.textInput.value().length * this.widthOfText + (this.textInput.value().length - 1) * this.textGap;
+      
       // Add the text button to the savedTextButtonsArray
       inButtonsManager.savedScrambleTextButtonsArray.push(
         new Button(this.textAnchorX, this.textAnchorY + this.sizeOfText * (savedTextYOffset + inButtonsManager.savedScrambleTextButtonsArray.length),
@@ -233,6 +240,10 @@ class TextManager{
         this.textAnchorY + this.sizeOfText * (savedTextYOffset + inButtonsManager.savedScrambleDeletionButtonsArray.length),
         this.widthOfText, "savedScrambleDeletion")        
       );
+      
+
+      this.adjustSavedButtonsXOffset(inButtonsManager);
+
     }
 
     // Called after a button is deleted, setting the remaining buttons Y (and X) positions accordingly.
@@ -245,6 +256,50 @@ class TextManager{
       for(let i  = 0; i < inButtonsManager.savedScrambleTextButtonsArray.length; i++){
         inButtonsManager.savedScrambleTextButtonsArray[i].posY = this.textAnchorY + this.sizeOfText * (savedTextYOffset + i);
         inButtonsManager.savedScrambleDeletionButtonsArray[i].posY = this.textAnchorY + this.sizeOfText * (savedTextYOffset + i);
+      }
+    }
+
+    // Call at the end of saveScramble to put scrambles in columns and use the desktop's horizontal space.
+    adjustSavedButtonsXOffset(inButtonsManager){     
+      if(this.usingMobile)
+          return;  // Only do the multiple saved scramble columns on desktop.
+
+      let savedScrambleXOffset = windowWidth / 4;
+      // Set the width of the text button depending on whether text is being edited or not.
+      let textButtonWidth = this.getCharsArrayAsString().length * this.widthOfText + (this.getCharsArrayAsString().length - 1) * this.textGap;
+      if(this.editingText)
+        textButtonWidth = this.textInput.value().length * this.widthOfText + (this.textInput.value().length - 1) * this.textGap;
+
+      let savedScrambleYOffset = 2;
+
+      // If scrambles are added beyond 6, split the saved scrambles into two columns.
+      if(inButtonsManager.savedScrambleTextButtonsArray.length > 6){
+        for(let i = 0; i < inButtonsManager.savedScrambleTextButtonsArray.length; i++){
+          if(i < 6){
+            inButtonsManager.savedScrambleTextButtonsArray[i].posX = this.textAnchorX - savedScrambleXOffset;
+            inButtonsManager.savedScrambleTextButtonsArray[i].posY = this.textAnchorY + this.sizeOfText * (savedScrambleYOffset + i);
+
+            inButtonsManager.savedScrambleDeletionButtonsArray[i].posX = this.textAnchorX + (textButtonWidth / 2) + (this.widthOfText * 1.5) - savedScrambleXOffset;
+            inButtonsManager.savedScrambleDeletionButtonsArray[i].posY = this.textAnchorY + this.sizeOfText * (savedScrambleYOffset + i);
+          }
+          else if(i < 12){
+            inButtonsManager.savedScrambleTextButtonsArray[i].posX = this.textAnchorX + savedScrambleXOffset;
+            inButtonsManager.savedScrambleTextButtonsArray[i].posY = this.textAnchorY + this.sizeOfText * (savedScrambleYOffset + (i % 6));
+
+            inButtonsManager.savedScrambleDeletionButtonsArray[i].posX = this.textAnchorX + (textButtonWidth / 2) + (this.widthOfText * 1.5) + savedScrambleXOffset;
+            inButtonsManager.savedScrambleDeletionButtonsArray[i].posY = this.textAnchorY + this.sizeOfText * (savedScrambleYOffset + (i % 6));
+          }
+        }          
+      }
+      // This is the xPosition reset when removing saved scrambles (aka returning to one column).
+      else if(inButtonsManager.savedScrambleTextButtonsArray.length <= 6){
+        for(let i = 0; i < inButtonsManager.savedScrambleTextButtonsArray.length; i++){
+          inButtonsManager.savedScrambleTextButtonsArray[i].posX = this.textAnchorX;
+          inButtonsManager.savedScrambleTextButtonsArray[i].posY = this.textAnchorY + this.sizeOfText * (savedScrambleYOffset + i);
+
+          inButtonsManager.savedScrambleDeletionButtonsArray[i].posX = this.textAnchorX + (textButtonWidth / 2) + (this.widthOfText * 1.5);
+          inButtonsManager.savedScrambleDeletionButtonsArray[i].posY = this.textAnchorY + this.sizeOfText * (savedScrambleYOffset + i);
+        }
       }
   }
 }
