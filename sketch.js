@@ -45,6 +45,7 @@ function setup() {
   textFont(textManager.sketchFont);
   textSize(textManager.sizeOfText);
   buttonsManager = new ButtonsManager(textManager, buttonSizePercentOfScreen, usingMobileDevice);
+  textManager.textInput.elt.focus();
 }
 
 function draw() {
@@ -63,8 +64,27 @@ function windowResized(){
   print("window was resized");
 }
 
+function keyPressed(){
+  // If a number or letter with keyCode (48-90) or a symbol 44-47, 91-93, 192, 222) is pressed, remove the default text.
+  // Add the Shift-key modified version of the character by directly reading in the key value.
+  // When the key is released, the text input will be handled by the text input box's logic from Javascript.
+  if(keyCode >= 44 && keyCode <= 93 || keyCode == 192 || keyCode == 222){
+    // Clear default text if any key is pressed.
+    if(textManager.defaultMessage == true){
+      textManager.clearInputTextValue();
+      textManager.defaultMessage = false;
+    }
+  }  
+}
+
 function keyReleased(){
   //print(keyCode);
+  // Reset display of default text if all text is removed.
+  if(textManager.textInput.elt.value == '' && keyCode == BACKSPACE){
+    textManager.textInput.elt.value = textManager.startingString;
+    textManager.defaultMessage = true;
+  } 
+
   // For spacebar pressed.
   if(keyCode == 32 && textManager.editingText == false){
     textManager.scrambleCharsArray();
@@ -86,6 +106,7 @@ function keyReleased(){
       textManager.setTextInputValue();
       textManager.textInput.show();
       textManager.textInput.elt.focus();
+      textManager.defaultMessage = false;
       textManager.editingText = true;
     }    
   }

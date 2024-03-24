@@ -19,9 +19,10 @@ class TextManager{
         this.usingMobile = inUsingMobile;
         this.textColor = inTextColor;
 
-        let startingString = "type your scramble here";
-        for(let i = 0; i < startingString.length; i++){
-          this.charsArray.push(new TextChar(startingString.charAt(i)));
+        this.startingString = "type your scramble here";
+
+        for(let i = 0; i < this.startingString.length; i++){
+          this.charsArray.push(new TextChar(this.startingString.charAt(i)));
         }
         
         // What the heck, AT HIGHER RESOLUTIONS, making the width of the text box equal the number of characters and an equal number of gaps
@@ -35,7 +36,7 @@ class TextManager{
         
 
         // Info on Input Elements here: https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement
-        this.textInput = createInput(startingString);
+        this.textInput = createInput(this.startingString);
         this.textInputOffsetY = this.sizeOfText * .82;
         //this.textInput.size(this.textInputBoxWidth + this.widthOfText/4);
         //this.textInput.size(windowWidth - this.widthOfText * 4);
