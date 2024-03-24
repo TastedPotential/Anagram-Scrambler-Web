@@ -45,6 +45,7 @@ function setup() {
   textFont(textManager.sketchFont);
   textSize(textManager.sizeOfText);
   buttonsManager = new ButtonsManager(textManager, buttonSizePercentOfScreen, usingMobileDevice);
+  textManager.textInput.show();
   textManager.textInput.elt.focus();
 }
 
@@ -61,7 +62,7 @@ function windowResized(){
   resizeCanvas(windowWidth, windowHeight);
   textManager.updateProperties();
   buttonsManager.updateProperties(textManager);
-  print("window was resized");
+  //print("window was resized");
 }
 
 function keyPressed(){
@@ -79,6 +80,14 @@ function keyPressed(){
 
 function keyReleased(){
   //print(keyCode);
+
+  // Cull the addition of extra characters beyond the maximum here
+  if(keyCode >= 44 && keyCode <= 93 || keyCode == 192 || keyCode == 222){
+    if(textManager.textInput.elt.value.length > textManager.scrambleMaxLength){
+      textManager.textInput.elt.value = textManager.textInput.elt.value.substring(0, textManager.scrambleMaxLength);
+    }
+  }
+
   // Reset display of default text if all text is removed.
   if(textManager.textInput.elt.value == '' && keyCode == BACKSPACE){
     textManager.textInput.elt.value = textManager.startingString;

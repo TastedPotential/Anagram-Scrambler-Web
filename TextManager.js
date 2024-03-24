@@ -20,6 +20,7 @@ class TextManager{
         this.textColor = inTextColor;
 
         this.startingString = "type your scramble here";
+        this.scrambleMaxLength = 13;
 
         for(let i = 0; i < this.startingString.length; i++){
           this.charsArray.push(new TextChar(this.startingString.charAt(i)));
