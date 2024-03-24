@@ -7,6 +7,7 @@ class Button{
         this.buttonType = buttonType;
         this.startedClickOnThis = false;
         this.buttonFillColor = 'rgb(253, 253, 249)';
+        this.buttonShadowColor = 'rgb(27, 34, 66)';
         this.buttonIconColor = 'rgb(55, 67, 117)';
         this.savedScrambleText = '';
         this.textHeight = '';
@@ -48,6 +49,7 @@ class Button{
 
     drawButton(){
         noStroke();
+
         if(this.buttonType === "scramble"){
             //fill(227, 45, 45);
             fill(this.buttonFillColor);
@@ -166,5 +168,11 @@ class Button{
             // rect(this.posX, this.posY, this.diameter, this.textHeight);
             
         }
+    }
+    
+    // May not use. Was testing it out but I'm not a fan of how this "drop shadow" looks so far.
+    drawButtonShadow(){
+        fill(this.buttonShadowColor);
+        circle(this.posX, this.posY + this.diameter/15, this.diameter * 1.05);
     }
 }
