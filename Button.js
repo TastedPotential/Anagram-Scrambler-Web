@@ -154,7 +154,7 @@ class Button{
         }
 
         else if(this.buttonType === "savedScrambleText"){
-            noStroke();
+            //noStroke();
             //fill(18, 21, 99);
             fill(this.buttonFillColor);
             textAlign(CENTER, CENTER);
@@ -167,6 +167,38 @@ class Button{
             // rectMode(CENTER);
             // rect(this.posX, this.posY, this.diameter, this.textHeight);
             
+        }
+
+        else if(this.buttonType === "group"){
+            //noStroke();
+            angleMode(DEGREES);            
+            fill(this.buttonFillColor);
+            circle(this.posX, this.posY, this.diameter);
+            stroke(this.buttonIconColor);
+
+            let arrowHead = this.diameter * .22;
+            let arrowShaft = this.diameter * .40;
+            let arrowTipGap = this.diameter / 14;
+
+            push();
+            translate(this.posX, this.posY);
+            line(-arrowShaft, 0, -arrowTipGap, 0);
+            line(arrowShaft, 0, arrowTipGap, 0);
+            // Left arrowHead
+            translate(-arrowTipGap, 0);
+            rotate(45);     
+            line(-arrowHead, 0, 0, 0);
+            rotate(-90);
+            line(-arrowHead, 0, 0, 0);
+            // Right arrowHead
+            rotate(45); // reset rotation back to zero
+            translate(2 * arrowTipGap, 0);
+            rotate(45);
+            line(arrowHead, 0, 0, 0);
+            rotate(-90);
+            line(arrowHead, 0, 0, 0);
+            pop();
+
         }
     }
     

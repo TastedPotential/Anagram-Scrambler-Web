@@ -23,6 +23,8 @@ class ButtonsManager{
         this.saveButton = new Button(inputTextManager.textAnchorX - inputTextManager.textBoxWidth / 2 - this.buttonOffsetX - saveButtonOffsetX,
         inputTextManager.textAnchorY - this.buttonOffsetY, this.buttonDiameter, "save");
 
+        this.groupButton = new Button(this.editButton.posX + this.buttonDiameter, this.editButton.posY - this.buttonDiameter, this.buttonDiameter, "group");
+
         this.savedScrambleDeletionButtonsArray = [];
         this.savedScrambleTextButtonsArray = [];
 
@@ -31,7 +33,8 @@ class ButtonsManager{
     drawButtons(){
         this.scrambleButton.drawButton();
         this.editButton.drawButton();
-        this.saveButton.drawButton();        
+        this.saveButton.drawButton();
+        this.groupButton.drawButton();
         this.drawSavedScrambleTextButtons();
         this.drawSavedScrambleDeletionButtons();
     }
@@ -60,6 +63,11 @@ class ButtonsManager{
         this.saveButton.posX = inputTextManager.textAnchorX - inputTextManager.textBoxWidth / 2 - this.buttonOffsetX - saveButtonOffsetX;
         this.saveButton.posY = inputTextManager.textAnchorY - this.buttonOffsetY;
         this.saveButton.diameter = this.buttonDiameter;
+
+        this.groupButton.posX = this.editButton.posX + this.buttonDiameter;
+        this.groupButton.posY = this.editButton.posY - this.buttonDiameter;
+        this.groupButton.diameter = this.buttonDiameter;
+
 
         //TODO
         // Update savedScrambleTextButtonsArray and savedScrambleDeletionButtonsArray sizes.
