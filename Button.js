@@ -179,12 +179,11 @@ class Button{
             let arrowHead = this.diameter * .22;
             let arrowShaft = this.diameter * .40;
             let arrowTipGap = this.diameter / 14;
-
             push();
             translate(this.posX, this.posY);
             line(-arrowShaft, 0, -arrowTipGap, 0);
             line(arrowShaft, 0, arrowTipGap, 0);
-            // Left arrowHead
+            // Left arrowHead           
             translate(-arrowTipGap, 0);
             rotate(45);     
             line(-arrowHead, 0, 0, 0);
@@ -199,6 +198,20 @@ class Button{
             line(arrowHead, 0, 0, 0);
             pop();
 
+            // // Trigonometry method
+            // //stroke(0,255,0);
+            // let arrowHeadAngle = 35;
+            // //arrowHead = this.diameter * .28;
+            // push();
+            // translate(this.posX, this.posY);
+            // line(-arrowShaft, 0, -arrowTipGap, 0);
+            // line(arrowShaft, 0, arrowTipGap, 0);
+            // // left arrowhead
+            // line(-cos(arrowHeadAngle)*arrowHead, sin(arrowHeadAngle) * arrowHead, -arrowTipGap, 0);
+            // line(-cos(arrowHeadAngle)*arrowHead, -sin(arrowHeadAngle) * arrowHead, -arrowTipGap, 0);
+            // line(cos(arrowHeadAngle)*arrowHead, sin(arrowHeadAngle) * arrowHead, arrowTipGap, 0);
+            // line(cos(arrowHeadAngle)*arrowHead, -sin(arrowHeadAngle) * arrowHead, arrowTipGap, 0);
+            // pop();
         }
     }
     
