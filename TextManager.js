@@ -22,6 +22,8 @@ class TextManager{
         this.startingString = "type your scramble here";
         this.scrambleMaxLength = 13;
 
+        this.buttonsManagerRef;
+
         for(let i = 0; i < this.startingString.length; i++){
           this.charsArray.push(new TextChar(this.startingString.charAt(i)));
         }
@@ -118,6 +120,9 @@ class TextManager{
       if(this.editingText)
         return;
 
+      this.buttonsManagerRef.drawTextCharButtons();
+
+      /*
       for(let i = 0; i < this.charsArray.length; i++){      
         noStroke();
         if(this.defaultMessage)
@@ -126,14 +131,16 @@ class TextManager{
           fill(this.textColor);
         textAlign(LEFT, BASELINE);
         text(this.charsArray[i].savedChar, this.textAnchorX - windowCenterTextOffsetX + (i * this.widthOfText) + (i * this.textGap), this.textAnchorY + yOffset);
+      
 
-        /*
-        stroke(0,0,0);
-        strokeWeight(1);
-        line(this.textAnchorX - windowCenterTextOffsetX + (i * this.widthOfText) + i * this.textGap,
-        0, this.textAnchorX - windowCenterTextOffsetX + (i * this.widthOfText) + i * this.textGap, windowHeight);
-        */
+        
+        // stroke(0,0,0);
+        // strokeWeight(1);
+        // line(this.textAnchorX - windowCenterTextOffsetX + (i * this.widthOfText) + i * this.textGap,
+        // 0, this.textAnchorX - windowCenterTextOffsetX + (i * this.widthOfText) + i * this.textGap, windowHeight);
+        
       }
+      */
 
       
     }
@@ -181,7 +188,22 @@ class TextManager{
         for(let i = 0; i < inString.length; i++){
           this.charsArray.push(new TextChar(inString.charAt(i)));
         }
-      }      
+      }
+      
+      // Set the textCharButtonsArray in the buttonsManager to have buttons with the same chars as chardArray
+      this.updateTextBoxWidth(); 
+      let windowCenterTextOffsetX = this.textBoxWidth / 2;
+
+      this.buttonsManagerRef.textCharButtonsArray.splice(0);
+      for(let i = 0; i < this.charsArray.length; i++){
+        // this.sizeOfText / 20 is trying to adjust for the slight offset of the drawn text and the textInputBox
+        this.buttonsManagerRef.textCharButtonsArray.push(new Button(
+          this.textAnchorX - windowCenterTextOffsetX + (i * this.widthOfText) + (i * this.textGap) + this.widthOfText/2,
+          this.textAnchorY - this.sizeOfText/2 + this.sizeOfText / 20, this.widthOfText, "textChar"
+        ));
+        this.buttonsManagerRef.textCharButtonsArray[this.buttonsManagerRef.textCharButtonsArray.length - 1].savedScrambleText = this.charsArray[i].savedChar;
+      }
+
     }
 
     setTextInputValue(){

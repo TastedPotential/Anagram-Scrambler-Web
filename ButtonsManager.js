@@ -27,6 +27,7 @@ class ButtonsManager{
 
         this.savedScrambleDeletionButtonsArray = [];
         this.savedScrambleTextButtonsArray = [];
+        this.textCharButtonsArray = [];
 
     }
 
@@ -37,6 +38,7 @@ class ButtonsManager{
         this.groupButton.drawButton();
         this.drawSavedScrambleTextButtons();
         this.drawSavedScrambleDeletionButtons();
+        //this.drawTextCharButtons();
     }
 
     updateProperties(inputTextManager){
@@ -71,6 +73,7 @@ class ButtonsManager{
 
         //TODO
         // Update savedScrambleTextButtonsArray and savedScrambleDeletionButtonsArray sizes.
+        // Update textCharButtons sizes
     }
 
     drawSavedScrambleDeletionButtons(){
@@ -83,5 +86,12 @@ class ButtonsManager{
         for(let i = 0; i < this.savedScrambleTextButtonsArray.length; i++){
             this.savedScrambleTextButtonsArray[i].drawButton();
         }
-    }   
+    }
+    
+    drawTextCharButtons(){
+
+        for(let i = 0; i < this.textCharButtonsArray.length; i++){
+            this.textCharButtonsArray[i].drawButton();
+        }
+    }
 }

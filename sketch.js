@@ -47,6 +47,7 @@ function setup() {
   buttonsManager = new ButtonsManager(textManager, buttonSizePercentOfScreen, usingMobileDevice);
   textManager.textInput.show();
   textManager.textInput.elt.focus();
+  textManager.buttonsManagerRef = buttonsManager;
 }
 
 function draw() {
@@ -54,8 +55,9 @@ function draw() {
   background(bgColor);
   textSize(textManager.sizeOfText);
   textFont(textManager.sketchFont);
-  textManager.drawText(0);
   buttonsManager.drawButtons();
+  textManager.drawText(0);
+  
 }
 
 function windowResized(){

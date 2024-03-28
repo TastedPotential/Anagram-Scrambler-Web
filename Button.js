@@ -10,7 +10,7 @@ class Button{
         this.buttonShadowColor = 'rgb(27, 34, 66)';
         this.buttonIconColor = 'rgb(55, 67, 117)';
         this.savedScrambleText = '';
-        this.textHeight = '';
+        this.textHeight;
     }
 
     clickedOn(){
@@ -197,21 +197,18 @@ class Button{
             rotate(-90);
             line(arrowHead, 0, 0, 0);
             pop();
+        }
 
-            // // Trigonometry method
-            // //stroke(0,255,0);
-            // let arrowHeadAngle = 35;
-            // //arrowHead = this.diameter * .28;
-            // push();
-            // translate(this.posX, this.posY);
-            // line(-arrowShaft, 0, -arrowTipGap, 0);
-            // line(arrowShaft, 0, arrowTipGap, 0);
-            // // left arrowhead
-            // line(-cos(arrowHeadAngle)*arrowHead, sin(arrowHeadAngle) * arrowHead, -arrowTipGap, 0);
-            // line(-cos(arrowHeadAngle)*arrowHead, -sin(arrowHeadAngle) * arrowHead, -arrowTipGap, 0);
-            // line(cos(arrowHeadAngle)*arrowHead, sin(arrowHeadAngle) * arrowHead, arrowTipGap, 0);
-            // line(cos(arrowHeadAngle)*arrowHead, -sin(arrowHeadAngle) * arrowHead, arrowTipGap, 0);
-            // pop();
+        else if(this.buttonType === "textChar"){
+            // draw a rectangle behind the character so it can be dragged around later
+            noStroke();
+            fill(this.buttonIconColor);
+            rectMode(CENTER);
+            rect(this.posX, this.posY, this.diameter, this.diameter * 2);
+            // draw the text of the character
+            fill(this.buttonFillColor);
+            textAlign(CENTER,CENTER);
+            text(this.savedScrambleText, this.posX, this.posY);
         }
     }
     
