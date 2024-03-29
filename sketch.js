@@ -138,6 +138,13 @@ function mousePressed(){
   else if(textManager.textInputClickedOn()){
     textManager.startedClickOnTextInput = true;
   }
+  else if(textManager.groupingText){
+    // check which textChar was clicked on
+    let clickedCharIndex = buttonsManager.getIndexOfClickedChar();
+    if(clickedCharIndex >= 0){
+      print("clicked on " + textManager.charsArray[clickedCharIndex].savedChar);
+    }
+  } 
 }
 
 function mouseReleased(){
@@ -156,7 +163,7 @@ function mouseReleased(){
 
     return;
   }
- 
+ // Scramble Button Block
   if(buttonsManager.scrambleButton.clickedOn() && buttonsManager.scrambleButton.startedClickOnThis){
     textManager.setCharsArray(textManager.textInput.elt.value);
     textManager.scrambleCharsArray();
@@ -164,6 +171,8 @@ function mouseReleased(){
     // textManager.textInput.hide();
     // textManager.editingText = false;
   }
+
+  //Edit button Block
   else if(buttonsManager.editButton.clickedOn() && buttonsManager.editButton.startedClickOnThis){
     if(textManager.editingText)
     {
@@ -185,9 +194,18 @@ function mouseReleased(){
     }
     
   }
+
+  // Save Button Block
   else if(buttonsManager.saveButton.clickedOn()){
     textManager.saveScramble(buttonsManager);
   }
+
+  // Group Button Block
+  else if(buttonsManager.groupButton.clickedOn()){
+    textManager.groupingText = !textManager.groupingText;
+  }
+
+  // Text Input Box Block
   else if(textManager.textInputClickedOn()){
     //print("clicked in the textInput box");
     // Don't hide the text input box if the clicks are inside the box, such as when editing text. So don't go to the next check.
@@ -197,6 +215,8 @@ function mouseReleased(){
       textManager.defaultMessage = false;
     }
   }
+
+  // Check series of buttons
   else{
 
     //Check savedScrambleTextButtonsArray to see if any of those buttons were clicked.

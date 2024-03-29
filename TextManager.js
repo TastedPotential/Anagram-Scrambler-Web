@@ -23,6 +23,9 @@ class TextManager{
         this.scrambleMaxLength = 13;
 
         this.buttonsManagerRef;
+        this.groupingText = false;
+        this.familyCreationStartIndex = -1;
+        this.familyCreationEndIndex = -1;
 
         for(let i = 0; i < this.startingString.length; i++){
           this.charsArray.push(new TextChar(this.startingString.charAt(i)));

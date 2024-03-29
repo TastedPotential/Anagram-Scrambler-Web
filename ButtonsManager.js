@@ -94,4 +94,13 @@ class ButtonsManager{
             this.textCharButtonsArray[i].drawButton();
         }
     }
+
+    getIndexOfClickedChar(){
+        for(let i = 0; i < this.textCharButtonsArray.length; i++){
+            if(this.textCharButtonsArray[i].clickedOn()){
+                return i;
+            }
+        }
+        return -1;  // if no textChar was clicked on
+    }
 }

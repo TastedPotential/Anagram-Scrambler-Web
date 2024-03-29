@@ -36,6 +36,17 @@ class Button{
                 return false;
             }
         }
+        // Rectangle check for textCharacters from the main display text
+        else if(this.buttonType === "textChar"){
+            if(mouseX <= this.posX + this.diameter / 2 && mouseX >= this.posX - this.diameter / 2
+            && mouseY <= this.posY + ((this.diameter * 2) / 2)
+            && mouseY >= this.posY - ((this.diameter * 2) / 2)){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
 
         // Check for circular buttons
         else if(dist(mouseX, mouseY, this.posX, this.posY) <= this.diameter / 2){
