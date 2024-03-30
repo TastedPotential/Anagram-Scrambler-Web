@@ -24,8 +24,8 @@ class TextManager{
 
         this.buttonsManagerRef;
         this.groupingText = false;
-        this.familyCreationStartIndex = -1;
-        this.familyCreationEndIndex = -1;
+        this.groupCreationStartIndex = -1;
+        this.groupCreationEndIndex = -1;
 
         for(let i = 0; i < this.startingString.length; i++){
           this.charsArray.push(new TextChar(this.startingString.charAt(i)));
@@ -102,7 +102,7 @@ class TextManager{
 
     }
     
-    drawText(yOffset){
+    drawText(){
       // This centers the main text horizontally on the screen.
       this.updateTextBoxWidth();      
       let windowCenterTextOffsetX = this.textBoxWidth / 2;    
@@ -120,10 +120,17 @@ class TextManager{
       }
       */
       
-      if(this.editingText)
+       if(this.groupingText){
+        fill(166, 58, 72);
+        noStroke();
+        textAlign(CENTER);
+        textSize(this.sizeOfText / 2);
+        text("grouping mode active", this.textAnchorX, this.textAnchorY - this.sizeOfText * 1.5);
         return;
+       }
+        
 
-      this.buttonsManagerRef.drawTextCharButtons();
+      // this.buttonsManagerRef.drawTextCharButtons();
 
       /*
       for(let i = 0; i < this.charsArray.length; i++){      
@@ -332,4 +339,44 @@ class TextManager{
         }
       }
   }
+
+  stopGroupCreation(){
+    this.groupCreationStartIndex = -1;
+    this.groupCreationEndIndex = -1;
+  }
+
+  // Use start and stop group creation indices to set a family of the characters between these two in the array
+  createGroup(){
+    // Swap the start and stop indices if user created a family with a left-swipe
+    if(this.groupCreationEndIndex < this.groupCreationStartIndex){
+      let originalStart = this.groupCreationStartIndex;
+      this.groupCreationStartIndex = this.groupCreationEndIndex;
+      this.groupCreationEndIndex = originalStart;
+    }
+
+    // find the next available lowest familyID value
+    let tempGroupID = 0;
+    for(let i = 0; i < this.charsArray.length; i++){
+      // If an ID of the current testing value was found, increment the testing ID and start the search over.
+      if(this.charsArray[i].groupID == tempGroupID){
+        tempGroupID++;
+        i = -1;
+      }
+    }
+    // Now that the lowest available family ID is set, so apply it to the textChars in the start and end range
+    // Also set the family order and size for each
+    let groupSizeValue = (this.groupCreationEndIndex - this.groupCreationStartIndex) + 1;
+    let groupOrderTracker = 0;  // The value for the head of the group.
+
+    for(let i = this.groupCreationStartIndex; i <= this.groupCreationEndIndex; i++){
+      this.charsArray[i].groupID = tempGroupID;
+      this.charsArray[i].groupSize = groupSizeValue;
+      this.charsArray[i].groupOrder = groupOrderTracker;
+      groupOrderTracker++;
+    }
+
+    print("group created with ID: " + tempGroupID + ", group size: " + groupSizeValue);
+
+  }
+
 }

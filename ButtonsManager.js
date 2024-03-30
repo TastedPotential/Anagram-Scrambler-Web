@@ -29,6 +29,8 @@ class ButtonsManager{
         this.savedScrambleTextButtonsArray = [];
         this.textCharButtonsArray = [];
 
+        this.textManagerRef = inputTextManager;
+
     }
 
     drawButtons(){
@@ -38,7 +40,12 @@ class ButtonsManager{
         this.groupButton.drawButton();
         this.drawSavedScrambleTextButtons();
         this.drawSavedScrambleDeletionButtons();
-        //this.drawTextCharButtons();
+        if(!this.textManagerRef.editingText){
+            this.drawTextCharButtons();
+            this.drawGroupLines();// draw group lines
+            // draw locks/brackets
+        }
+
     }
 
     updateProperties(inputTextManager){
@@ -102,5 +109,31 @@ class ButtonsManager{
             }
         }
         return -1;  // if no textChar was clicked on
+    }
+
+    drawGroupLines(){
+        let groupLineSize = -1;
+        for(let i = 0; i < this.textManagerRef.charsArray.length; i++){
+            // ONLY if we found the HEAD of a group, draw a grouping bracket
+            if(this.textManagerRef.charsArray[i].groupOrder == 0){
+                groupLineSize = this.textManagerRef.charsArray[i].groupSize;
+                this.drawGroupBracket(i, groupLineSize);
+            }
+        }
+    }
+
+    drawGroupBracket(groupHeadIndex, groupUnitSize){
+        // The bracket will extend from the leftmost unit to the rightmost unit in the group.
+        let groupEndIndex = groupHeadIndex + (groupUnitSize - 1);
+        stroke(163, 64, 201);
+        strokeWeight(4);
+
+        let groupLineYDrop = (this.textCharButtonsArray[groupHeadIndex].diameter * 1.5);
+
+        line(this.textCharButtonsArray[groupHeadIndex].posX - (this.textCharButtonsArray[groupHeadIndex].diameter/2),
+        this.textCharButtonsArray[groupHeadIndex].posY + groupLineYDrop,
+        this.textCharButtonsArray[groupEndIndex].posX + (this.textCharButtonsArray[groupEndIndex].diameter/2),
+        this.textCharButtonsArray[groupEndIndex].posY + groupLineYDrop,
+        );
     }
 }

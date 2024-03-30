@@ -4,9 +4,9 @@ class TextChar{
         this.savedChar = inputChar;
         this.isLocked = false;
         this.relativePos = -1;
-        this.familyOrder = -1;
-        this.familyID = -1;
-        this.familySize = 0;
+        this.groupOrder = -1;
+        this.groupID = -1;
+        this.groupSize = 0;
     
         this.isShaking = false;
         this.animStartTime = 0;

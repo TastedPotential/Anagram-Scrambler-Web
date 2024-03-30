@@ -56,7 +56,7 @@ function draw() {
   textSize(textManager.sizeOfText);
   textFont(textManager.sketchFont);
   buttonsManager.drawButtons();
-  textManager.drawText(0);
+  textManager.drawText();
   
 }
 
@@ -141,8 +141,11 @@ function mousePressed(){
   else if(textManager.groupingText){
     // check which textChar was clicked on
     let clickedCharIndex = buttonsManager.getIndexOfClickedChar();
-    if(clickedCharIndex >= 0){
-      print("clicked on " + textManager.charsArray[clickedCharIndex].savedChar);
+    // If we clicked on a character, it is NOT in a group (groupID == -1, aka default), start the group creation attempt
+    // with this character
+    if(clickedCharIndex >= 0 && textManager.charsArray[clickedCharIndex].groupID == -1){
+      //print("clicked on " + textManager.charsArray[clickedCharIndex].savedChar);
+      textManager.groupCreationStartIndex = clickedCharIndex;
     }
   } 
 }
@@ -215,7 +218,21 @@ function mouseReleased(){
       textManager.defaultMessage = false;
     }
   }
-
+  else if(textManager.groupingText){
+    // check which textChar was released on
+    let clickedCharIndex = buttonsManager.getIndexOfClickedChar();
+    // If 1) we clicked on a character, 2) it is NOT in a group (groupID == -1, aka default), 3) did not end the drag over the same starting character
+    //start the group creation attempt with this character
+    if(clickedCharIndex >= 0 && textManager.charsArray[clickedCharIndex].groupID == -1 && clickedCharIndex != textManager.groupCreationStartIndex){
+      //print("clicked on " + textManager.charsArray[clickedCharIndex].savedChar);
+      textManager.groupCreationEndIndex = clickedCharIndex;
+      textManager.createGroup();
+    }
+    // reset the group creation start and end indexes if released in invalid conditions or over no chars
+    else{
+      textManager.stopGroupCreation();
+    }
+  }
   // Check series of buttons
   else{
 
