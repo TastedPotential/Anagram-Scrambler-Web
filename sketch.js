@@ -218,6 +218,7 @@ function mouseReleased(){
       textManager.defaultMessage = false;
     }
   }
+  // Group creation block
   else if(textManager.groupingText){
     // check which textChar was released on
     let clickedCharIndex = buttonsManager.getIndexOfClickedChar();
@@ -257,13 +258,21 @@ function mouseReleased(){
       }
     }
 
+    
     //print("didn't click on any elements");
-    textManager.setCharsArray(textManager.textInput.elt.value);
-    if(textManager.textInput.elt.value == ''){
-      textManager.defaultMessage = true;
+    // I think this is where the stored groups are being wiped.
+    // TODO
+    // Determine if groups & locks should all be removed every time text input is made.
+    // Clicked on empty space white text editor is open, aka close the text editor and save the current textInput contents.
+    if(textManager.editingText == true){
+      textManager.setCharsArray(textManager.textInput.elt.value);
+      if(textManager.textInput.elt.value == ''){
+        textManager.defaultMessage = true;
+      }
+      textManager.textInput.hide();
+      textManager.editingText = false;
     }
-    textManager.textInput.hide();
-    textManager.editingText = false;
+    
   }
 
   // Set all buttons that were clicked on back to false. There's probably a cleaner way to do this.

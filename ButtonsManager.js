@@ -40,7 +40,7 @@ class ButtonsManager{
         this.groupButton.drawButton();
         this.drawSavedScrambleTextButtons();
         this.drawSavedScrambleDeletionButtons();
-        if(!this.textManagerRef.editingText){
+        if(this.textManagerRef.editingText == false){
             this.drawTextCharButtons();
             this.drawGroupLines();// draw group lines
             // draw locks/brackets
@@ -128,12 +128,18 @@ class ButtonsManager{
         stroke(163, 64, 201);
         strokeWeight(4);
 
-        let groupLineYDrop = (this.textCharButtonsArray[groupHeadIndex].diameter * 1.5);
+        let groupLineYDrop = this.textCharButtonsArray[groupHeadIndex].diameter * 1.5;
+        let charDiameter = this.textCharButtonsArray[groupHeadIndex].diameter / 2;
+        let bracketHeight = charDiameter/4;
 
-        line(this.textCharButtonsArray[groupHeadIndex].posX - (this.textCharButtonsArray[groupHeadIndex].diameter/2),
-        this.textCharButtonsArray[groupHeadIndex].posY + groupLineYDrop,
-        this.textCharButtonsArray[groupEndIndex].posX + (this.textCharButtonsArray[groupEndIndex].diameter/2),
-        this.textCharButtonsArray[groupEndIndex].posY + groupLineYDrop,
-        );
+        let leftEndpointX = this.textCharButtonsArray[groupHeadIndex].posX - charDiameter;
+        let leftEndpointY = this.textCharButtonsArray[groupHeadIndex].posY + groupLineYDrop;
+        let rightEndPointX = this.textCharButtonsArray[groupEndIndex].posX + charDiameter;
+        let rightEndpointY = this.textCharButtonsArray[groupEndIndex].posY + groupLineYDrop;
+
+        line(leftEndpointX, leftEndpointY, rightEndPointX, rightEndpointY);// Main horizontal line
+        line(leftEndpointX, leftEndpointY, leftEndpointX, leftEndpointY - bracketHeight); // left vertical
+        line(rightEndPointX, rightEndpointY, rightEndPointX, rightEndpointY - bracketHeight); // right vertical
+
     }
 }

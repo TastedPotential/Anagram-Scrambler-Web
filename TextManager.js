@@ -126,7 +126,7 @@ class TextManager{
         textAlign(CENTER);
         textSize(this.sizeOfText / 2);
         text("grouping mode active", this.textAnchorX, this.textAnchorY - this.sizeOfText * 1.5);
-        return;
+        //return;
        }
         
 
