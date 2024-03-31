@@ -57,6 +57,7 @@ function draw() {
   textFont(textManager.sketchFont);
   buttonsManager.drawButtons();
   textManager.drawText();
+  textManager.checkGroupDeletion();
   
 }
 
@@ -129,10 +130,10 @@ function keyReleased(){
 }
 
 function mousePressed(){
-  if(buttonsManager.scrambleButton.clickedOn()){
+  if(buttonsManager.scrambleButton.isMouseOverButton()){
     buttonsManager.scrambleButton.startedClickOnThis = true;
   }
-  else if(buttonsManager.editButton.clickedOn()){
+  else if(buttonsManager.editButton.isMouseOverButton()){
     buttonsManager.editButton.startedClickOnThis = true;
   }
   else if(textManager.textInputClickedOn()){
@@ -167,7 +168,7 @@ function mouseReleased(){
     return;
   }
  // Scramble Button Block
-  if(buttonsManager.scrambleButton.clickedOn() && buttonsManager.scrambleButton.startedClickOnThis){
+  if(buttonsManager.scrambleButton.isMouseOverButton() && buttonsManager.scrambleButton.startedClickOnThis){
     textManager.setCharsArray(textManager.textInput.elt.value);
     textManager.scrambleCharsArray();
     textManager.textInput.value(textManager.getCharsArrayAsString());
@@ -176,7 +177,7 @@ function mouseReleased(){
   }
 
   //Edit button Block
-  else if(buttonsManager.editButton.clickedOn() && buttonsManager.editButton.startedClickOnThis){
+  else if(buttonsManager.editButton.isMouseOverButton() && buttonsManager.editButton.startedClickOnThis){
     if(textManager.editingText)
     {
       textManager.setCharsArray(textManager.textInput.elt.value);
@@ -199,12 +200,12 @@ function mouseReleased(){
   }
 
   // Save Button Block
-  else if(buttonsManager.saveButton.clickedOn()){
+  else if(buttonsManager.saveButton.isMouseOverButton()){
     textManager.saveScramble(buttonsManager);
   }
 
   // Group Button Block
-  else if(buttonsManager.groupButton.clickedOn()){
+  else if(buttonsManager.groupButton.isMouseOverButton()){
     textManager.groupingText = !textManager.groupingText;
   }
 
@@ -239,7 +240,7 @@ function mouseReleased(){
 
     //Check savedScrambleTextButtonsArray to see if any of those buttons were clicked.
     for(let i = 0; i < buttonsManager.savedScrambleTextButtonsArray.length; i++){
-      if(buttonsManager.savedScrambleTextButtonsArray[i].clickedOn()){
+      if(buttonsManager.savedScrambleTextButtonsArray[i].isMouseOverButton()){
         // Copy text to clipboard
         navigator.clipboard.writeText(buttonsManager.savedScrambleTextButtonsArray[i].savedScrambleText);
         return;
@@ -248,7 +249,7 @@ function mouseReleased(){
 
     //Check savedScrambleDeletionButtonsArray to see if any of those buttons were clicked.
     for(let i = 0; i < buttonsManager.savedScrambleDeletionButtonsArray.length; i++){
-      if(buttonsManager.savedScrambleDeletionButtonsArray[i].clickedOn()){
+      if(buttonsManager.savedScrambleDeletionButtonsArray[i].isMouseOverButton()){
         // Delete that specific saved scramble entry from the saved scrambles array
         buttonsManager.savedScrambleDeletionButtonsArray.splice(i, 1);
         buttonsManager.savedScrambleTextButtonsArray.splice(i, 1);        

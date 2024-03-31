@@ -374,8 +374,56 @@ class TextManager{
       this.charsArray[i].groupOrder = groupOrderTracker;
       groupOrderTracker++;
     }
+  }
 
-    print("group created with ID: " + tempGroupID + ", group size: " + groupSizeValue);
+  checkGroupDeletion(){
+    // see if we are in grouping mode and that there is some saved text, otherwise no textChars to draw positions from
+    if(this.groupingText == false || this.defaultMessage == true){
+      return;
+    }
+
+    
+    let halfDiameter = this.buttonsManagerRef.textCharButtonsArray[0].diameter / 2;
+    let leftBound = this.buttonsManagerRef.textCharButtonsArray[0].posX - halfDiameter;
+    let rightBound = this.buttonsManagerRef.textCharButtonsArray[this.buttonsManagerRef.textCharButtonsArray.length - 1].posX + halfDiameter;
+    let topBound = this.buttonsManagerRef.textCharButtonsArray[0].posY + (2*halfDiameter);
+    let bottomBound = this.buttonsManagerRef.textCharButtonsArray[0].posY + (4*halfDiameter);
+    let xCenter = leftBound + (rightBound - leftBound) / 2;
+    let yCenter = topBound + (bottomBound - topBound) / 2;
+    rectMode(CENTER);
+    noFill();
+    stroke(0,255,0);
+    strokeWeight(2);  
+
+    // check if mouse is in the area that could contain group brackets and also the area to click to break a group.
+    // Testing out using a guard/escape clause instead of doing too many nested if blocks.
+    if(mouseX < leftBound || mouseX > rightBound || mouseY < topBound || mouseY > bottomBound){
+      return;
+    }
+
+    // Debugging: draw a box around the area that could be clicked in to destroy a group
+    rect(xCenter, yCenter, rightBound - leftBound, bottomBound - topBound);    
+
+    // check which specific group is being hovered over by comparing to the group status and left and right bounds of the hovered-over character
+    for(let i = 0; i < this.charsArray.length; i++){
+      //let foundGroupID = -1;
+      // Look for a group head, then check if the mouse in that head's group under-area.
+      if(this.charsArray[i].groupOrder == 0){
+        leftBound = this.buttonsManagerRef.textCharButtonsArray[i].posX - halfDiameter;
+        let groupEndIndex = i + (this.charsArray[i].groupSize - 1);
+        rightBound = this.buttonsManagerRef.textCharButtonsArray[groupEndIndex].posX + halfDiameter;
+
+        if(mouseX >= leftBound && mouseX <= rightBound){
+          //circle(windowWidth / 2, windowHeight * .75, windowWidth / 5);
+          this.buttonsManagerRef.drawGroupBracket(i, this.charsArray[i].groupSize, 'rgb(255, 25, 25)');
+          // TODO
+          // Draw the red deletion X here over the middle of the group. Maybe also make the bracket red while hovering over?
+          return true;
+        }
+      }
+    }
+
+    return false;
 
   }
 

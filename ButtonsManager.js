@@ -30,6 +30,7 @@ class ButtonsManager{
         this.textCharButtonsArray = [];
 
         this.textManagerRef = inputTextManager;
+        this.bracketColor = 'rgb(163, 64, 201)';
 
     }
 
@@ -104,7 +105,7 @@ class ButtonsManager{
 
     getIndexOfClickedChar(){
         for(let i = 0; i < this.textCharButtonsArray.length; i++){
-            if(this.textCharButtonsArray[i].clickedOn()){
+            if(this.textCharButtonsArray[i].isMouseOverButton()){
                 return i;
             }
         }
@@ -112,20 +113,20 @@ class ButtonsManager{
     }
 
     drawGroupLines(){
-        let groupLineSize = -1;
+        let groupLineUnits = -1;
         for(let i = 0; i < this.textManagerRef.charsArray.length; i++){
             // ONLY if we found the HEAD of a group, draw a grouping bracket
             if(this.textManagerRef.charsArray[i].groupOrder == 0){
-                groupLineSize = this.textManagerRef.charsArray[i].groupSize;
-                this.drawGroupBracket(i, groupLineSize);
+                groupLineUnits = this.textManagerRef.charsArray[i].groupSize;
+                this.drawGroupBracket(i, groupLineUnits, this.bracketColor);
             }
         }
     }
 
-    drawGroupBracket(groupHeadIndex, groupUnitSize){
+    drawGroupBracket(groupHeadIndex, groupUnitSize, inBracketColor){
         // The bracket will extend from the leftmost unit to the rightmost unit in the group.
         let groupEndIndex = groupHeadIndex + (groupUnitSize - 1);
-        stroke(163, 64, 201);
+        stroke(inBracketColor);
         strokeWeight(4);
 
         let groupLineYDrop = this.textCharButtonsArray[groupHeadIndex].diameter * 1.5;
