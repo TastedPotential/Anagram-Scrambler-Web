@@ -5,6 +5,7 @@ let mobileDeviceRegExp;
 let usingMobileDevice;
 let bgColor = 'rgb(55, 67, 117)';
 let textColor = 'rgb(253, 253, 249)';
+let groupUnderMouse = -1;
 
 function preload(){
   // Ultimately returned to CourierPrime for its readability and monospace width.
@@ -57,8 +58,7 @@ function draw() {
   textFont(textManager.sketchFont);
   buttonsManager.drawButtons();
   textManager.drawText();
-  textManager.checkGroupDeletion();
-  
+  groupUnderMouse = textManager.checkGroupDeletion();  
 }
 
 function windowResized(){
@@ -142,6 +142,11 @@ function mousePressed(){
   else if(textManager.groupingText){
     // check which textChar was clicked on
     let clickedCharIndex = buttonsManager.getIndexOfClickedChar();
+    // If the click wasn't on a character, abandon and reset group creation.
+    if(clickedCharIndex == -1){
+      textManager.stopGroupCreation();
+      return;
+    }
     // If we clicked on a character, it is NOT in a group (groupID == -1, aka default), start the group creation attempt
     // with this character
     if(clickedCharIndex >= 0 && textManager.charsArray[clickedCharIndex].groupID == -1){
@@ -219,9 +224,23 @@ function mouseReleased(){
       textManager.defaultMessage = false;
     }
   }
-  // Group creation block
+  // Group creation/deletion block
   else if(textManager.groupingText){
+    // group deletion block
+    if(groupUnderMouse >= 0){
+      // If the mouse is over a group's bracket and left click is released, delete that group.
+      textManager.dismantleGroup(groupUnderMouse);
+      return;
+    }
+    // Group creation block
     // check which textChar was released on
+    // Don't attempt to create a group if the start of the current drag was not on a textChar.
+    if(textManager.groupCreationStartIndex == -1){
+      textManager.stopGroupCreation();
+      return;
+    }
+      
+
     let clickedCharIndex = buttonsManager.getIndexOfClickedChar();
     // If 1) we clicked on a character, 2) it is NOT in a group (groupID == -1, aka default), 3) did not end the drag over the same starting character
     //start the group creation attempt with this character
@@ -234,10 +253,9 @@ function mouseReleased(){
     else{
       textManager.stopGroupCreation();
     }
-  }
+  } 
   // Check series of buttons
   else{
-
     //Check savedScrambleTextButtonsArray to see if any of those buttons were clicked.
     for(let i = 0; i < buttonsManager.savedScrambleTextButtonsArray.length; i++){
       if(buttonsManager.savedScrambleTextButtonsArray[i].isMouseOverButton()){

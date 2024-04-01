@@ -347,6 +347,12 @@ class TextManager{
 
   // Use start and stop group creation indices to set a family of the characters between these two in the array
   createGroup(){
+    // guard clause just to be safe from wrong index issues leading to trying to create an invalid group.
+    if(this.groupCreationstartIndex == -1 || this.groupCreationEndIndex == -1){
+      this.stopGroupCreation();
+      return;
+    }
+
     // Swap the start and stop indices if user created a family with a left-swipe
     if(this.groupCreationEndIndex < this.groupCreationStartIndex){
       let originalStart = this.groupCreationStartIndex;
@@ -368,6 +374,7 @@ class TextManager{
     let groupSizeValue = (this.groupCreationEndIndex - this.groupCreationStartIndex) + 1;
     let groupOrderTracker = 0;  // The value for the head of the group.
 
+    // Set all group-related properties of the relevant textChars
     for(let i = this.groupCreationStartIndex; i <= this.groupCreationEndIndex; i++){
       this.charsArray[i].groupID = tempGroupID;
       this.charsArray[i].groupSize = groupSizeValue;
@@ -376,10 +383,11 @@ class TextManager{
     }
   }
 
+  // Returns the group the mouse is hovering in addition to highlighting that group's bracket.
   checkGroupDeletion(){
     // see if we are in grouping mode and that there is some saved text, otherwise no textChars to draw positions from
     if(this.groupingText == false || this.defaultMessage == true){
-      return;
+      return -1;
     }
 
     
@@ -398,7 +406,7 @@ class TextManager{
     // check if mouse is in the area that could contain group brackets and also the area to click to break a group.
     // Testing out using a guard/escape clause instead of doing too many nested if blocks.
     if(mouseX < leftBound || mouseX > rightBound || mouseY < topBound || mouseY > bottomBound){
-      return;
+      return -1;
     }
 
     // Debugging: draw a box around the area that could be clicked in to destroy a group
@@ -418,13 +426,23 @@ class TextManager{
           this.buttonsManagerRef.drawGroupBracket(i, this.charsArray[i].groupSize, 'rgb(255, 25, 25)');
           // TODO
           // Draw the red deletion X here over the middle of the group. Maybe also make the bracket red while hovering over?
-          return true;
+          return this.charsArray[i].groupID;
         }
       }
     }
 
-    return false;
+    return -1;
 
+  }
+
+  dismantleGroup(inGroupID){
+    for(let i = 0; i < this.charsArray.length; i++){
+      if(this.charsArray[i].groupID == inGroupID){
+        this.charsArray[i].groupID = -1;
+        this.charsArray[i].groupSize = 0;
+        this.charsArray[i].groupOrder = -1;
+      }
+    }
   }
 
 }
