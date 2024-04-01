@@ -11,6 +11,7 @@ class Button{
         this.buttonIconColor = 'rgb(55, 67, 117)';
         this.savedScrambleText = '';
         this.textHeight;
+        this.textGap = this.diameter / 6;
     }
 
     isMouseOverButton(){
@@ -37,7 +38,7 @@ class Button{
         }
         // Rectangle check for textCharacters from the main display text
         else if(this.buttonType === "textChar"){
-            if(mouseX <= this.posX + this.diameter / 2 && mouseX >= this.posX - this.diameter / 2
+            if(mouseX <= this.posX + (this.diameter / 2) + floor(this.textGap / 2) && mouseX >= this.posX - (this.diameter / 2) - floor(this.textGap / 2)  
             && mouseY <= this.posY + ((this.diameter * 2) / 2)
             && mouseY >= this.posY - ((this.diameter * 2) / 2)){
                 return true;

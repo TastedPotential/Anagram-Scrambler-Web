@@ -97,11 +97,12 @@ class ButtonsManager{
     }
     
     drawTextCharButtons(){
-
         for(let i = 0; i < this.textCharButtonsArray.length; i++){
             this.textCharButtonsArray[i].drawButton();
         }
     }
+
+    
 
     getIndexOfClickedChar(){
         for(let i = 0; i < this.textCharButtonsArray.length; i++){

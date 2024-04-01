@@ -156,13 +156,14 @@ class TextManager{
     }
 
     scrambleCharsArray(){
-        let lowestIndex = 0;
-        let randomIndex = 0;
-        for(let i = lowestIndex; i < this.charsArray.length; i++){
-            randomIndex = floor(random(lowestIndex, this.charsArray.length));
-            this.charsArray.splice(0, 0, this.charsArray[randomIndex]);
-            this.charsArray.splice(randomIndex+1, 1);
-        }
+      let lowestIndex = 0;
+      let randomIndex = 0;
+      for(let i = lowestIndex; i < this.charsArray.length; i++){
+          randomIndex = floor(random(lowestIndex, this.charsArray.length));
+          this.charsArray.splice(0, 0, this.charsArray[randomIndex]);
+          this.charsArray.splice(randomIndex+1, 1);
+      }
+      this.setCharsArray(this.getCharsArrayAsString());
     }
 
     getCharsArrayAsString(){
@@ -360,6 +361,14 @@ class TextManager{
       this.groupCreationEndIndex = originalStart;
     }
 
+    // Check that there aren't any existing group members in the range of the current drag. If there are, abandon group creation.
+    for(let i = this.groupCreationStartIndex; i <= this.groupCreationEndIndex; i++){
+      if(this.charsArray[i].groupID >= 0){
+        this.stopGroupCreation();
+        return;
+      }
+    }
+
     // find the next available lowest familyID value
     let tempGroupID = 0;
     for(let i = 0; i < this.charsArray.length; i++){
@@ -369,8 +378,9 @@ class TextManager{
         i = -1;
       }
     }
-    // Now that the lowest available family ID is set, so apply it to the textChars in the start and end range
-    // Also set the family order and size for each
+
+    // Now that the lowest available group ID is set, apply it to the textChars in the start and end range
+    // Also set the group order and size for each
     let groupSizeValue = (this.groupCreationEndIndex - this.groupCreationStartIndex) + 1;
     let groupOrderTracker = 0;  // The value for the head of the group.
 
