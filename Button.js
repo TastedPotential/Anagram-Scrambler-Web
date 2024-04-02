@@ -41,7 +41,7 @@ class Button{
         // Rectangle check for textCharacters from the main display text
         else if(this.buttonType === "textChar"){
             
-            if(mouseX <= this.posX + (this.diameter / 2) + floor(this.textGap / 2) && mouseX >= this.posX - (this.diameter / 2) - floor(this.textGap / 2)  
+            if(mouseX <= this.posX + (this.diameter / 2) + this.textGap && mouseX >= this.posX - (this.diameter / 2) - this.textGap  
             && mouseY <= this.posY + ((this.diameter * 2) / 2)
             && mouseY >= this.posY - ((this.diameter * 2) / 2)){
                 return true;
@@ -253,9 +253,10 @@ class Button{
     }
 
     checkHoverStatus(){
-        if(this.buttonType === "textChar"){
-            
-            if(mouseX <= this.posX + (this.diameter / 2) + floor(this.textGap / 2) && mouseX >= this.posX - (this.diameter / 2) - floor(this.textGap / 2)  
+        // I'm adding in the textGap when checking the x-hitbox to guarantee a character is being hit when mousing over the area with textChars,
+        // then later will choose the one closest to the mouse or if equal choosing the left char.
+        if(this.buttonType === "textChar"){            
+            if(mouseX <= this.posX + (this.diameter / 2) + this.textGap && mouseX >= this.posX - (this.diameter / 2) - this.textGap 
             && mouseY <= this.posY + ((this.diameter * 2) / 2)
             && mouseY >= this.posY - ((this.diameter * 2) / 2)){
                 this.isBeingHoveredOver = true;
@@ -264,5 +265,13 @@ class Button{
                 this.isBeingHoveredOver = false;
             }
         }   
+    }
+
+    setHoverStatusVariable(inStatus){
+        this.isBeingHoveredOver = inStatus;
+    }
+
+    getXDistanceFromMouse(){
+        return abs(mouseX - this.posX);
     }
 }

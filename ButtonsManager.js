@@ -105,12 +105,18 @@ class ButtonsManager{
     
 
     getIndexOfClickedChar(){
+        let clickedIndex = -1;
+        this.setHoverStatus();
+
         for(let i = 0; i < this.textCharButtonsArray.length; i++){
-            if(this.textCharButtonsArray[i].isMouseOverButton()){
-                return i;
+            if(this.textCharButtonsArray[i].isBeingHoveredOver){
+                clickedIndex = i;
             }
         }
-        return -1;  // if no textChar was clicked on
+
+        // Check if overlapping
+
+        return clickedIndex;  // if no textChar was clicked on
     }
 
     // The main loop to draw all set families each frame.
@@ -166,6 +172,26 @@ class ButtonsManager{
     setHoverStatus(){
         for(let i = 0; i < this.textCharButtonsArray.length; i++){
             this.textCharButtonsArray[i].checkHoverStatus();
+        }
+        
+        // Check if there is a character being hovered over. If so, check the char to the right (if not at the last index).
+        for(let i = 0; i < this.textCharButtonsArray.length - 1; i++){
+            if(this.textCharButtonsArray[i].isBeingHoveredOver && this.textCharButtonsArray[i+1].isBeingHoveredOver){
+                //Set the one closest to the mouseX position as being hovered over and then set the other to not being hovered over.
+                let leftHoverDistance = this.textCharButtonsArray[i].getXDistanceFromMouse();
+                let rightHoverDistance = this.textCharButtonsArray[i+1].getXDistanceFromMouse();
+                // Then if two are set to being hovered over, choose the closest one with an equal match going to the left textChar
+                if(rightHoverDistance < leftHoverDistance){
+                    this.textCharButtonsArray[i].setHoverStatusVariable(false);
+                    this.textCharButtonsArray[i+1].setHoverStatusVariable(true);
+                }
+                else{
+                    this.textCharButtonsArray[i].setHoverStatusVariable(true);
+                    this.textCharButtonsArray[i+1].setHoverStatusVariable(false);
+                }
+                
+
+            }
         }
     }
 }
