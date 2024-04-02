@@ -58,7 +58,12 @@ function draw() {
   textFont(textManager.sketchFont);
   buttonsManager.drawButtons();
   textManager.drawText();
-  groupUnderMouse = textManager.checkGroupDeletion();  
+  groupUnderMouse = textManager.checkGroupDeletion();
+  // Draw the grouping brackets
+  if(textManager.groupingText){
+    buttonsManager.setHoverStatus();
+    buttonsManager.drawGroupChoosingBracket();
+  }
 }
 
 function windowResized(){
@@ -172,7 +177,7 @@ function mouseReleased(){
 
     return;
   }
- // Scramble Button Block
+  // Scramble Button Block
   if(buttonsManager.scrambleButton.isMouseOverButton() && buttonsManager.scrambleButton.startedClickOnThis){
     textManager.setCharsArray(textManager.textInput.elt.value);
     textManager.scrambleCharsArray();
@@ -248,6 +253,7 @@ function mouseReleased(){
       //print("clicked on " + textManager.charsArray[clickedCharIndex].savedChar);
       textManager.groupCreationEndIndex = clickedCharIndex;
       textManager.createGroup();
+      textManager.stopGroupCreation();
     }
     // reset the group creation start and end indexes if released in invalid conditions or over no chars
     else{

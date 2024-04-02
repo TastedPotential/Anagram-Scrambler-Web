@@ -115,7 +115,7 @@ class TextManager{
         fill(18, 21, 99);
         textAlign(CENTER, BASELINE);
         text(this.savedScramblesArray[i], this.textAnchorX, this.textAnchorY + this.sizeOfText * (2 + i));
-        // This is a nice spot to draw the saveg scramble deletion buttons.
+        // This is a nice spot to draw the saved scramble deletion buttons.
         inButtonsManager.drawSavedScrambleDeletionButtons();
       }
       */

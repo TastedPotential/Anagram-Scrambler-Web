@@ -9,9 +9,11 @@ class Button{
         this.buttonFillColor = 'rgb(253, 253, 249)';
         this.buttonShadowColor = 'rgb(27, 34, 66)';
         this.buttonIconColor = 'rgb(55, 67, 117)';
+        this.bracketColor = 'rgb(163, 64, 201)';
         this.savedScrambleText = '';
         this.textHeight;
         this.textGap = this.diameter / 6;
+        this.isBeingHoveredOver = false;
     }
 
     isMouseOverButton(){
@@ -38,6 +40,7 @@ class Button{
         }
         // Rectangle check for textCharacters from the main display text
         else if(this.buttonType === "textChar"){
+            
             if(mouseX <= this.posX + (this.diameter / 2) + floor(this.textGap / 2) && mouseX >= this.posX - (this.diameter / 2) - floor(this.textGap / 2)  
             && mouseY <= this.posY + ((this.diameter * 2) / 2)
             && mouseY >= this.posY - ((this.diameter * 2) / 2)){
@@ -225,7 +228,11 @@ class Button{
         else if(this.buttonType === "textChar"){
             // draw a rectangle behind the character so it can be dragged around later
             noStroke();
-            fill(this.buttonIconColor);
+            if(this.isBeingHoveredOver){
+                fill(this.bracketColor);
+            } else{
+                fill(this.buttonIconColor);
+            }
             rectMode(CENTER);
             rect(this.posX, this.posY, this.diameter, this.diameter * 2);
             // draw the text of the character
@@ -239,5 +246,23 @@ class Button{
     drawButtonShadow(){
         fill(this.buttonShadowColor);
         circle(this.posX, this.posY + this.diameter/15, this.diameter * 1.05);
+    }
+
+    setButtonIconColor(inFillColor){
+        this.buttonIconColor = inFillColor;
+    }
+
+    checkHoverStatus(){
+        if(this.buttonType === "textChar"){
+            
+            if(mouseX <= this.posX + (this.diameter / 2) + floor(this.textGap / 2) && mouseX >= this.posX - (this.diameter / 2) - floor(this.textGap / 2)  
+            && mouseY <= this.posY + ((this.diameter * 2) / 2)
+            && mouseY >= this.posY - ((this.diameter * 2) / 2)){
+                this.isBeingHoveredOver = true;
+            }
+            else{
+                this.isBeingHoveredOver = false;
+            }
+        }   
     }
 }

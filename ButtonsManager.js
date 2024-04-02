@@ -113,6 +113,7 @@ class ButtonsManager{
         return -1;  // if no textChar was clicked on
     }
 
+    // The main loop to draw all set families each frame.
     drawGroupLines(){
         let groupLineUnits = -1;
         for(let i = 0; i < this.textManagerRef.charsArray.length; i++){
@@ -143,5 +144,28 @@ class ButtonsManager{
         line(leftEndpointX, leftEndpointY, leftEndpointX, leftEndpointY - bracketHeight); // left vertical
         line(rightEndPointX, rightEndpointY, rightEndPointX, rightEndpointY - bracketHeight); // right vertical
 
+    }
+
+    // This will draw a temporary bracket after the user has started their drag in the process of making a new group.
+    drawGroupChoosingBracket(){
+        if(this.textManagerRef.groupCreationStartIndex == -1)
+            return;
+        let startingIndex = this.textManagerRef.groupCreationStartIndex;
+        let currentHoveringIndex = this.getIndexOfClickedChar();
+        if(currentHoveringIndex == -1)
+            return;
+        // This swap allows groups to still be drawn even if dragging right to left.
+        if(startingIndex > currentHoveringIndex){
+            let tempVal = startingIndex;
+            startingIndex = currentHoveringIndex;
+            currentHoveringIndex = tempVal;
+        }
+        this.drawGroupBracket(startingIndex, abs((currentHoveringIndex - startingIndex) + 1), this.bracketColor);
+    }
+
+    setHoverStatus(){
+        for(let i = 0; i < this.textCharButtonsArray.length; i++){
+            this.textCharButtonsArray[i].checkHoverStatus();
+        }
     }
 }
