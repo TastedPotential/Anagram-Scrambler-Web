@@ -402,7 +402,7 @@ class TextManager{
   // Returns the group the mouse is hovering in addition to highlighting that group's bracket.
   checkGroupDeletion(){
     // see if we are in grouping mode and that there is some saved text, otherwise no textChars to draw positions from
-    if(this.groupingText == false || this.defaultMessage == true){
+    if(this.groupingText == false || this.defaultMessage == true || this.editingText){
       return -1;
     }
 
@@ -472,6 +472,11 @@ class TextManager{
         let foundGroupSize = this.charsArray[i].groupSize;
         let workingIndex = i;
 
+        // If the group is in order, move to the next character in the search for group heads.
+        if(this.groupOrderCheck(workingIndex, foundGroupSize, foundGroupID)){
+          continue;
+        }
+
         // Iterate through the charsArray once per member of the group excluding the head.
         for(let groupMemberCounter = 1; groupMemberCounter < foundGroupSize; groupMemberCounter++){
           // Search through the charsArray for the next group member with the criteria:
@@ -501,7 +506,6 @@ class TextManager{
 
             }
           }
-
           
         }
         
@@ -512,9 +516,45 @@ class TextManager{
     //print('Groups have been returned.\n\n\n');
   }
 
-  // // Check the characters next to the found group head and sees if 
-  // groupCheck(){
+  // Check the characters next to the found group head and see if it needs to be iterated through to fix the group.
+  groupOrderCheck(startingPosition, sizeOfGroup, inputID){
+    //print('charsArray after scramble: ' + this.getCharsArrayAsString());
+    let isGroupInOrder = false;
+    // If the group head is in the last index of the array, it is out of order because there is no room to check for the chars
+    // that are supposed to be to its right. Had to make this early return otherwise an out of bounds index could be attempted.
+    if(startingPosition > (this.charsArray.length - 1) - (sizeOfGroup - 1)){
+      //print('charsArray after scramble: ' + this.getCharsArrayAsString());
+      //print('group head was too close to the end to fit the body in the array. Needs reordering.');
+      return isGroupInOrder;
+    }
+      
 
-  // }
+    let orderCount = 1;
+    for(let i = startingPosition + 1; i < sizeOfGroup; i++){
+
+      // If an index out of bounds of the array is attempted to be indexed, return false
+      // because it means that the group head is too close to the end of the array to fit the size of its group.
+      if(i > this.charsArray.length - 1){
+        //print('charsArray after scramble: ' + this.getCharsArrayAsString());
+        //print('group head was too close to the end to fit the body in the array. Needs reordering.');
+        return false;
+      }
+      //print('checking: ' + this.charsArray[i].savedChar + ' with i = ' + i);
+      
+      if(this.charsArray[i].groupID != inputID || this.charsArray[i].groupOrder != orderCount){
+        //print('group is not in order. Needs to be fixed.');
+        return false;      
+      }
+      orderCount++;
+    }
+
+    // if(isGroupInOrder){
+    //   print('This group is in order.');
+    // }
+    // else{
+    //   print('group is not in order. Needs to be fixed.');
+    // }
+    return isGroupInOrder;
+  }
 
 }

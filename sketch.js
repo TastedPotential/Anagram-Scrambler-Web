@@ -217,7 +217,7 @@ function mouseReleased(){
   }
 
   // Group Button Block
-  else if(buttonsManager.groupButton.isMouseOverButton()){
+  else if(buttonsManager.groupButton.isMouseOverButton() && textManager.editingText == false){
     textManager.groupingText = !textManager.groupingText;
   }
 
