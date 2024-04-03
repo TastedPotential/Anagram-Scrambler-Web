@@ -56,9 +56,9 @@ function draw() {
   background(bgColor);
   textSize(textManager.sizeOfText);
   textFont(textManager.sketchFont);
-  buttonsManager.drawButtons();
-  textManager.drawText();
   groupUnderMouse = textManager.checkGroupDeletion();
+  buttonsManager.drawButtons(groupUnderMouse);
+  textManager.drawText();  
   // Draw the grouping brackets
   if(textManager.groupingText){
     buttonsManager.setHoverStatus();

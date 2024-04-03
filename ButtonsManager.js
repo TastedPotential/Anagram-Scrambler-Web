@@ -31,19 +31,20 @@ class ButtonsManager{
 
         this.textManagerRef = inputTextManager;
         this.bracketColor = 'rgb(163, 64, 201)';
+        this.bgColor = 'rgb(55, 67, 117)';
 
     }
 
-    drawButtons(){
+    drawButtons(inGroupUnderMouse){
         this.scrambleButton.drawButton();
         this.editButton.drawButton();
         this.saveButton.drawButton();
-        this.groupButton.drawButton();
         this.drawSavedScrambleTextButtons();
         this.drawSavedScrambleDeletionButtons();
         if(this.textManagerRef.editingText == false){
+            this.groupButton.drawButton();
             this.drawTextCharButtons();
-            this.drawGroupLines();// draw group lines
+            this.drawGroupLines(inGroupUnderMouse);// draw group lines
             // draw locks/brackets
         }
 
@@ -118,24 +119,27 @@ class ButtonsManager{
     }
 
     // The main loop to draw all set families each frame.
-    drawGroupLines(){
+    drawGroupLines(inGroupUnderMouse){
         let groupLineUnits = -1;
         for(let i = 0; i < this.textManagerRef.charsArray.length; i++){
             // ONLY if we found the HEAD of a group, draw a grouping bracket
             if(this.textManagerRef.charsArray[i].groupOrder == 0){
-                groupLineUnits = this.textManagerRef.charsArray[i].groupSize;
-                this.drawGroupBracket(i, groupLineUnits, this.bracketColor);
+                // If the mouse is hovering over a bracket, don't draw this bracket until later in textManager.checkGroupDeletion().
+                if(this.textManagerRef.charsArray[i].groupID != inGroupUnderMouse){
+                    groupLineUnits = this.textManagerRef.charsArray[i].groupSize;
+                    this.drawGroupBracket(i, groupLineUnits, this.bracketColor, false);
+                }
             }
         }
     }
 
-    drawGroupBracket(groupHeadIndex, groupUnitSize, inBracketColor){
+    drawGroupBracket(groupHeadIndex, groupUnitSize, inBracketColor, isDeleting){
         // The bracket will extend from the leftmost unit to the rightmost unit in the group.
         let groupEndIndex = groupHeadIndex + (groupUnitSize - 1);
         stroke(inBracketColor);
         strokeWeight(4);
 
-        let groupLineYDrop = this.textCharButtonsArray[groupHeadIndex].diameter * 1.5;
+        let groupLineYDrop = this.textCharButtonsArray[groupHeadIndex].diameter * 1.6;
         let charDiameter = this.textCharButtonsArray[groupHeadIndex].diameter / 2;
         let bracketHeight = charDiameter/4;
 
@@ -143,10 +147,45 @@ class ButtonsManager{
         let leftEndpointY = this.textCharButtonsArray[groupHeadIndex].posY + groupLineYDrop;
         let rightEndPointX = this.textCharButtonsArray[groupEndIndex].posX + charDiameter;
         let rightEndpointY = this.textCharButtonsArray[groupEndIndex].posY + groupLineYDrop;
+        let bracketWidth = rightEndPointX - leftEndpointX;
+        //TODO
+        // Change this so the gap isn't dependent on the width of the bar, otherwise it draws a bigger gap for larger groups.
+        let bracketCentralOffset = (bracketWidth * 0.5) - (charDiameter *.75);
+        let deletionXWidth = charDiameter * 0.5;
+        let deletionXHorizontalCenter = (rightEndPointX - leftEndpointX) / 2;
 
-        line(leftEndpointX, leftEndpointY, rightEndPointX, rightEndpointY);// Main horizontal line
+        // Draw the main line as two lines with a gap to contain the deletion X.
+        if(isDeleting){
+            // Draw a rect of the bg color over the intersection where the deletion X will be to cover old bracket drawings.
+            // rectMode(CENTER);
+            // noStroke();
+            // fill(this.bgColor);
+            // rect(leftEndpointX + bracketWidth, leftEndpointY, deletionXWidth * .25, deletionXWidth * .25);
+            // stroke(inBracketColor);
+            line(leftEndpointX, leftEndpointY, leftEndpointX + bracketCentralOffset, rightEndpointY);
+            line(rightEndPointX, rightEndpointY, rightEndPointX - bracketCentralOffset, leftEndpointY);
+        }
+        // Otherwise just draw one line.
+        else{
+            line(leftEndpointX, leftEndpointY, rightEndPointX, rightEndpointY);// Main horizontal line
+        }
         line(leftEndpointX, leftEndpointY, leftEndpointX, leftEndpointY - bracketHeight); // left vertical
         line(rightEndPointX, rightEndpointY, rightEndPointX, rightEndpointY - bracketHeight); // right vertical
+
+        // Draw the red X over the bracket if it is being hovered over for deletion.
+        if(isDeleting){
+            push();
+            translate(leftEndpointX + deletionXHorizontalCenter, leftEndpointY);
+            // stroke(this.bgColor);
+            // strokeWeight(12);
+            // line(-deletionXWidth,  -deletionXWidth, deletionXWidth, deletionXWidth);
+            // line(-deletionXWidth, deletionXWidth, deletionXWidth, -deletionXWidth);
+            // stroke(inBracketColor);
+            // strokeWeight(4);
+            line(-deletionXWidth,  -deletionXWidth, deletionXWidth, deletionXWidth);
+            line(-deletionXWidth, deletionXWidth, deletionXWidth, -deletionXWidth);
+            pop();
+        }
 
     }
 
@@ -164,7 +203,7 @@ class ButtonsManager{
             startingIndex = currentHoveringIndex;
             currentHoveringIndex = tempVal;
         }
-        this.drawGroupBracket(startingIndex, abs((currentHoveringIndex - startingIndex) + 1), this.bracketColor);
+        this.drawGroupBracket(startingIndex, abs((currentHoveringIndex - startingIndex) + 1), this.bracketColor, false);
     }
 
     setHoverStatus(){

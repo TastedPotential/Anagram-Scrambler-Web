@@ -426,7 +426,7 @@ class TextManager{
     }
 
     // Debugging: draw a box around the area that could be clicked in to destroy a group
-    rect(xCenter, yCenter, rightBound - leftBound, bottomBound - topBound);    
+    //rect(xCenter, yCenter, rightBound - leftBound, bottomBound - topBound);    
 
     // check which specific group is being hovered over by comparing to the group status and left and right bounds of the hovered-over character
     for(let i = 0; i < this.charsArray.length; i++){
@@ -439,7 +439,8 @@ class TextManager{
 
         if(mouseX >= leftBound && mouseX <= rightBound){
           //circle(windowWidth / 2, windowHeight * .75, windowWidth / 5);
-          this.buttonsManagerRef.drawGroupBracket(i, this.charsArray[i].groupSize, 'rgb(255, 25, 25)');
+          // Draw the bracket as red.
+          this.buttonsManagerRef.drawGroupBracket(i, this.charsArray[i].groupSize, 'rgb(255, 25, 25)', true);
           // TODO
           // Draw the red deletion X here over the middle of the group. Maybe also make the bracket red while hovering over?
           return this.charsArray[i].groupID;
