@@ -393,8 +393,8 @@ class TextManager{
       this.charsArray[i].groupID = tempGroupID;
       this.charsArray[i].groupSize = groupSizeValue;
       this.charsArray[i].groupOrder = groupOrderTracker;
-      print('created group consisting of: ' + this.charsArray[i].savedChar + ' at: ' + i + ' with groupID: ' + this.charsArray[i].groupID + 
-      ' group size: ' + this.charsArray[i].groupSize + ' and groupOrder: ' + this.charsArray[i].groupOrder);
+      // print('created group consisting of: ' + this.charsArray[i].savedChar + ' at: ' + i + ' with groupID: ' + this.charsArray[i].groupID + 
+      // ' group size: ' + this.charsArray[i].groupSize + ' and groupOrder: ' + this.charsArray[i].groupOrder);
       groupOrderTracker++;
     }
   }
@@ -466,7 +466,6 @@ class TextManager{
     for(let i = 0; i < this.charsArray.length; i++){
       // If you found a group head, look for its body members as many times as the group's size requires.
       if(this.charsArray[i].groupOrder == 0){
-        //print('found a group head: ' + this.charsArray[i].savedChar);
         let foundGroupID = this.charsArray[i].groupID;
         //let groupMemberCounter = 1;
         let foundGroupSize = this.charsArray[i].groupSize;
@@ -486,8 +485,6 @@ class TextManager{
             // If we found a member of the same group, it is the next member of the group, and it is NOT in the right position (at i + group#)
             // splice() it into position, remove the old instance, and proceed to the next member in the group.
             if(this.charsArray[k].groupID == foundGroupID && this.charsArray[k].groupOrder == groupMemberCounter && k != properIndex){
-              //print('charsArray is: ' + this.getCharsArrayAsString());
-              //print('found a group member out of order: ' + this.charsArray[k].savedChar + ' should be at ' + properIndex);
               // place the found textChar at k at the intended position of workingIndex (i) + 1, aka to the right of the previous member of the group.
               this.charsArray.splice(properIndex, 0, this.charsArray[k]);
               // Now remove the old instance of the group member.
@@ -502,7 +499,7 @@ class TextManager{
               }
               // Reset the overall search if a group was finished being reordered.
               if(groupMemberCounter == foundGroupSize - 1)
-              i = -1;
+                i = -1;
 
             }
           }
@@ -512,49 +509,31 @@ class TextManager{
       }
 
     }
-
-    //print('Groups have been returned.\n\n\n');
   }
 
   // Check the characters next to the found group head and see if it needs to be iterated through to fix the group.
   groupOrderCheck(startingPosition, sizeOfGroup, inputID){
-    //print('charsArray after scramble: ' + this.getCharsArrayAsString());
-    let isGroupInOrder = false;
     // If the group head is in the last index of the array, it is out of order because there is no room to check for the chars
     // that are supposed to be to its right. Had to make this early return otherwise an out of bounds index could be attempted.
     if(startingPosition > (this.charsArray.length - 1) - (sizeOfGroup - 1)){
-      //print('charsArray after scramble: ' + this.getCharsArrayAsString());
-      //print('group head was too close to the end to fit the body in the array. Needs reordering.');
-      return isGroupInOrder;
+      return false;
     }
-      
-
     let orderCount = 1;
-    for(let i = startingPosition + 1; i < sizeOfGroup; i++){
-
+    // The problem was that the index where a group is started at can be less than the size of the group.
+    // Needed to set the range to check as the starting position through the starting position + group size (-1 for index at 0).
+    for(let i = startingPosition + 1; i <= startingPosition + (sizeOfGroup-1); i++){     
       // If an index out of bounds of the array is attempted to be indexed, return false
       // because it means that the group head is too close to the end of the array to fit the size of its group.
-      if(i > this.charsArray.length - 1){
-        //print('charsArray after scramble: ' + this.getCharsArrayAsString());
-        //print('group head was too close to the end to fit the body in the array. Needs reordering.');
+      if(i >= this.charsArray.length){
         return false;
       }
-      //print('checking: ' + this.charsArray[i].savedChar + ' with i = ' + i);
       
       if(this.charsArray[i].groupID != inputID || this.charsArray[i].groupOrder != orderCount){
-        //print('group is not in order. Needs to be fixed.');
         return false;      
       }
       orderCount++;
     }
-
-    // if(isGroupInOrder){
-    //   print('This group is in order.');
-    // }
-    // else{
-    //   print('group is not in order. Needs to be fixed.');
-    // }
-    return isGroupInOrder;
+    return true;
   }
 
 }
