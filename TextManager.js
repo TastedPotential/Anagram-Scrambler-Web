@@ -5,7 +5,7 @@ class TextManager{
         this.textSizePercentage = inputTextSizePercentage;
         this.sizeOfText = windowWidth * this.textSizePercentage;
         this.widthOfText = this.sizeOfText/2;
-        this.textGap = this.widthOfText / 6; // divide by 6 for CourierPrime 20 for default monospace, 9 for SpaceMono, 0 value for Sometype (not needed)
+        this.textGap = this.widthOfText / 6; // divide by 6 for CourierPrime 20 for default monospace, 9 for SpaceMono, 0 value for SomeType (not needed)
         this.editingText = true;
         this.defaultMessage = true; // This changes after the user adds ANY characters to be scrambled. It is reset if the user deletes all text in the input box.
         this.startedClickOnTextInput = false;
@@ -33,8 +33,8 @@ class TextManager{
         
         // What the heck, AT HIGHER RESOLUTIONS, making the width of the text box equal the number of characters and an equal number of gaps
         // makes the text align with the main display text. I had been using number of gaps as characters minus one accounts for gaps BETWEEN
-        // charactes, but if it aligns when the gaps equal the characters, I won't complain.
-        // Needs more tweaking to get it to work at lower resoluions, but it's aligning at 1920 and 3840 wide.
+        // characters, but if it aligns when the gaps equal the characters, I won't complain.
+        // Needs more tweaking to get it to work at lower resolutions, but it's aligning at 1920 and 3840 wide.
         this.textBoxWidth = (this.charsArray.length * this.widthOfText) + ((this.charsArray.length - 1) * this.textGap);
         //this.textBoxWidth = (this.charsArray.length * this.widthOfText) + (this.charsArray.length * this.textGap);
         this.textInputBoxWidth = (this.charsArray.length * this.widthOfText) + (this.charsArray.length * this.textGap);
@@ -62,7 +62,7 @@ class TextManager{
         //this.textInput.style('background-color', 'rgb(255, 251, 161)');
         this.textInput.style('background-color', textBoxBGColor);
         this.textInput.style('border', '1');
-        //this.textInsdput.style('font-kerning', 'none');
+        //this.textInput.style('font-kerning', 'none');
         //this.textInput.style('letter-spacing', '-1.4px');
         this.textInput.style('letter-spacing', '-1px');
         this.textInput.style('word-spacing', '-0.03em');
@@ -163,7 +163,9 @@ class TextManager{
           this.charsArray.splice(0, 0, this.charsArray[randomIndex]);
           this.charsArray.splice(randomIndex+1, 1);
       }
-      this.setCharsArray(this.getCharsArrayAsString());
+      //this.setCharsArray(this.getCharsArrayAsString());
+      this.reformGroups();
+      this.updateTextCharButtonsArray();
     }
 
     getCharsArrayAsString(){
@@ -200,8 +202,11 @@ class TextManager{
           this.charsArray.push(new TextChar(inString.charAt(i)));
         }
       }
-      
-      // Set the textCharButtonsArray in the buttonsManager to have buttons with the same chars as chardArray
+      this.updateTextCharButtonsArray();
+    }
+
+    updateTextCharButtonsArray(){
+      // Set the textCharButtonsArray in the buttonsManager to have buttons with the same chars as charsArray
       this.updateTextBoxWidth(); 
       let windowCenterTextOffsetX = this.textBoxWidth / 2;
 
@@ -214,22 +219,21 @@ class TextManager{
         ));
         this.buttonsManagerRef.textCharButtonsArray[this.buttonsManagerRef.textCharButtonsArray.length - 1].savedScrambleText = this.charsArray[i].savedChar;
       }
-
     }
 
     setTextInputValue(){
-      // Learned that fullstring needed to be initialized as an empty string otherwise the first character was "undefined".
-      let fullstring = "";
+      // Learned that fullString needed to be initialized as an empty string otherwise the first character was "undefined".
+      let fullString = "";
       if(this.defaultMessage){
         this.defaultMessage = false;
       }
       else{
         this.defaultMessage = false;
         for(let i = 0; i < this.charsArray.length; i++){
-          fullstring += this.charsArray[i].savedChar;
+          fullString += this.charsArray[i].savedChar;
         }
       }
-      this.textInput.value(fullstring);
+      this.textInput.value(fullString);
       this.textInput.style('color', this.textColor);
     }
 
@@ -269,7 +273,7 @@ class TextManager{
         inButtonsManager.savedScrambleTextButtonsArray[inButtonsManager.savedScrambleTextButtonsArray.length - 1].savedScrambleText = this.getCharsArrayAsString();
 
       // Add the corresponding deletion button
-      // Make width of deletion square buttons equal to ~2 tect characters.
+      // Make width of deletion square buttons equal to ~2 text characters.
       inButtonsManager.savedScrambleDeletionButtonsArray.push(
         new Button(this.textAnchorX + (textButtonWidth / 2) + (this.widthOfText * 1.5), 
         this.textAnchorY + this.sizeOfText * (savedTextYOffset + inButtonsManager.savedScrambleDeletionButtonsArray.length),
@@ -349,7 +353,7 @@ class TextManager{
   // Use start and stop group creation indices to set a family of the characters between these two in the array
   createGroup(){
     // guard clause just to be safe from wrong index issues leading to trying to create an invalid group.
-    if(this.groupCreationstartIndex == -1 || this.groupCreationEndIndex == -1){
+    if(this.groupCreationStartIndex == -1 || this.groupCreationEndIndex == -1){
       this.stopGroupCreation();
       return;
     }
@@ -389,6 +393,8 @@ class TextManager{
       this.charsArray[i].groupID = tempGroupID;
       this.charsArray[i].groupSize = groupSizeValue;
       this.charsArray[i].groupOrder = groupOrderTracker;
+      print('created group consisting of: ' + this.charsArray[i].savedChar + ' at: ' + i + ' with groupID: ' + this.charsArray[i].groupID + 
+      ' group size: ' + this.charsArray[i].groupSize + ' and groupOrder: ' + this.charsArray[i].groupOrder);
       groupOrderTracker++;
     }
   }
@@ -454,5 +460,61 @@ class TextManager{
       }
     }
   }
+
+  reformGroups(){
+    // Look for a group head.
+    for(let i = 0; i < this.charsArray.length; i++){
+      // If you found a group head, look for its body members as many times as the group's size requires.
+      if(this.charsArray[i].groupOrder == 0){
+        //print('found a group head: ' + this.charsArray[i].savedChar);
+        let foundGroupID = this.charsArray[i].groupID;
+        //let groupMemberCounter = 1;
+        let foundGroupSize = this.charsArray[i].groupSize;
+        let workingIndex = i;
+
+        // Iterate through the charsArray once per member of the group excluding the head.
+        for(let groupMemberCounter = 1; groupMemberCounter < foundGroupSize; groupMemberCounter++){
+          // Search through the charsArray for the next group member with the criteria:
+          // same groupID, next in the group (groupMemberCounter), the group member is not in its right position (workingIndex+1)
+          let properIndex = workingIndex + groupMemberCounter;
+          for(let k = 0; k < this.charsArray.length; k++){
+            // If we found a member of the same group, it is the next member of the group, and it is NOT in the right position (at i + group#)
+            // splice() it into position, remove the old instance, and proceed to the next member in the group.
+            if(this.charsArray[k].groupID == foundGroupID && this.charsArray[k].groupOrder == groupMemberCounter && k != properIndex){
+              //print('charsArray is: ' + this.getCharsArrayAsString());
+              //print('found a group member out of order: ' + this.charsArray[k].savedChar + ' should be at ' + properIndex);
+              // place the found textChar at k at the intended position of workingIndex (i) + 1, aka to the right of the previous member of the group.
+              this.charsArray.splice(properIndex, 0, this.charsArray[k]);
+              // Now remove the old instance of the group member.
+              // If it was originally to the right of the intended spot, remove the element at found + 1.
+              if(k > properIndex){
+                this.charsArray.splice(k + 1, 1);
+              }
+              // If it was originally to the left of the intended spot, remove the element at the found spot.
+              else if(k < properIndex){
+                this.charsArray.splice(k, 1);
+                workingIndex--;
+              }
+              // Reset the overall search if a group was finished being reordered.
+              if(groupMemberCounter == foundGroupSize - 1)
+              i = -1;
+
+            }
+          }
+
+          
+        }
+        
+      }
+
+    }
+
+    //print('Groups have been returned.\n\n\n');
+  }
+
+  // // Check the characters next to the found group head and sees if 
+  // groupCheck(){
+
+  // }
 
 }

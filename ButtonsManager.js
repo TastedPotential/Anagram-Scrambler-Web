@@ -100,9 +100,7 @@ class ButtonsManager{
         for(let i = 0; i < this.textCharButtonsArray.length; i++){
             this.textCharButtonsArray[i].drawButton();
         }
-    }
-
-    
+    }   
 
     getIndexOfClickedChar(){
         let clickedIndex = -1;

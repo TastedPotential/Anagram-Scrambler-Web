@@ -179,7 +179,9 @@ function mouseReleased(){
   }
   // Scramble Button Block
   if(buttonsManager.scrambleButton.isMouseOverButton() && buttonsManager.scrambleButton.startedClickOnThis){
-    textManager.setCharsArray(textManager.textInput.elt.value);
+    if(textManager.editingText){
+      textManager.setCharsArray(textManager.textInput.elt.value);
+    }    
     textManager.scrambleCharsArray();
     textManager.textInput.value(textManager.getCharsArrayAsString());
     // textManager.textInput.hide();
