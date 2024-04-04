@@ -27,6 +27,8 @@ class TextManager{
         this.groupCreationStartIndex = -1;
         this.groupCreationEndIndex = -1;
 
+        this.lockingText = false;
+
         for(let i = 0; i < this.startingString.length; i++){
           this.charsArray.push(new TextChar(this.startingString.charAt(i)));
         }
@@ -127,6 +129,13 @@ class TextManager{
         textSize(this.sizeOfText / 2);
         text("grouping mode active", this.textAnchorX, this.textAnchorY - this.sizeOfText * 1.5);
         //return;
+       }
+       else if(this.lockingText){
+        fill(166, 58, 72);
+        noStroke();
+        textAlign(CENTER);
+        textSize(this.sizeOfText / 2);
+        text("locking mode active", this.textAnchorX, this.textAnchorY - this.sizeOfText * 1.5);
        }
         
 

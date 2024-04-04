@@ -125,6 +125,8 @@ function keyReleased(){
       textManager.textInput.elt.focus();
       textManager.defaultMessage = false;
       textManager.editingText = true;
+      textManager.groupingText = false;
+      textManager.lockingText = false;
     }    
   }
 
@@ -201,6 +203,8 @@ function mouseReleased(){
       textManager.textInput.show();
       textManager.textInput.elt.focus();
       textManager.editingText = true;
+      textManager.groupingText = false;
+      textManager.lockingText = false;
     }
     //TODO
     // Determine if it's a better UX to have the text all selected when clicking the edit button, or instead
@@ -216,9 +220,16 @@ function mouseReleased(){
     textManager.saveScramble(buttonsManager);
   }
 
-  // Group Button Block
+  // Group Mode Toggle Button Block
   else if(buttonsManager.groupButton.isMouseOverButton() && textManager.editingText == false){
     textManager.groupingText = !textManager.groupingText;
+    textManager.lockingText = false; 
+  }
+
+  // Lock Mode Toggle Button Block
+  else if(buttonsManager.lockButton.isMouseOverButton() && textManager.editingText == false){
+    textManager.lockingText = !textManager.lockingText;
+    textManager.groupingText = false;
   }
 
   // Text Input Box Block

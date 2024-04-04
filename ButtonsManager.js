@@ -23,7 +23,9 @@ class ButtonsManager{
         this.saveButton = new Button(inputTextManager.textAnchorX - inputTextManager.textBoxWidth / 2 - this.buttonOffsetX - saveButtonOffsetX,
         inputTextManager.textAnchorY - this.buttonOffsetY, this.buttonDiameter, "save");
 
-        this.groupButton = new Button(this.editButton.posX + this.buttonDiameter, this.editButton.posY - this.buttonDiameter, this.buttonDiameter, "group");
+        this.groupButton = new Button(this.editButton.posX + this.buttonDiameter * .75, this.editButton.posY - this.buttonDiameter, this.buttonDiameter, "group");
+        
+        this.lockButton = new Button(this.editButton.posX + this.buttonDiameter * 1.5, this.editButton.posY, this.buttonDiameter, "lock");
 
         this.savedScrambleDeletionButtonsArray = [];
         this.savedScrambleTextButtonsArray = [];
@@ -43,6 +45,9 @@ class ButtonsManager{
         this.drawSavedScrambleDeletionButtons();
         if(this.textManagerRef.editingText == false){
             this.groupButton.drawButton();
+            this.lockButton.drawButton();
+            // Draw a lock on the lock button
+            this.drawLock(this.lockButton.posX, this.lockButton.posY + this.lockButton.diameter * .06, this.lockButton.buttonIconColor);
             this.drawTextCharButtons();
             this.drawGroupLines(inGroupUnderMouse);// draw group lines
             // draw locks/brackets
@@ -75,10 +80,13 @@ class ButtonsManager{
         this.saveButton.posY = inputTextManager.textAnchorY - this.buttonOffsetY;
         this.saveButton.diameter = this.buttonDiameter;
 
-        this.groupButton.posX = this.editButton.posX + this.buttonDiameter;
+        this.groupButton.posX = this.editButton.posX + this.buttonDiameter * .75;
         this.groupButton.posY = this.editButton.posY - this.buttonDiameter;
         this.groupButton.diameter = this.buttonDiameter;
 
+        this.lockButton.posX = this.editButton.posX + this.buttonDiameter * 1.5;
+        this.lockButton.posY = this.editButton.posY;
+        this.lockButton.diameter = this.buttonDiameter;
 
         //TODO
         // Update savedScrambleTextButtonsArray and savedScrambleDeletionButtonsArray sizes.
@@ -230,5 +238,46 @@ class ButtonsManager{
 
             }
         }
+    }
+
+    drawLock(inX, inY, strokeColor){
+        let lockWidth = this.textManagerRef.widthOfText * 0.75;
+        let textWidth = this.textManagerRef.widthOfText;
+        let lockXBuffer = textWidth * 0.15;
+
+        let lockYGap = 0.70 * this.textManagerRef.sizeOfText;
+        let lockYPos = inY - this.textManagerRef.sizeOfText - lockYGap;
+
+        let barHeight = lockWidth / 6;
+        let barXPosLeft = inX - (0.3 * lockWidth);
+        let barXPosRight = inX + (0.3 * lockWidth);
+        let barExtraFill = 0;
+        let lockCrossOffset = lockWidth * .22;
+        // Draw the main rounded square block of the lock.
+        //strokeWeight(5);
+        // TODO
+        // Maybe set the stroke weight for the lock to be thinner on mobile where the lock is drawn smaller.
+        rectMode(CENTER);
+        stroke(strokeColor);
+        strokeWeight(this.lockButton.diameter / 18);
+        noFill();
+        rect(inX, inY, lockWidth, lockWidth, 4);
+
+        strokeCap(PROJECT);
+        // Draw the arc of the top of the lock
+        arc(inX, inY - (lockWidth / 2) - barHeight, lockWidth * 0.6, lockWidth * 0.6, 180, 360);
+        
+        strokeCap(SQUARE);
+        // Draw the two lines connecting the arc to the square of the lock.
+        
+        line(barXPosLeft, inY - (lockWidth / 2) - barHeight * .70 - barExtraFill, barXPosLeft, inY - (lockWidth / 2));
+        line(barXPosRight, inY - (lockWidth / 2) - barHeight * .70 - barExtraFill, barXPosRight, inY - (lockWidth / 2));
+        
+        strokeCap(ROUND);
+        // Draw X in the center of the lock.
+        line(inX - lockCrossOffset, inY - lockCrossOffset, inX + lockCrossOffset, inY + lockCrossOffset);
+        line(inX - lockCrossOffset, inY + lockCrossOffset, inX + lockCrossOffset, inY - lockCrossOffset);
+
+
     }
 }

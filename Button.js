@@ -95,6 +95,7 @@ class Button{
             translate(lineLength /2, tan(arcGap) * lineLength /2);
             rotate(-45);
             fill(this.buttonIconColor);
+            //strokeJoin(ROUND);
             triangle(-lineLength/triDiv, -lineLength/triDiv, 0, 0, -lineLength/triDiv, lineLength/triDiv);
             pop();
             // Top Arc Arrow
@@ -227,7 +228,7 @@ class Button{
 
         else if(this.buttonType === "textChar"){
             // draw a rectangle behind the character so it can be dragged around later
-            noStroke();
+            //noStroke();
             if(this.isBeingHoveredOver){
                 fill(this.bracketColor);
             } else{
@@ -239,6 +240,13 @@ class Button{
             fill(this.buttonFillColor);
             textAlign(CENTER,CENTER);
             text(this.savedScrambleText, this.posX, this.posY);
+        }
+
+        else if (this.buttonType === "lock"){
+            angleMode(DEGREES);            
+            fill(this.buttonFillColor);
+            circle(this.posX, this.posY, this.diameter);
+            stroke(this.buttonIconColor);            
         }
     }
     
