@@ -28,6 +28,7 @@ class TextManager{
         this.groupCreationEndIndex = -1;
 
         this.lockingText = false;
+        this.lockingIndex = -1;
 
         for(let i = 0; i < this.startingString.length; i++){
           this.charsArray.push(new TextChar(this.startingString.charAt(i)));
@@ -127,7 +128,7 @@ class TextManager{
         noStroke();
         textAlign(CENTER);
         textSize(this.sizeOfText / 2);
-        text("grouping mode active", this.textAnchorX, this.textAnchorY - this.sizeOfText * 1.5);
+        text("grouping mode active", this.textAnchorX, this.textAnchorY + this.sizeOfText * 1);
         //return;
        }
        else if(this.lockingText){
@@ -135,7 +136,7 @@ class TextManager{
         noStroke();
         textAlign(CENTER);
         textSize(this.sizeOfText / 2);
-        text("locking mode active", this.textAnchorX, this.textAnchorY - this.sizeOfText * 1.5);
+        text("locking mode active", this.textAnchorX, this.textAnchorY + this.sizeOfText * 1);
        }
         
 
@@ -375,8 +376,12 @@ class TextManager{
     }
 
     // Check that there aren't any existing group members in the range of the current drag. If there are, abandon group creation.
+    // Also check if any of the characters in the attempted range are locked, if so, also abandon group creation.
+    // TODO
+    // When abandoning group creation due to hitting conditions like these that prevent it, start a shaking animation to further
+    // indicate that action isn't supported.
     for(let i = this.groupCreationStartIndex; i <= this.groupCreationEndIndex; i++){
-      if(this.charsArray[i].groupID >= 0){
+      if(this.charsArray[i].groupID >= 0 || this.charsArray[i].isLocked){
         this.stopGroupCreation();
         return;
       }
@@ -544,6 +549,21 @@ class TextManager{
       orderCount++;
     }
     return true;
+  }
+
+  toggleCharLock(){
+    // See if we clicked on a group member, and if so toggle the locked status of the entire group.
+    if(this.charsArray[this.lockingIndex].groupID >= 0){
+      for(let i = 0; i < this.charsArray.length; i++){
+        if(this.charsArray[i].groupID == this.charsArray[this.lockingIndex].groupID ){
+          this.charsArray[i].isLocked = !this.charsArray[i].isLocked;
+        }
+      }
+    }
+    else{
+      this.charsArray[this.lockingIndex].isLocked = !this.charsArray[this.lockingIndex].isLocked;
+    }
+    this.lockingIndex = -1; // reset this as it is the working variable for a clicked-on character.
   }
 
 }

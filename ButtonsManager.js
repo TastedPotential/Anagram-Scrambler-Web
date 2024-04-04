@@ -34,7 +34,11 @@ class ButtonsManager{
         this.textManagerRef = inputTextManager;
         this.bracketColor = 'rgb(163, 64, 201)';
         this.bgColor = 'rgb(55, 67, 117)';
-
+        //this.lockColor = 'rgb(255, 25, 25)';
+        //this.lockColor = 'rgb(37, 151, 217)';
+        //this.lockColor = 'rgb(66, 200, 227)';
+        //this.lockColor = 'rgb(245, 242, 83)';
+        this.lockColor = 'rgb(230, 216, 73)';
     }
 
     drawButtons(inGroupUnderMouse){
@@ -51,6 +55,7 @@ class ButtonsManager{
             this.drawTextCharButtons();
             this.drawGroupLines(inGroupUnderMouse);// draw group lines
             // draw locks/brackets
+            this.drawCharLocks();
         }
 
     }
@@ -107,6 +112,12 @@ class ButtonsManager{
     
     drawTextCharButtons(){
         for(let i = 0; i < this.textCharButtonsArray.length; i++){
+            if(this.textManagerRef.lockingText){
+                this.textCharButtonsArray[i].setHoverColor(this.lockColor);
+            }
+            else if(this.textManagerRef.groupingText){
+                this.textCharButtonsArray[i].setHoverColor(this.bracketColor);
+            }
             this.textCharButtonsArray[i].drawButton();
         }
     }   
@@ -279,5 +290,16 @@ class ButtonsManager{
         line(inX - lockCrossOffset, inY + lockCrossOffset, inX + lockCrossOffset, inY - lockCrossOffset);
 
 
+    }
+
+    drawCharLocks(){
+        // Button diameters are equal to 
+        let charLockYOffset = this.buttonDiameter * .80;
+
+        for(let i = 0; i < this.textManagerRef.charsArray.length; i++){
+            if(this.textManagerRef.charsArray[i].isLocked){
+                this.drawLock(this.textCharButtonsArray[i].posX, this.textCharButtonsArray[i].posY - charLockYOffset, this.lockColor);
+            }
+        }
     }
 }

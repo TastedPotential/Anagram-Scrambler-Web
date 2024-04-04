@@ -14,6 +14,7 @@ class Button{
         this.textHeight;
         this.textGap = this.diameter / 6;
         this.isBeingHoveredOver = false;
+        this.hoverColor = 'rgb(163, 64, 201)';
     }
 
     isMouseOverButton(){
@@ -230,7 +231,7 @@ class Button{
             // draw a rectangle behind the character so it can be dragged around later
             //noStroke();
             if(this.isBeingHoveredOver){
-                fill(this.bracketColor);
+                fill(this.hoverColor);
             } else{
                 fill(this.buttonIconColor);
             }
@@ -256,8 +257,8 @@ class Button{
         circle(this.posX, this.posY + this.diameter/15, this.diameter * 1.05);
     }
 
-    setButtonIconColor(inFillColor){
-        this.buttonIconColor = inFillColor;
+    setHoverColor(inFillColor){
+        this.hoverColor = inFillColor;
     }
 
     checkHoverStatus(){

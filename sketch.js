@@ -64,6 +64,9 @@ function draw() {
     buttonsManager.setHoverStatus();
     buttonsManager.drawGroupChoosingBracket();
   }
+  else if(textManager.lockingText){
+    buttonsManager.setHoverStatus();
+  }
 }
 
 function windowResized(){
@@ -272,7 +275,14 @@ function mouseReleased(){
     else{
       textManager.stopGroupCreation();
     }
-  } 
+  }
+  // Character locking block.
+  else if(textManager.lockingText){
+    textManager.lockingIndex = buttonsManager.getIndexOfClickedChar();
+    if(textManager.lockingIndex >= 0){
+      textManager.toggleCharLock();
+    }
+  }
   // Check series of buttons
   else{
     //Check savedScrambleTextButtonsArray to see if any of those buttons were clicked.
