@@ -292,13 +292,70 @@ class ButtonsManager{
 
     }
 
+    drawLockedGroup(groupHeadIndex, groupUnitSize, inBracketColor, isDeleting){
+        // The bracket will extend from the leftmost unit to the rightmost unit in the group.
+        let groupEndIndex = groupHeadIndex + (groupUnitSize - 1);
+        let groupLockWidth = this.textManagerRef.widthOfText * 0.75;
+        stroke(inBracketColor);
+        strokeWeight(4);
+
+        let groupLineYRaise = this.textCharButtonsArray[groupHeadIndex].diameter * 1.4 + (groupLockWidth * 0.25);
+        let charDiameter = this.textCharButtonsArray[groupHeadIndex].diameter / 2;
+        let bracketHeight = charDiameter/4;
+
+        let leftEndpointX = this.textCharButtonsArray[groupHeadIndex].posX - charDiameter;
+        let leftEndpointY = this.textCharButtonsArray[groupHeadIndex].posY - groupLineYRaise;
+        let rightEndPointX = this.textCharButtonsArray[groupEndIndex].posX + charDiameter;
+        let rightEndpointY = this.textCharButtonsArray[groupEndIndex].posY - groupLineYRaise;
+        let bracketWidth = rightEndPointX - leftEndpointX;
+
+        let bracketCentralOffset = (bracketWidth * 0.5) - (groupLockWidth * .82);
+        let deletionXWidth = charDiameter * 0.5;
+        let deletionXHorizontalCenter = (rightEndPointX - leftEndpointX) / 2;
+
+        let charGroupLockYOffset = this.buttonDiameter * .80;
+
+        // Always drawing the bracket as two lines since a lock is in the middle.
+        line(leftEndpointX, leftEndpointY, leftEndpointX + bracketCentralOffset, rightEndpointY);
+        line(rightEndPointX, rightEndpointY, rightEndPointX - bracketCentralOffset, leftEndpointY);
+
+        line(leftEndpointX, leftEndpointY, leftEndpointX, leftEndpointY + bracketHeight); // left vertical bracket
+        line(rightEndPointX, rightEndpointY, rightEndPointX, rightEndpointY + bracketHeight); // right vertical bracket
+
+        // Draw the red X over the bracket if it is being hovered over for deletion.
+        if(isDeleting){
+            push();
+            translate(leftEndpointX + deletionXHorizontalCenter, leftEndpointY);
+            line(-deletionXWidth,  -deletionXWidth, deletionXWidth, deletionXWidth);
+            line(-deletionXWidth, deletionXWidth, deletionXWidth, -deletionXWidth);
+            pop();
+        }
+        // If not deleting, draw a lock at the center of the group.
+        else{
+            this.drawLock(leftEndpointX + (bracketWidth / 2), this.textCharButtonsArray[groupHeadIndex].posY - charGroupLockYOffset, inBracketColor);
+        }
+
+    }
+
     drawCharLocks(){
         // Button diameters are equal to 
         let charLockYOffset = this.buttonDiameter * .80;
 
         for(let i = 0; i < this.textManagerRef.charsArray.length; i++){
+            
             if(this.textManagerRef.charsArray[i].isLocked){
-                this.drawLock(this.textCharButtonsArray[i].posX, this.textCharButtonsArray[i].posY - charLockYOffset, this.lockColor);
+                //TODO
+                // If the head of a group is found, draw a lock bracket centered over the group.
+                // Don't draw a lock for bodies of a group.
+                if(this.textManagerRef.charsArray[i].groupOrder == 0){
+                    this.drawLockedGroup(i, this.textManagerRef.charsArray[i].groupSize, this.lockColor, false);
+                    continue;   // don't draw the lock again, move on to the next item.
+                }
+                // Draw locks for any locked non-grouped textChars.
+                else if(this.textManagerRef.charsArray[i].groupOrder == -1){
+                    this.drawLock(this.textCharButtonsArray[i].posX, this.textCharButtonsArray[i].posY - charLockYOffset, this.lockColor);
+                }
+                
             }
         }
     }
