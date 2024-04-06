@@ -200,11 +200,15 @@ function mouseReleased(){
       textManager.setCharsArray(textManager.textInput.elt.value);
       textManager.textInput.hide();
       textManager.editingText = false;
+      if(textManager.textInput.elt.value == ''){
+        textManager.defaultMessage = true;
+      }
     }
     else{
       textManager.setTextInputValue();
       textManager.textInput.show();
       textManager.textInput.elt.focus();
+      textManager.defaultMessage = false;
       textManager.editingText = true;
       textManager.groupingText = false;
       textManager.lockingText = false;
