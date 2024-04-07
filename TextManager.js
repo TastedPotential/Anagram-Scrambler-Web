@@ -124,7 +124,8 @@ class TextManager{
       */
       
        if(this.groupingText){
-        fill(166, 58, 72);
+        //fill(166, 58, 72);
+        fill(this.buttonsManagerRef.bracketColor);
         noStroke();
         textAlign(CENTER);
         textSize(this.sizeOfText / 2);
@@ -132,7 +133,8 @@ class TextManager{
         //return;
        }
        else if(this.lockingText){
-        fill(166, 58, 72);
+        //fill(166, 58, 72);
+        fill(this.buttonsManagerRef.lockColor);
         noStroke();
         textAlign(CENTER);
         textSize(this.sizeOfText / 2);
