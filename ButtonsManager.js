@@ -23,9 +23,16 @@ class ButtonsManager{
         this.saveButton = new Button(inputTextManager.textAnchorX - inputTextManager.textBoxWidth / 2 - this.buttonOffsetX - saveButtonOffsetX,
         inputTextManager.textAnchorY - this.buttonOffsetY, this.buttonDiameter, "save");
 
+        
+
         this.groupButton = new Button(this.editButton.posX + this.buttonDiameter * .75, this.editButton.posY - this.buttonDiameter, this.buttonDiameter, "group");
         
         this.lockButton = new Button(this.editButton.posX + this.buttonDiameter * 1.5, this.editButton.posY, this.buttonDiameter, "lock");
+
+        if(this.usingMobile){
+            this.groupButton = new Button(this.scrambleButton.posX + this.buttonDiameter * 1.5, this.scrambleButton.posY, this.buttonDiameter, "group");
+            this.lockButton = new Button(this.editButton.posX - this.buttonDiameter * 1.5, this.editButton.posY, this.buttonDiameter, "lock");            
+        }
 
         this.savedScrambleDeletionButtonsArray = [];
         this.savedScrambleTextButtonsArray = [];
@@ -253,6 +260,10 @@ class ButtonsManager{
 
     drawLock(inX, inY, strokeColor){
         let lockWidth = this.textManagerRef.widthOfText * 0.75;
+        if(this.usingMobile){
+            lockWidth = this.textManagerRef.widthOfText * 1.5;
+        }
+
         let textWidth = this.textManagerRef.widthOfText;
         let lockXBuffer = textWidth * 0.15;
 
@@ -271,6 +282,9 @@ class ButtonsManager{
         rectMode(CENTER);
         stroke(strokeColor);
         strokeWeight(this.lockButton.diameter / 18);
+        if(this.usingMobile){
+            strokeWeight(this.lockButton.diameter / 18);
+        }
         noFill();
         rect(inX, inY, lockWidth, lockWidth, 4);
 
