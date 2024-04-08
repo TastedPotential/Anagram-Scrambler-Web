@@ -58,7 +58,7 @@ class ButtonsManager{
             this.groupButton.drawButton();
             this.lockButton.drawButton();
             // Draw a lock on the lock button
-            this.drawLock(this.lockButton.posX, this.lockButton.posY + this.lockButton.diameter * .06, this.lockButton.buttonIconColor);
+            this.drawLock(this.lockButton.posX, this.lockButton.posY + this.lockButton.diameter * .06, this.lockButton.buttonIconColor, true);
             this.drawTextCharButtons();
             this.drawGroupLines(inGroupUnderMouse);// draw group lines
             // draw locks/brackets
@@ -258,9 +258,9 @@ class ButtonsManager{
         }
     }
 
-    drawLock(inX, inY, strokeColor){
+    drawLock(inX, inY, strokeColor, forButton){
         let lockWidth = this.textManagerRef.widthOfText * 0.75;
-        if(this.usingMobile){
+        if(this.usingMobile && forButton){
             lockWidth = this.textManagerRef.widthOfText * 1.5;
         }
 
@@ -346,7 +346,7 @@ class ButtonsManager{
         }
         // If not deleting, draw a lock at the center of the group.
         else{
-            this.drawLock(leftEndpointX + (bracketWidth / 2), this.textCharButtonsArray[groupHeadIndex].posY - charGroupLockYOffset, inBracketColor);
+            this.drawLock(leftEndpointX + (bracketWidth / 2), this.textCharButtonsArray[groupHeadIndex].posY - charGroupLockYOffset, inBracketColor, false);
         }
 
     }
@@ -367,7 +367,7 @@ class ButtonsManager{
                 }
                 // Draw locks for any locked non-grouped textChars.
                 else if(this.textManagerRef.charsArray[i].groupOrder == -1){
-                    this.drawLock(this.textCharButtonsArray[i].posX, this.textCharButtonsArray[i].posY - charLockYOffset, this.lockColor);
+                    this.drawLock(this.textCharButtonsArray[i].posX, this.textCharButtonsArray[i].posY - charLockYOffset, this.lockColor, false);
                 }
                 
             }
