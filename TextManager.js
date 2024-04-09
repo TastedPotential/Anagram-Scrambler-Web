@@ -19,7 +19,7 @@ class TextManager{
         this.usingMobile = inUsingMobile;
         this.textColor = inTextColor;
 
-        this.startingString = "type your scramble here";
+        this.startingString = "enter your scramble";
         this.scrambleMaxLength = 13;
 
         this.buttonsManagerRef;
@@ -129,7 +129,10 @@ class TextManager{
         noStroke();
         textAlign(CENTER);
         textSize(this.sizeOfText / 2);
-        text("grouping mode active", this.textAnchorX, this.textAnchorY + this.sizeOfText * 1);
+        if(this.usingMobile){
+          textSize(this.sizeOfText);
+        }
+        text("grouping mode", this.textAnchorX, this.textAnchorY + this.sizeOfText * 1);
         //return;
        }
        else if(this.lockingText){
@@ -138,7 +141,10 @@ class TextManager{
         noStroke();
         textAlign(CENTER);
         textSize(this.sizeOfText / 2);
-        text("locking mode active", this.textAnchorX, this.textAnchorY + this.sizeOfText * 1);
+        if(this.usingMobile){
+          textSize(this.sizeOfText);
+        }
+        text("locking mode", this.textAnchorX, this.textAnchorY + this.sizeOfText * 1);
        }
         
 
@@ -592,7 +598,7 @@ class TextManager{
               // Set relativePos to tracker if the char was just set to locked, otherwise reset it to default.
               if(this.charsArray[j].isLocked){
                 this.charsArray[j].relativePos = relPosTracker;
-                print('set ' + this.charsArray[j].savedChar + '\'s relative Position as: ' + relPosTracker);
+                // print('set ' + this.charsArray[j].savedChar + '\'s relative Position as: ' + relPosTracker);
               }
               else{
                 this.charsArray[j].relativePos = -1;
@@ -617,7 +623,7 @@ class TextManager{
   }
 
   fixLockedChars(){
-    print('charsArray before fixing locked chars: ' + this.getCharsArrayAsString());
+    // print('charsArray before fixing locked chars: ' + this.getCharsArrayAsString());
     let relPosCheck = -1;
     for(let i = 0; i < this.charsArray.length; i++){
       //print('Found ' + this.charsArray[i].savedChar);
@@ -631,14 +637,13 @@ class TextManager{
       // If a character is found to be locked and not in its relative position, return it to its relative position.
       if(this.charsArray[i].isLocked && this.charsArray[i].relativePos != relPosCheck){
         if(this.charsArray[i].groupID >= 0){
-          print('group starting with ' + this.charsArray[i].savedChar + ' has a relative position of: ' + this.charsArray[i].relativePos);
+          // print('group starting with ' + this.charsArray[i].savedChar + ' has a relative position of: ' + this.charsArray[i].relativePos);
         }
         else{
-          print('locked char ' + this.charsArray[i].savedChar + ' has a relative position of: ' + this.charsArray[i].relativePos);
+          // print('locked char ' + this.charsArray[i].savedChar + ' has a relative position of: ' + this.charsArray[i].relativePos);
         }
         
-        print('found ' + this.charsArray[i].savedChar + ' at index: ' + i + ' instead of ' +
-        this.findRelativePosIndex(this.charsArray[i].relativePos, false));
+        // print('found ' + this.charsArray[i].savedChar + ' at index: ' + i + ' instead of ' + this.findRelativePosIndex(this.charsArray[i].relativePos, false));
 
         // If placing elements that are in a group, place each of the members of the group in order
         //if(this.charsArray[i].groupOrder == )
@@ -660,18 +665,18 @@ class TextManager{
           //TODO
           // May have to check placing index and whether it is in a group or not and have to keep searching for valid index.
           this.moveCharGroup(i, placementIndex);
-          print('charsArray after fixing one charGroup: ' + this.getCharsArrayAsString() + '.');
-          print('-');
+          // print('charsArray after fixing one charGroup: ' + this.getCharsArrayAsString() + '.');
+          // print('-');
           // After moving a character, start the search over from the beginning in chars were moved around.
           relPosCheck = -1;
           i = -1;
         }
         else if(this.charsArray[i].groupOrder == -1){
-          print('attempting to place ' + this.charsArray[i].savedChar + ' at ' + placementIndex);
+          // print('attempting to place ' + this.charsArray[i].savedChar + ' at ' + placementIndex);
           // Remove the old incorrectly placed character.
           this.moveChar(i, placementIndex);
           // After moving a character, start the search over from the beginning in chars were moved around.
-          print('starting lock fixing over.\n***');
+          // print('starting lock fixing over.\n***');
           relPosCheck = -1;
           i = -1;
         }
@@ -679,7 +684,7 @@ class TextManager{
       }
     }
 
-    print('charsArray after fixing locked chars: ' + this.getCharsArrayAsString() + '.|\n|\n|\n|\n');
+    // print('charsArray after fixing locked chars: ' + this.getCharsArrayAsString() + '.|\n|\n|\n|\n');
   }
 
   findRelativePosIndex(inRelPos, report){
@@ -693,7 +698,7 @@ class TextManager{
       // If we have finally landed on the desired relative Position, return the current index which corresponds to the relativePos
       if(trackingRelPos == inRelPos && this.charsArray[i].groupOrder <= 0){
         if(report){
-          print('found the intended relative position index: ' + i);
+          // print('found the intended relative position index: ' + i);
         }
         return i;
       }
@@ -705,41 +710,41 @@ class TextManager{
   moveChar(foundIndex, goalIndex){
     // Remove the old incorrectly placed character.
     if(foundIndex > goalIndex){
-      print('placing ' + this.charsArray[foundIndex].savedChar + ' at ' + (goalIndex));
+      // print('placing ' + this.charsArray[foundIndex].savedChar + ' at ' + (goalIndex));
       this.charsArray.splice(goalIndex, 0, this.charsArray[foundIndex]);
-      print('removing ' + this.charsArray[foundIndex + 1].savedChar + ' at ' + (foundIndex + 1));
+      // print('removing ' + this.charsArray[foundIndex + 1].savedChar + ' at ' + (foundIndex + 1));
       this.charsArray.splice(foundIndex + 1, 1);
     }
     else if(foundIndex < goalIndex){
       // Adjust the goalIndex if the goalIndex contains a group (head). Normally it's +1 of the index to account
       // for having to delete the original found index, but that +1 is shifted by the size of the found group now.
       if(goalIndex + 1 < this.charsArray.length && this.charsArray[goalIndex + 1].groupID >= 0){
-        print('found a group starting with ' + this.charsArray[goalIndex + 1].savedChar + ' at index: ' + goalIndex);
+        // print('found a group starting with ' + this.charsArray[goalIndex + 1].savedChar + ' at index: ' + goalIndex);
         goalIndex += this.charsArray[goalIndex + 1].groupSize;        
       }
       // Otherwise if the character at the intended position isn't in a group, increment the placement by 1.
       else{
         goalIndex++;
       }
-      print('placing ' + this.charsArray[foundIndex].savedChar + ' at ' + (goalIndex));
+      // print('placing ' + this.charsArray[foundIndex].savedChar + ' at ' + (goalIndex));
       this.charsArray.splice(goalIndex, 0, this.charsArray[foundIndex]);
-      print('removing ' + this.charsArray[foundIndex].savedChar + ' at ' + (foundIndex));
+      // print('removing ' + this.charsArray[foundIndex].savedChar + ' at ' + (foundIndex));
       this.charsArray.splice(foundIndex, 1);
     }
 
-    print('charsArray after moving this one character: ' + this.getCharsArrayAsString());
+    // print('charsArray after moving this one character: ' + this.getCharsArrayAsString());
   }
 
   moveCharGroup(foundIndex, goalIndex){
     let sizeOfFoundGroup = this.charsArray[foundIndex].groupSize;
     if(foundIndex > goalIndex){
       for(let i = 0; i < sizeOfFoundGroup; i++){
-        print('placing ' + this.charsArray[foundIndex+2 * i].savedChar + ' at ' + (goalIndex+i));
+        // print('placing ' + this.charsArray[foundIndex+2 * i].savedChar + ' at ' + (goalIndex+i));
         // update where is is reading in the textChar to copy from
         this.charsArray.splice(goalIndex+i, 0, this.charsArray[foundIndex + 2 * i]);
       }
-      print('charsArray after adding locked chars to goalIndex: ' + this.getCharsArrayAsString() + '.');
-      print('removing group starting with ' + this.charsArray[foundIndex + sizeOfFoundGroup].savedChar + ' at ' + (foundIndex + sizeOfFoundGroup));
+      // print('charsArray after adding locked chars to goalIndex: ' + this.getCharsArrayAsString() + '.');
+      // print('removing group starting with ' + this.charsArray[foundIndex + sizeOfFoundGroup].savedChar + ' at ' + (foundIndex + sizeOfFoundGroup));
       this.charsArray.splice(foundIndex + sizeOfFoundGroup, sizeOfFoundGroup);
           
     }
@@ -753,10 +758,10 @@ class TextManager{
       }
 
       for(let i = 0; i < sizeOfFoundGroup; i++){
-        print('placing ' + this.charsArray[foundIndex+i].savedChar + ' at ' + (goalIndex+i));
+        // print('placing ' + this.charsArray[foundIndex+i].savedChar + ' at ' + (goalIndex+i));
         this.charsArray.splice(goalIndex + i, 0, this.charsArray[foundIndex+i]);
       }
-      print('removing group starting with' + this.charsArray[foundIndex].savedChar + ' at ' + (foundIndex));
+      // print('removing group starting with' + this.charsArray[foundIndex].savedChar + ' at ' + (foundIndex));
       this.charsArray.splice(foundIndex, sizeOfFoundGroup);
     }
 

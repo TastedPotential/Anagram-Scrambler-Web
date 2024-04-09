@@ -29,9 +29,11 @@ class ButtonsManager{
         
         this.lockButton = new Button(this.editButton.posX + this.buttonDiameter * 1.5, this.editButton.posY, this.buttonDiameter, "lock");
 
+        let scrambleEditXGap = this.editButton.posX - this.scrambleButton.posX;
+
         if(this.usingMobile){
-            this.groupButton = new Button(this.scrambleButton.posX + this.buttonDiameter * 1.5, this.scrambleButton.posY, this.buttonDiameter, "group");
-            this.lockButton = new Button(this.editButton.posX - this.buttonDiameter * 1.5, this.editButton.posY, this.buttonDiameter, "lock");            
+            this.groupButton = new Button(this.scrambleButton.posX + scrambleEditXGap*.25, this.scrambleButton.posY, this.buttonDiameter, "group");
+            this.lockButton = new Button(this.editButton.posX - scrambleEditXGap*.25, this.editButton.posY, this.buttonDiameter, "lock");            
         }
 
         this.savedScrambleDeletionButtonsArray = [];
@@ -164,6 +166,9 @@ class ButtonsManager{
         let groupEndIndex = groupHeadIndex + (groupUnitSize - 1);
         stroke(inBracketColor);
         strokeWeight(4);
+        if(this.usingMobile){
+            strokeWeight(2.5);
+        }
 
         let groupLineYDrop = this.textCharButtonsArray[groupHeadIndex].diameter * 1.6;
         let charDiameter = this.textCharButtonsArray[groupHeadIndex].diameter / 2;
@@ -268,6 +273,9 @@ class ButtonsManager{
         let lockXBuffer = textWidth * 0.15;
 
         let lockYGap = 0.70 * this.textManagerRef.sizeOfText;
+        // if(this.usingMobile){
+        //     lockYGap = 0.10 * this.textManagerRef.sizeOfText;
+        // }
         let lockYPos = inY - this.textManagerRef.sizeOfText - lockYGap;
 
         let barHeight = lockWidth / 6;
@@ -282,8 +290,8 @@ class ButtonsManager{
         rectMode(CENTER);
         stroke(strokeColor);
         strokeWeight(this.lockButton.diameter / 18);
-        if(this.usingMobile){
-            strokeWeight(this.lockButton.diameter / 18);
+        if(this.usingMobile && !forButton){
+            strokeWeight(this.lockButton.diameter / 30);
         }
         noFill();
         rect(inX, inY, lockWidth, lockWidth, 4);
@@ -312,6 +320,10 @@ class ButtonsManager{
         let groupLockWidth = this.textManagerRef.widthOfText * 0.75;
         stroke(inBracketColor);
         strokeWeight(4);
+        if(this.usingMobile){
+            strokeWeight(2.5);
+        }
+        
 
         let groupLineYRaise = this.textCharButtonsArray[groupHeadIndex].diameter * 1.4 + (groupLockWidth * 0.25);
         let charDiameter = this.textCharButtonsArray[groupHeadIndex].diameter / 2;
@@ -328,6 +340,9 @@ class ButtonsManager{
         let deletionXHorizontalCenter = (rightEndPointX - leftEndpointX) / 2;
 
         let charGroupLockYOffset = this.buttonDiameter * .80;
+        if(this.usingMobile){
+            charGroupLockYOffset = this.buttonDiameter * .50;
+        }
 
         // Always drawing the bracket as two lines since a lock is in the middle.
         line(leftEndpointX, leftEndpointY, leftEndpointX + bracketCentralOffset, rightEndpointY);
@@ -354,6 +369,9 @@ class ButtonsManager{
     drawCharLocks(){
         // Button diameters are equal to 
         let charLockYOffset = this.buttonDiameter * .80;
+        if(this.usingMobile){
+            charLockYOffset = this.buttonDiameter * .50;
+        }
 
         for(let i = 0; i < this.textManagerRef.charsArray.length; i++){
             

@@ -34,7 +34,7 @@ function setup() {
 
   if(usingMobileDevice){
     //print("On Mobile");
-    textSizePercentOfScreen = 1/14; // Was 1/15 before.
+    textSizePercentOfScreen = 1/13.5; // Was 1/15 before.
     buttonSizePercentOfScreen = 1/8;
   }
   else{
