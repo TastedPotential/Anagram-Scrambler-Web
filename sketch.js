@@ -93,7 +93,7 @@ function keyReleased(){
   //print(keyCode);
 
   // Cull the addition of extra characters beyond the maximum here
-  if(keyCode >= 44 && keyCode <= 93 || keyCode == 192 || keyCode == 222){
+  if(keyCode >= 44 && keyCode <= 93 || (keyCode >= 186 && keyCode <= 222)){
     if(textManager.textInput.elt.value.length > textManager.scrambleMaxLength){
       textManager.textInput.elt.value = textManager.textInput.elt.value.substring(0, textManager.scrambleMaxLength);
     }
