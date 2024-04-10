@@ -391,4 +391,30 @@ class ButtonsManager{
             }
         }
     }
+
+    resetButtonsClicked(){
+        this.scrambleButton.startedClickOnThis = false;
+        this.editButton.startedClickOnThis = false;
+        this.groupButton.startedClickOnThis = false;
+        this.lockButton.startedClickOnThis = false;
+        this.saveButton.startedClickOnThis = false;
+    }
+
+    setButtonStartedClickOn(){
+        if(this.scrambleButton.isMouseOverButton()){
+            this.scrambleButton.startedClickOnThis = true;
+        }
+        else if(this.editButton.isMouseOverButton()){
+            this.editButton.startedClickOnThis = true;
+        }
+        else if(this.groupButton.isMouseOverButton()){
+            this.groupButton.startedClickOnThis = true;
+        }
+        else if(this.saveButton.isMouseOverButton()){
+            this.saveButton.startedClickOnThis = true;
+        }
+        else if(this.lockButton.isMouseOverButton()){
+            this.lockButton.startedClickOnThis = true;
+        }
+    }
 }

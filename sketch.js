@@ -6,6 +6,7 @@ let usingMobileDevice;
 let bgColor = 'rgb(55, 67, 117)';
 let textColor = 'rgb(253, 253, 249)';
 let groupUnderMouse = -1;
+let isTouchDevice;
 
 function preload(){
   // Ultimately returned to CourierPrime for its readability and monospace width.
@@ -40,6 +41,12 @@ function setup() {
   else{
     //print("On Desktop");
   }
+
+  // Touch device detection.
+  // Using methods described at https://github.com/processing/p5.js/issues/1815
+  // which was discussing issues with double clicks on android. Doesn't seem to be an issue on iOS Safari.
+  isTouchDevice = ('ontouchstart' in window || navigator.maxTouchPoints) ? true : false;
+  print(isTouchDevice);
 
 
   textManager = new TextManager(sketchFont, textSizePercentOfScreen, usingMobileDevice, bgColor, textColor);
@@ -140,13 +147,13 @@ function keyReleased(){
 }
 
 function mousePressed(){
-  if(buttonsManager.scrambleButton.isMouseOverButton()){
-    buttonsManager.scrambleButton.startedClickOnThis = true;
+  if(isTouchDevice){    
+    return;
   }
-  else if(buttonsManager.editButton.isMouseOverButton()){
-    buttonsManager.editButton.startedClickOnThis = true;
-  }
-  else if(textManager.textInputClickedOn()){
+  
+  buttonsManager.setButtonStartedClickOn();
+  
+  if(textManager.textInputClickedOn()){
     textManager.startedClickOnTextInput = true;
   }
   else if(textManager.groupingText){
@@ -167,6 +174,11 @@ function mousePressed(){
 }
 
 function mouseReleased(){
+  if(isTouchDevice){
+    return;
+  }
+    
+
   // If a click was started inside the textInput box, but then let go anywhere else, don't change anything.
   // This allows for the user to drag and select text while editing, then is able to let go anywhere outside the box without issues.
   if(textManager.startedClickOnTextInput){
@@ -223,18 +235,18 @@ function mouseReleased(){
   }
 
   // Save Button Block
-  else if(buttonsManager.saveButton.isMouseOverButton()){
+  else if(buttonsManager.saveButton.isMouseOverButton() && buttonsManager.saveButton.startedClickOnThis){
     textManager.saveScramble(buttonsManager);
   }
 
   // Group Mode Toggle Button Block
-  else if(buttonsManager.groupButton.isMouseOverButton() && textManager.editingText == false){
+  else if(buttonsManager.groupButton.isMouseOverButton() && textManager.editingText == false && buttonsManager.groupButton.startedClickOnThis){
     textManager.groupingText = !textManager.groupingText;
     textManager.lockingText = false; 
   }
 
   // Lock Mode Toggle Button Block
-  else if(buttonsManager.lockButton.isMouseOverButton() && textManager.editingText == false){
+  else if(buttonsManager.lockButton.isMouseOverButton() && textManager.editingText == false && buttonsManager.lockButton.startedClickOnThis){
     textManager.lockingText = !textManager.lockingText;
     textManager.groupingText = false;
   }
@@ -328,8 +340,7 @@ function mouseReleased(){
   }
 
   // Set all buttons that were clicked on back to false. There's probably a cleaner way to do this.
-  buttonsManager.scrambleButton.startedClickOnThis = false;
-  buttonsManager.editButton.startedClickOnThis = false;
+  buttonsManager.resetButtonsClicked();
       
     //document.getElementById('textInputID').style.display = 'none';
   
