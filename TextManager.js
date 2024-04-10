@@ -12,7 +12,7 @@ class TextManager{
 
         this.savedScramblesArray = [];
 
-        this.textAnchorX = windowWidth/2;;
+        this.textAnchorX = windowWidth/2;
         this.textAnchorY = this.sizeOfText * 2; // Place the main display text 2 text-heights down from the top of the screen.        
         
         this.sketchFont = inputFont;
@@ -54,7 +54,9 @@ class TextManager{
         //print(this.textInput.size());
         this.textInput.elt.style.setProperty("text-align", "center");
         //this.textInput.position("center");
-        this.textInput.position(this.textAnchorX - (this.textInputBoxWidth + this.widthOfText/4) / 2, this.textAnchorY - this.textInputOffsetY);
+        //this.textInput.position(this.textAnchorX - (this.textInputBoxWidth + this.widthOfText/4) / 2, this.textAnchorY - this.textInputOffsetY);
+        this.textInput.position(this.textAnchorX - this.textInput.width/2, this.textAnchorY - this.textInputOffsetY);
+        
         
 
         let sizeString = this.sizeOfText.toString() + "px";
@@ -210,9 +212,9 @@ class TextManager{
       this.charsArray.splice(0);  // This clears the main textChars array.
       // Reset the string to the default message if nothing was entered in the text input box.
       if(inString == ""){
-        let startingString = "type your scramble here";
-        for(let i = 0; i < startingString.length; i++){
-          this.charsArray.push(new TextChar(startingString.charAt(i)));
+        //let startingString = "type your scramble here";
+        for(let i = 0; i < this.startingString.length; i++){
+          this.charsArray.push(new TextChar(this.startingString.charAt(i)));
         }
         this.defaultMessage = true;
       }

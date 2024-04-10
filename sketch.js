@@ -34,7 +34,7 @@ function setup() {
 
   if(usingMobileDevice){
     //print("On Mobile");
-    textSizePercentOfScreen = 1/13.5; // Was 1/15 before.
+    textSizePercentOfScreen = 1/12; // Was 1/15 before.
     buttonSizePercentOfScreen = 1/8;
   }
   else{
@@ -100,7 +100,7 @@ function keyReleased(){
   }
 
   // Reset display of default text if all text is removed.
-  if(textManager.textInput.elt.value == '' && keyCode == BACKSPACE){
+  if(textManager.textInput.elt.value == '' || keyCode == BACKSPACE && textManager.defaultMessage){
     textManager.textInput.elt.value = textManager.startingString;
     textManager.defaultMessage = true;
   } 

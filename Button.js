@@ -65,7 +65,7 @@ class Button{
     isMouseOverGroup(){
         // checking a the area below the textChar's for group deletion
         // Essentially only checking the xPosition to see if it's in the same "column" as the character because
-        // this is being used within the group deltion box area in textManager.
+        // this is being used within the group deletion box area in textManager.
         if(this.buttonType === "textChar"){
             if(mouseX <= this.posX + this.diameter / 2 && mouseX >= this.posX - this.diameter / 2){
                 return true;
