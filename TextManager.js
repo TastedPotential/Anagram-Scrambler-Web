@@ -49,7 +49,26 @@ class TextManager{
         this.textInputOffsetY = this.sizeOfText * .82;
         //this.textInput.size(this.textInputBoxWidth + this.widthOfText/4);
         //this.textInput.size(windowWidth - this.widthOfText * 4);
-        this.textInput.size(this.textInputBoxWidth + this.widthOfText/4, this.sizeOfText);
+        
+        //this.textInput.size(this.textInputBoxWidth + this.widthOfText/4, this.sizeOfText);
+        
+        // print(textWidth(this.startingString) + textWidth(this.startingString.substring(0,2)));
+        // print(this.startingString.length * (this.sizeOfText));
+        // text(this.startingString, windowWidth/2, windowHeight /2);
+        // rectMode(CENTER);
+        // noStroke();
+        // fill(textBoxBGColor);
+        // rect(windowWidth, windowHeight, this.sizeOfText * 14, this.sizeOfText*4);
+
+        // Make the textInput box as wide as the default string plus three characters,
+        let textInputBoxSizeX = (this.startingString.length+4) * (this.widthOfText);
+        //let textInputBoxSizeX = (this.charsArray.length * this.widthOfText) + (this.charsArray.length * this.textGap);
+        if(this.usingMobile){
+          textInputBoxSizeX = (this.startingString.length+3) * (this.widthOfText);
+        }
+        this.textInput.size(textInputBoxSizeX, this.sizeOfText);
+        //this.textInput.size(textWidth(this.startingString) + textWidth(this.startingString.substring(0,2)), this.sizeOfText);
+        
         //print("textSize is:" + this.sizeOfText);
         //print(this.textInput.size());
         this.textInput.elt.style.setProperty("text-align", "center");
@@ -97,8 +116,17 @@ class TextManager{
       this.textInput.position(this.textAnchorX - (this.textInputBoxWidth + this.widthOfText/4) / 2, this.textAnchorY - this.textInputOffsetY);
       //this.textInput.size(this.textInputBoxWidth + this.widthOfText/4);
       //this.textInput.size(windowWidth - this.widthOfText * 4);
-      //this.textInput.size(windowWidth * 2);      
-      this.textInput.size(this.textInputBoxWidth + this.widthOfText/4, this.sizeOfText);
+      //this.textInput.size(windowWidth * 2);    
+
+      //this.textInput.size(this.textInputBoxWidth + this.widthOfText/4, this.sizeOfText);
+      //this.textInput.size(textWidth(this.startingString) + textWidth(this.startingString.substring(0,2)), this.sizeOfText);
+      // Make the textInput box as wide as the default string plus three characters,
+      let textInputBoxSizeX = (this.startingString.length+4) * (this.widthOfText);
+      //let textInputBoxSizeX = (this.charsArray.length * this.widthOfText) + (this.charsArray.length * this.textGap);
+      if(this.usingMobile){
+        textInputBoxSizeX = (this.startingString.length+3) * (this.widthOfText);
+      }
+      this.textInput.size(textInputBoxSizeX, this.sizeOfText);
       
       //this.textInput.position("center");
       let sizeString = this.sizeOfText.toString() + "px";
