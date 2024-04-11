@@ -178,7 +178,7 @@ function mousePressed(){
       textManager.groupCreationStartIndex = clickedCharIndex;
     }
   } 
-  return false; // return false at the end to prevent default behavior such as causing extra double clicks.
+  // return false; // return false at the end to prevent default behavior such as causing extra double clicks.
 }
 
 //MARK: mouseReleased
@@ -350,7 +350,7 @@ function mouseReleased(){
   // Set all buttons that were clicked on back to false. There's probably a cleaner way to do this.
   buttonsManager.resetButtonsClicked();
   //document.getElementById('textInputID').style.display = 'none';
-  return false; // return false at the end to prevent default behavior such as causing extra double clicks.
+  // return false; // return false at the end to prevent default behavior such as causing extra double clicks.
 }
 
 function mouseClicked(){
