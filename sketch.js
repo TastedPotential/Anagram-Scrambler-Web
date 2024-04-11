@@ -29,6 +29,16 @@ function setup() {
   mobileDeviceRegExp = /android|iphone|kindle|ipad/i;
   usingMobileDevice = mobileDeviceRegExp.test(userDetails);
 
+  // Touch device detection.
+  // Using methods described at https://github.com/processing/p5.js/issues/1815
+  // which was discussing issues with double clicks on android. Doesn't seem to be an issue on iOS Safari.
+  isTouchDevice = ('ontouchstart' in window || navigator.maxTouchPoints) ? true : false;
+  //print(isTouchDevice);
+  // This may catch the detection of being on mobile and allow the PWA version to work on android.
+  if(isTouchDevice || windowWidth < windowHeight){
+    usingMobileDevice = true;
+  }
+
   // These values will be the percentage of the screen's width to determine the size of said elements.
   let textSizePercentOfScreen = 1/20;
   let buttonSizePercentOfScreen = 1/20;
@@ -42,11 +52,7 @@ function setup() {
     //print("On Desktop");
   }
 
-  // Touch device detection.
-  // Using methods described at https://github.com/processing/p5.js/issues/1815
-  // which was discussing issues with double clicks on android. Doesn't seem to be an issue on iOS Safari.
-  isTouchDevice = ('ontouchstart' in window || navigator.maxTouchPoints) ? true : false;
-  print(isTouchDevice);
+  
 
 
   textManager = new TextManager(sketchFont, textSizePercentOfScreen, usingMobileDevice, bgColor, textColor);
