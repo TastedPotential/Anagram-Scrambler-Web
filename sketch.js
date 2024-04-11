@@ -69,10 +69,12 @@ function setup() {
   textSize(textManager.sizeOfText);
   buttonsManager = new ButtonsManager(textManager, buttonSizePercentOfScreen, usingMobileDevice, isTouchDevice);
   textManager.textInput.show();
+  textManager.textInput.elt.focus();
+
   // Only set the focus on the textInput at the start if on desktop.
-  if(!isTouchDevice){
-    textManager.textInput.elt.focus();
-  }
+  // if(!isTouchDevice){
+  //   textManager.textInput.elt.focus();
+  // }
   textManager.buttonsManagerRef = buttonsManager;
 }
 
@@ -259,7 +261,8 @@ function mouseReleased(){
   }
 
   // Save Button Block
-  else if(buttonsManager.saveButton.isMouseOverButton() && buttonsManager.saveButton.startedClickOnThis && !textManager.defaultMessage){
+  else if(buttonsManager.saveButton.isMouseOverButton() && buttonsManager.saveButton.startedClickOnThis && !textManager.defaultMessage
+&& textManager.textInput.value() != ''){
     textManager.saveScramble(buttonsManager);
   }
 
@@ -366,10 +369,6 @@ function mouseReleased(){
   buttonsManager.resetButtonsClicked();
   //document.getElementById('textInputID').style.display = 'none';
   // return false; // return false at the end to prevent default behavior such as causing extra double clicks.
-}
-
-function mouseDragged(){
-
 }
 
 //MARK: mouseClicked

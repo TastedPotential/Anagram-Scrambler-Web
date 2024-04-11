@@ -53,7 +53,7 @@ class ButtonsManager{
     drawButtons(inGroupUnderMouse){
         this.scrambleButton.drawButton();
         this.editButton.drawButton();
-        if(!this.textManagerRef.defaultMessage){
+        if(!this.textManagerRef.defaultMessage && this.textManagerRef.textInput.value() != ''){
             this.saveButton.drawButton();
         }        
         this.drawSavedScrambleTextButtons();
