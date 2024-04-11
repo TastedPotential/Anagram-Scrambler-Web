@@ -1,5 +1,5 @@
 class ButtonsManager{
-    constructor(inputTextManager, inButtonSizePercentage, isMobileDevice){
+    constructor(inputTextManager, inButtonSizePercentage, isMobileDevice, isTouchDevice){
         this.buttonDiameterFactor = inButtonSizePercentage;
         this.buttonDiameter = windowWidth * this.buttonDiameterFactor;
 
@@ -53,7 +53,9 @@ class ButtonsManager{
     drawButtons(inGroupUnderMouse){
         this.scrambleButton.drawButton();
         this.editButton.drawButton();
-        this.saveButton.drawButton();
+        if(!this.textManagerRef.defaultMessage){
+            this.saveButton.drawButton();
+        }        
         this.drawSavedScrambleTextButtons();
         this.drawSavedScrambleDeletionButtons();
         if(this.textManagerRef.editingText == false){
@@ -129,7 +131,19 @@ class ButtonsManager{
             }
             this.textCharButtonsArray[i].drawButton();
         }
-    }   
+    }
+    
+    resetTextCharButtonsBGs(){
+        for(let i = 0; i < this.textCharButtonsArray.length; i++){
+            this.textCharButtonsArray[i].setHoverColor(this.bgColor);
+        }
+    }
+
+    resetTextCharButtonHoverStatuses(){
+        for(let i = 0; i < this.textCharButtonsArray.length; i++){
+            this.textCharButtonsArray[i].isBeingHoveredOver = false;
+        }
+    }
 
     getIndexOfClickedChar(){
         let clickedIndex = -1;

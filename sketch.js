@@ -7,6 +7,7 @@ let bgColor = 'rgb(55, 67, 117)';
 let textColor = 'rgb(253, 253, 249)';
 let groupUnderMouse = -1;
 let isTouchDevice;
+let usingAppleTouchDevice;
 
 function preload(){
   // Ultimately returned to CourierPrime for its readability and monospace width.
@@ -38,6 +39,14 @@ function setup() {
   if(isTouchDevice || windowWidth < windowHeight){
     usingMobileDevice = true;
   }
+  // Give an exception to the no-dragging version to iOS/iPad devices since they seem to be able to use the desktop version with
+  // dragging and all that just fine.
+  let appleTouchDeviceRegExp = /iphone|ipad/i;
+  usingAppleTouchDevice = appleTouchDeviceRegExp.test(userDetails);
+  if(usingAppleTouchDevice){
+    print('using apple touch device');
+    //isTouchDevice = false;
+  }
 
   // These values will be the percentage of the screen's width to determine the size of said elements.
   let textSizePercentOfScreen = 1/20;
@@ -58,10 +67,10 @@ function setup() {
   textManager = new TextManager(sketchFont, textSizePercentOfScreen, usingMobileDevice, bgColor, textColor);
   textFont(textManager.sketchFont);
   textSize(textManager.sizeOfText);
-  buttonsManager = new ButtonsManager(textManager, buttonSizePercentOfScreen, usingMobileDevice);
+  buttonsManager = new ButtonsManager(textManager, buttonSizePercentOfScreen, usingMobileDevice, isTouchDevice);
   textManager.textInput.show();
-  // Only set the focus on the textInput on desktop.
-  if(!usingMobileDevice){
+  // Only set the focus on the textInput at the start if on desktop.
+  if(!isTouchDevice){
     textManager.textInput.elt.focus();
   }
   textManager.buttonsManagerRef = buttonsManager;
@@ -75,7 +84,10 @@ function draw() {
   groupUnderMouse = textManager.checkGroupDeletion();
   buttonsManager.drawButtons(groupUnderMouse);
   textManager.drawText();  
-  // Draw the grouping brackets
+  // Don't draw anything hovering related on mobile because mobile cannot detect hovering anyway.
+  if(isTouchDevice)
+    return;
+  // Draw the grouping brackets & backgrounds of textChars being hovered over
   if(textManager.groupingText){
     buttonsManager.setHoverStatus();
     buttonsManager.drawGroupChoosingBracket();
@@ -247,7 +259,7 @@ function mouseReleased(){
   }
 
   // Save Button Block
-  else if(buttonsManager.saveButton.isMouseOverButton() && buttonsManager.saveButton.startedClickOnThis){
+  else if(buttonsManager.saveButton.isMouseOverButton() && buttonsManager.saveButton.startedClickOnThis && !textManager.defaultMessage){
     textManager.saveScramble(buttonsManager);
   }
 
@@ -356,71 +368,25 @@ function mouseReleased(){
   // return false; // return false at the end to prevent default behavior such as causing extra double clicks.
 }
 
-function touchStarted(){
+function mouseDragged(){
+
+}
+
+//MARK: mouseClicked
+// Click only version of everything for android.
+function mouseClicked(){
   // This is only called on mobile/touch devices. It's going to be a reworking of the desktop mousePressed and mouseReleased.
   if(!isTouchDevice){
     return;
+  }
+
+  if(textManager.textInputClickedOn()){
+    print('clicked in textBox');
+    //return;// should allow text to be selected while in edit mode.
   }
 
   buttonsManager.setButtonStartedClickOn();
 
-  if(textManager.textInputClickedOn()){
-    textManager.startedClickOnTextInput = true;
-  }
-  else if(textManager.groupingText){
-    // check which textChar was clicked on
-    let clickedCharIndex = buttonsManager.getIndexOfClickedChar();
-    // If the click wasn't on a character, abandon and reset group creation.
-    if(clickedCharIndex == -1){
-      textManager.stopGroupCreation();
-      return;
-    }
-    // If we clicked on a character, it is NOT in a group (groupID == -1, aka default), start the group creation attempt
-    // with this character
-    if(clickedCharIndex >= 0 && textManager.charsArray[clickedCharIndex].groupID == -1){
-      //print("clicked on " + textManager.charsArray[clickedCharIndex].savedChar);
-      textManager.groupCreationStartIndex = clickedCharIndex;
-    }
-  } 
-
-  //end of old mousePressed() Block
-
-}
-
-function touchEnded(){
-  // This is only called on mobile/touch devices. It's going to be a reworking of the desktop mousePressed and mouseReleased.
-  if(!isTouchDevice){
-    return;
-  }
-
-  
-
-  // Save Button Block
-  if(buttonsManager.saveButton.isMouseOverButton() && buttonsManager.saveButton.startedClickOnThis){
-    textManager.saveScramble(buttonsManager);
-  }
-
-  // return false; // return false at the end to prevent default behavior such as causing extra double clicks.
-
-  // new stuff below
-
-
-
-  // If a click was started inside the textInput box, but then let go anywhere else, don't change anything.
-  // This allows for the user to drag and select text while editing, then is able to let go anywhere outside the box without issues.
-  if(textManager.startedClickOnTextInput){
-    // Set all buttons that were clicked on back to false. There's probably a cleaner way to do this.
-    textManager.startedClickOnTextInput = false;
-    buttonsManager.scrambleButton.startedClickOnThis = false;
-    buttonsManager.editButton.startedClickOnThis = false;
-
-    if(textManager.defaultMessage){
-      textManager.clearInputTextValue();
-      textManager.defaultMessage = false;
-    }
-
-    return;
-  }
   // Scramble Button Block
   if(buttonsManager.scrambleButton.isMouseOverButton() && buttonsManager.scrambleButton.startedClickOnThis){
     if(textManager.editingText){
@@ -490,34 +456,52 @@ function touchEnded(){
   }
   // Group creation/deletion block
   else if(textManager.groupingText){
+
+    groupUnderMouse = textManager.checkGroupDeletion();
     // group deletion block
     if(groupUnderMouse >= 0){
       // If the mouse is over a group's bracket and left click is released, delete that group.
       textManager.dismantleGroup(groupUnderMouse);
       return;
     }
-    // Group creation block
-    // check which textChar was released on
-    // Don't attempt to create a group if the start of the current drag was not on a textChar.
-    if(textManager.groupCreationStartIndex == -1){
-      textManager.stopGroupCreation();
-      return;
-    }
-      
-
+    // Get the character clicked on.
     let clickedCharIndex = buttonsManager.getIndexOfClickedChar();
-    // If 1) we clicked on a character, 2) it is NOT in a group (groupID == -1, aka default), 3) did not end the drag over the same starting character
-    //start the group creation attempt with this character
-    if(clickedCharIndex >= 0 && textManager.charsArray[clickedCharIndex].groupID == -1 && clickedCharIndex != textManager.groupCreationStartIndex){
-      //print("clicked on " + textManager.charsArray[clickedCharIndex].savedChar);
+    
+    // Group creation block
+    // If the first character of a group hasn't been set and if we clicked on a character,
+    // it is NOT in a group (groupID == -1, aka default), start the group creation attempt with this character.
+    if(textManager.groupCreationStartIndex == -1 && clickedCharIndex >= 0 && textManager.charsArray[clickedCharIndex].groupID == -1){
+      textManager.groupCreationStartIndex = clickedCharIndex;
+    }
+    // Otherwise check if a valid group ending index was clicked. If so, create a group with those two characters.
+    else if(clickedCharIndex != textManager.groupCreationStartIndex && textManager.groupCreationStartIndex >= 0 &&
+      clickedCharIndex >= 0 && textManager.charsArray[clickedCharIndex].groupID == -1){
       textManager.groupCreationEndIndex = clickedCharIndex;
       textManager.createGroup();
       textManager.stopGroupCreation();
+
+      buttonsManager.resetTextCharButtonHoverStatuses();
     }
-    // reset the group creation start and end indexes if released in invalid conditions or over no chars
-    else{
-      textManager.stopGroupCreation();
-    }
+
+    // if(textManager.groupCreationStartIndex == -1){
+    //   textManager.stopGroupCreation();
+    //   return;
+    // }
+    
+    //let clickedCharIndex = buttonsManager.getIndexOfClickedChar();
+    // If 1) we clicked on a character, 2) it is NOT in a group (groupID == -1, aka default), 3) did not end the drag over the same starting character
+    //start the group creation attempt with this character
+
+    // if(clickedCharIndex >= 0 && textManager.charsArray[clickedCharIndex].groupID == -1 && clickedCharIndex != textManager.groupCreationStartIndex){
+    //   //print("clicked on " + textManager.charsArray[clickedCharIndex].savedChar);
+    //   textManager.groupCreationEndIndex = clickedCharIndex;
+    //   textManager.createGroup();
+    //   textManager.stopGroupCreation();
+    // }
+    // // reset the group creation start and end indexes if released in invalid conditions or over no chars
+    // else{
+    //   textManager.stopGroupCreation();
+    // }
   }
   // Character locking block.
   else if(textManager.lockingText){
@@ -525,6 +509,7 @@ function touchEnded(){
     if(textManager.lockingIndex >= 0){
       textManager.toggleCharLock();
     }
+    buttonsManager.resetTextCharButtonHoverStatuses();
   }
   // Check series of buttons
   else{
@@ -564,11 +549,10 @@ function touchEnded(){
       textManager.editingText = false;
     }
     
-  }
+  }  
   // Set all buttons that were clicked on back to false. There's probably a cleaner way to do this.
   buttonsManager.resetButtonsClicked();
-  //document.getElementById('textInputID').style.display = 'none';
-  // return false; // return false at the end to prevent default behavior such as causing extra double clicks.
+
 
 }
 

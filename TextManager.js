@@ -295,8 +295,10 @@ class TextManager{
 
     saveScramble(inButtonsManager){
       // Max number of saved scrambles is 12.
-      if(inButtonsManager.savedScrambleTextButtonsArray.length >= 12){
+      if(inButtonsManager.savedScrambleTextButtonsArray.length >= 12 || this.defaultMessage){
+        //TODO
         // Maybe add some visual indication to the user that the max saves has been hit.
+        // Or that they tried to save the default message.
         return;
       }    
 
