@@ -146,11 +146,12 @@ function keyReleased(){
   }
 }
 
+//MARK: mousePressed
 function mousePressed(){
   if(isTouchDevice){    
-    return;
+    // return;
   }
-  
+
   buttonsManager.setButtonStartedClickOn();
   
   if(textManager.textInputClickedOn()){
@@ -171,11 +172,13 @@ function mousePressed(){
       textManager.groupCreationStartIndex = clickedCharIndex;
     }
   } 
+  return false; // return false at the end to prevent default behavior such as causing extra double clicks.
 }
 
+//MARK: mouseReleased
 function mouseReleased(){
   if(isTouchDevice){
-    return;
+    // return;
   }
     
 
@@ -338,14 +341,26 @@ function mouseReleased(){
     }
     
   }
-
   // Set all buttons that were clicked on back to false. There's probably a cleaner way to do this.
   buttonsManager.resetButtonsClicked();
-      
-    //document.getElementById('textInputID').style.display = 'none';
-  
+  //document.getElementById('textInputID').style.display = 'none';
+  return false; // return false at the end to prevent default behavior such as causing extra double clicks.
+}
 
-  
+function mouseClicked(){
+  // This is only called on mobile/touch devices. It's going to be a reworking of the desktop mousePressed and mouseReleased.
+  // if(!isTouchDevice){
+  //   return;
+  // }
+
+  // buttonsManager.setButtonStartedClickOn();
+
+  // // Save Button Block
+  // if(buttonsManager.saveButton.isMouseOverButton() && buttonsManager.saveButton.startedClickOnThis){
+  //   textManager.saveScramble(buttonsManager);
+  // }
+
+  return false; // return false at the end to prevent default behavior such as causing extra double clicks.
 
 }
 
