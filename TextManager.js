@@ -655,7 +655,7 @@ class TextManager{
   }
 
   fixLockedChars(){
-    // print('charsArray before fixing locked chars: ' + this.getCharsArrayAsString());
+    print('charsArray before fixing locked chars: ' + this.getCharsArrayAsString());
     let relPosCheck = -1;
     for(let i = 0; i < this.charsArray.length; i++){
       //print('Found ' + this.charsArray[i].savedChar);
@@ -697,7 +697,7 @@ class TextManager{
           //TODO
           // May have to check placing index and whether it is in a group or not and have to keep searching for valid index.
           this.moveCharGroup(i, placementIndex);
-          // print('charsArray after fixing one charGroup: ' + this.getCharsArrayAsString() + '.');
+          print('charsArray after fixing one charGroup: ' + this.getCharsArrayAsString() + '.');
           // print('-');
           // After moving a character, start the search over from the beginning in chars were moved around.
           relPosCheck = -1;
@@ -707,6 +707,7 @@ class TextManager{
           // print('attempting to place ' + this.charsArray[i].savedChar + ' at ' + placementIndex);
           // Remove the old incorrectly placed character.
           this.moveChar(i, placementIndex);
+          print('charsArray after fixing one char: ' + this.getCharsArrayAsString() + '.');
           // After moving a character, start the search over from the beginning in chars were moved around.
           // print('starting lock fixing over.\n***');
           relPosCheck = -1;
@@ -716,7 +717,7 @@ class TextManager{
       }
     }
 
-    // print('charsArray after fixing locked chars: ' + this.getCharsArrayAsString() + '.|\n|\n|\n|\n');
+    print('charsArray after fixing locked chars: ' + this.getCharsArrayAsString() + '.\n|\n|\n|\n');
   }
 
   findRelativePosIndex(inRelPos, report){
@@ -749,17 +750,16 @@ class TextManager{
     }
     else if(foundIndex < goalIndex){
       // Adjust the goalIndex if the goalIndex contains a group (head). Normally it's +1 of the index to account
-      // for having to delete the original found index, but that +1 is shifted by the size of the found group now.
-      if(goalIndex + 1 < this.charsArray.length && this.charsArray[goalIndex + 1].groupID >= 0){
+      // for having to delete the original found index, but that +1 is shifted by the size of the found group minus 1 (zero indexing) now.
+      if(this.charsArray[goalIndex].groupID >= 0){
         // print('found a group starting with ' + this.charsArray[goalIndex + 1].savedChar + ' at index: ' + goalIndex);
-        goalIndex += this.charsArray[goalIndex + 1].groupSize;        
-      }
-      // Otherwise if the character at the intended position isn't in a group, increment the placement by 1.
-      else{
-        goalIndex++;
+        // If the goal index is the head of a group, to add one unit "to the right" of the group, the goal index needs to be
+        // shifted by the size of the group, then add 1 to the index.
+        goalIndex += this.charsArray[goalIndex].groupSize - 1;        
       }
       // print('placing ' + this.charsArray[foundIndex].savedChar + ' at ' + (goalIndex));
-      this.charsArray.splice(goalIndex, 0, this.charsArray[foundIndex]);
+      // Increment the goal (placement) by 1 when the found location is to the left of the goal location.      
+      this.charsArray.splice(goalIndex + 1, 0, this.charsArray[foundIndex]);
       // print('removing ' + this.charsArray[foundIndex].savedChar + ' at ' + (foundIndex));
       this.charsArray.splice(foundIndex, 1);
     }
@@ -782,16 +782,19 @@ class TextManager{
     }
     else if(foundIndex < goalIndex){
       // Adjust the goalIndex if the goalIndex contains a group (head)
-      if(goalIndex + 1 < this.charsArray.length && this.charsArray[goalIndex + 1].groupID >= 0){
-        goalIndex += this.charsArray[goalIndex + 1].groupSize;
-      }
-      else{
-        goalIndex++;
+      // if(goalIndex + 1 < this.charsArray.length && this.charsArray[goalIndex + 1].groupID >= 0){
+      //   goalIndex += this.charsArray[goalIndex + 1].groupSize;
+      // }
+      // else{
+      //   goalIndex++;
+      // }
+      if(this.charsArray[goalIndex].groupID >= 0){
+        goalIndex += this.charsArray[goalIndex].groupSize - 1;
       }
 
       for(let i = 0; i < sizeOfFoundGroup; i++){
         // print('placing ' + this.charsArray[foundIndex+i].savedChar + ' at ' + (goalIndex+i));
-        this.charsArray.splice(goalIndex + i, 0, this.charsArray[foundIndex+i]);
+        this.charsArray.splice(goalIndex + 1 + i, 0, this.charsArray[foundIndex + i]);
       }
       // print('removing group starting with' + this.charsArray[foundIndex].savedChar + ' at ' + (foundIndex));
       this.charsArray.splice(foundIndex, sizeOfFoundGroup);
