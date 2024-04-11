@@ -60,7 +60,10 @@ function setup() {
   textSize(textManager.sizeOfText);
   buttonsManager = new ButtonsManager(textManager, buttonSizePercentOfScreen, usingMobileDevice);
   textManager.textInput.show();
-  textManager.textInput.elt.focus();
+  // Only set the focus on the textInput on desktop.
+  if(!usingMobileDevice){
+    textManager.textInput.elt.focus();
+  }
   textManager.buttonsManagerRef = buttonsManager;
 }
 
@@ -155,7 +158,7 @@ function keyReleased(){
 //MARK: mousePressed
 function mousePressed(){
   if(isTouchDevice){    
-    // return;
+    return;
   }
 
   buttonsManager.setButtonStartedClickOn();
@@ -184,7 +187,7 @@ function mousePressed(){
 //MARK: mouseReleased
 function mouseReleased(){
   if(isTouchDevice){
-    // return;
+    return;
   }
     
 
@@ -353,20 +356,219 @@ function mouseReleased(){
   // return false; // return false at the end to prevent default behavior such as causing extra double clicks.
 }
 
-function mouseClicked(){
+function touchStarted(){
   // This is only called on mobile/touch devices. It's going to be a reworking of the desktop mousePressed and mouseReleased.
-  // if(!isTouchDevice){
-  //   return;
-  // }
+  if(!isTouchDevice){
+    return;
+  }
 
-  // buttonsManager.setButtonStartedClickOn();
+  buttonsManager.setButtonStartedClickOn();
 
-  // // Save Button Block
-  // if(buttonsManager.saveButton.isMouseOverButton() && buttonsManager.saveButton.startedClickOnThis){
-  //   textManager.saveScramble(buttonsManager);
-  // }
+  if(textManager.textInputClickedOn()){
+    textManager.startedClickOnTextInput = true;
+  }
+  else if(textManager.groupingText){
+    // check which textChar was clicked on
+    let clickedCharIndex = buttonsManager.getIndexOfClickedChar();
+    // If the click wasn't on a character, abandon and reset group creation.
+    if(clickedCharIndex == -1){
+      textManager.stopGroupCreation();
+      return;
+    }
+    // If we clicked on a character, it is NOT in a group (groupID == -1, aka default), start the group creation attempt
+    // with this character
+    if(clickedCharIndex >= 0 && textManager.charsArray[clickedCharIndex].groupID == -1){
+      //print("clicked on " + textManager.charsArray[clickedCharIndex].savedChar);
+      textManager.groupCreationStartIndex = clickedCharIndex;
+    }
+  } 
 
-  return false; // return false at the end to prevent default behavior such as causing extra double clicks.
+  //end of old mousePressed() Block
+
+}
+
+function touchEnded(){
+  // This is only called on mobile/touch devices. It's going to be a reworking of the desktop mousePressed and mouseReleased.
+  if(!isTouchDevice){
+    return;
+  }
+
+  
+
+  // Save Button Block
+  if(buttonsManager.saveButton.isMouseOverButton() && buttonsManager.saveButton.startedClickOnThis){
+    textManager.saveScramble(buttonsManager);
+  }
+
+  // return false; // return false at the end to prevent default behavior such as causing extra double clicks.
+
+  // new stuff below
+
+
+
+  // If a click was started inside the textInput box, but then let go anywhere else, don't change anything.
+  // This allows for the user to drag and select text while editing, then is able to let go anywhere outside the box without issues.
+  if(textManager.startedClickOnTextInput){
+    // Set all buttons that were clicked on back to false. There's probably a cleaner way to do this.
+    textManager.startedClickOnTextInput = false;
+    buttonsManager.scrambleButton.startedClickOnThis = false;
+    buttonsManager.editButton.startedClickOnThis = false;
+
+    if(textManager.defaultMessage){
+      textManager.clearInputTextValue();
+      textManager.defaultMessage = false;
+    }
+
+    return;
+  }
+  // Scramble Button Block
+  if(buttonsManager.scrambleButton.isMouseOverButton() && buttonsManager.scrambleButton.startedClickOnThis){
+    if(textManager.editingText){
+      textManager.setCharsArray(textManager.textInput.elt.value);
+    }    
+    textManager.scrambleCharsArray();
+    textManager.textInput.value(textManager.getCharsArrayAsString());
+    // textManager.textInput.hide();
+    // textManager.editingText = false;
+  }
+
+  //Edit button Block
+  else if(buttonsManager.editButton.isMouseOverButton() && buttonsManager.editButton.startedClickOnThis){
+    if(textManager.editingText)
+    {
+      textManager.setCharsArray(textManager.textInput.elt.value);
+      textManager.textInput.hide();
+      textManager.editingText = false;
+      if(textManager.textInput.elt.value == ''){
+        textManager.defaultMessage = true;
+      }
+    }
+    else{
+      textManager.setTextInputValue();
+      textManager.textInput.show();
+      textManager.textInput.elt.focus();
+      textManager.defaultMessage = false;
+      textManager.editingText = true;
+      textManager.groupingText = false;
+      textManager.lockingText = false;
+    }
+    //TODO
+    // Determine if it's a better UX to have the text all selected when clicking the edit button, or instead
+    // allow the user to select all at their discretion.
+    if(!usingMobileDevice){
+      //textManager.textInput.elt.select();
+    }
+    
+  }
+
+  // Save Button Block
+  else if(buttonsManager.saveButton.isMouseOverButton() && buttonsManager.saveButton.startedClickOnThis){
+    textManager.saveScramble(buttonsManager);
+  }
+
+  // Group Mode Toggle Button Block
+  else if(buttonsManager.groupButton.isMouseOverButton() && textManager.editingText == false && buttonsManager.groupButton.startedClickOnThis){
+    textManager.groupingText = !textManager.groupingText;
+    textManager.lockingText = false; 
+  }
+
+  // Lock Mode Toggle Button Block
+  else if(buttonsManager.lockButton.isMouseOverButton() && textManager.editingText == false && buttonsManager.lockButton.startedClickOnThis){
+    textManager.lockingText = !textManager.lockingText;
+    textManager.groupingText = false;
+  }
+
+  // Text Input Box Block
+  else if(textManager.textInputClickedOn()){
+    //print("clicked in the textInput box");
+    // Don't hide the text input box if the clicks are inside the box, such as when editing text. So don't go to the next check.
+    // If the click is on te default text, make the default text disappear when the user starts typing.
+    if(textManager.defaultMessage){
+      textManager.clearInputTextValue();
+      textManager.defaultMessage = false;
+    }
+  }
+  // Group creation/deletion block
+  else if(textManager.groupingText){
+    // group deletion block
+    if(groupUnderMouse >= 0){
+      // If the mouse is over a group's bracket and left click is released, delete that group.
+      textManager.dismantleGroup(groupUnderMouse);
+      return;
+    }
+    // Group creation block
+    // check which textChar was released on
+    // Don't attempt to create a group if the start of the current drag was not on a textChar.
+    if(textManager.groupCreationStartIndex == -1){
+      textManager.stopGroupCreation();
+      return;
+    }
+      
+
+    let clickedCharIndex = buttonsManager.getIndexOfClickedChar();
+    // If 1) we clicked on a character, 2) it is NOT in a group (groupID == -1, aka default), 3) did not end the drag over the same starting character
+    //start the group creation attempt with this character
+    if(clickedCharIndex >= 0 && textManager.charsArray[clickedCharIndex].groupID == -1 && clickedCharIndex != textManager.groupCreationStartIndex){
+      //print("clicked on " + textManager.charsArray[clickedCharIndex].savedChar);
+      textManager.groupCreationEndIndex = clickedCharIndex;
+      textManager.createGroup();
+      textManager.stopGroupCreation();
+    }
+    // reset the group creation start and end indexes if released in invalid conditions or over no chars
+    else{
+      textManager.stopGroupCreation();
+    }
+  }
+  // Character locking block.
+  else if(textManager.lockingText){
+    textManager.lockingIndex = buttonsManager.getIndexOfClickedChar();
+    if(textManager.lockingIndex >= 0){
+      textManager.toggleCharLock();
+    }
+  }
+  // Check series of buttons
+  else{
+    //Check savedScrambleTextButtonsArray to see if any of those buttons were clicked.
+    for(let i = 0; i < buttonsManager.savedScrambleTextButtonsArray.length; i++){
+      if(buttonsManager.savedScrambleTextButtonsArray[i].isMouseOverButton()){
+        // Copy text to clipboard
+        navigator.clipboard.writeText(buttonsManager.savedScrambleTextButtonsArray[i].savedScrambleText);
+        return;
+      }
+    }
+
+    //Check savedScrambleDeletionButtonsArray to see if any of those buttons were clicked.
+    for(let i = 0; i < buttonsManager.savedScrambleDeletionButtonsArray.length; i++){
+      if(buttonsManager.savedScrambleDeletionButtonsArray[i].isMouseOverButton()){
+        // Delete that specific saved scramble entry from the saved scrambles array
+        buttonsManager.savedScrambleDeletionButtonsArray.splice(i, 1);
+        buttonsManager.savedScrambleTextButtonsArray.splice(i, 1);        
+        textManager.updateButtonPositions(buttonsManager);
+        textManager.adjustSavedButtonsXOffset(buttonsManager);    
+        return;
+      }
+    }
+
+    
+    //print("didn't click on any elements");
+    // I think this is where the stored groups are being wiped.
+    // TODO
+    // Determine if groups & locks should all be removed every time text input is made.
+    // Clicked on empty space white text editor is open, aka close the text editor and save the current textInput contents.
+    if(textManager.editingText == true){
+      textManager.setCharsArray(textManager.textInput.elt.value);
+      if(textManager.textInput.elt.value == ''){
+        textManager.defaultMessage = true;
+      }
+      textManager.textInput.hide();
+      textManager.editingText = false;
+    }
+    
+  }
+  // Set all buttons that were clicked on back to false. There's probably a cleaner way to do this.
+  buttonsManager.resetButtonsClicked();
+  //document.getElementById('textInputID').style.display = 'none';
+  // return false; // return false at the end to prevent default behavior such as causing extra double clicks.
 
 }
 
