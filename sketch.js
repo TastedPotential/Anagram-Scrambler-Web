@@ -37,7 +37,7 @@ function setup() {
   //print(isTouchDevice);
   // This may catch the detection of being on mobile and allow the PWA version to work on android.
   if(isTouchDevice || windowWidth < windowHeight){
-    usingMobileDevice = true;
+    //usingMobileDevice = true;
   }
   // Give an exception to the no-dragging version to iOS/iPad devices since they seem to be able to use the desktop version with
   // dragging and all that just fine.

@@ -655,7 +655,7 @@ class TextManager{
   }
 
   fixLockedChars(){
-    print('charsArray before fixing locked chars: ' + this.getCharsArrayAsString());
+    // print('charsArray before fixing locked chars: ' + this.getCharsArrayAsString());
     let relPosCheck = -1;
     for(let i = 0; i < this.charsArray.length; i++){
       //print('Found ' + this.charsArray[i].savedChar);
@@ -697,7 +697,7 @@ class TextManager{
           //TODO
           // May have to check placing index and whether it is in a group or not and have to keep searching for valid index.
           this.moveCharGroup(i, placementIndex);
-          print('charsArray after fixing one charGroup: ' + this.getCharsArrayAsString() + '.');
+          // print('charsArray after fixing one charGroup: ' + this.getCharsArrayAsString() + '.');
           // print('-');
           // After moving a character, start the search over from the beginning in chars were moved around.
           relPosCheck = -1;
@@ -707,7 +707,7 @@ class TextManager{
           // print('attempting to place ' + this.charsArray[i].savedChar + ' at ' + placementIndex);
           // Remove the old incorrectly placed character.
           this.moveChar(i, placementIndex);
-          print('charsArray after fixing one char: ' + this.getCharsArrayAsString() + '.');
+          // print('charsArray after fixing one char: ' + this.getCharsArrayAsString() + '.');
           // After moving a character, start the search over from the beginning in chars were moved around.
           // print('starting lock fixing over.\n***');
           relPosCheck = -1;
@@ -717,7 +717,7 @@ class TextManager{
       }
     }
 
-    print('charsArray after fixing locked chars: ' + this.getCharsArrayAsString() + '.\n|\n|\n|\n');
+    // print('charsArray after fixing locked chars: ' + this.getCharsArrayAsString() + '.\n|\n|\n|\n');
   }
 
   findRelativePosIndex(inRelPos, report){
