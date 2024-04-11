@@ -25,9 +25,9 @@ class ButtonsManager{
 
         
 
-        this.groupButton = new Button(this.editButton.posX + this.buttonDiameter * .75, this.editButton.posY - this.buttonDiameter, this.buttonDiameter, "group");
+        this.groupButton = new Button(this.editButton.posX + this.buttonDiameter * 1.20, this.editButton.posY, this.buttonDiameter, "group");
         
-        this.lockButton = new Button(this.editButton.posX + this.buttonDiameter * 1.5, this.editButton.posY, this.buttonDiameter, "lock");
+        this.lockButton = new Button(this.editButton.posX + this.buttonDiameter * 2.40, this.editButton.posY, this.buttonDiameter, "lock");
 
         let scrambleEditXGap = this.editButton.posX - this.scrambleButton.posX;
 
