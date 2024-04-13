@@ -82,8 +82,8 @@ class ButtonsManager{
         // Mobile layout version of button adjusting.
         if(this.usingMobile == true){
             this.buttonOffsetX = -inputTextManager.sizeOfText;
-            this.buttonOffsetY = -inputTextManager.sizeOfText;
-            saveButtonOffsetX = -inputTextManager.textInputBoxSizeX / 2 - this.buttonOffsetX;   // this will place it in the middle of the screen on mobile.
+            this.buttonOffsetY = -inputTextManager.sizeOfText * 3;
+            saveButtonOffsetX = -inputTextManager.textInputBoxSizeX / 2 - this.buttonOffsetX;   // this will place it in the middle on mobile.
 
             this.scrambleButton.posX = inputTextManager.textAnchorX - inputTextManager.textInputBoxSizeX / 2 - this.buttonOffsetX;
             this.scrambleButton.posY = inputTextManager.textAnchorY - this.buttonOffsetY;
