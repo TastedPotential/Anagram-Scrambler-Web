@@ -73,9 +73,9 @@ function setup() {
   textManager.textInput.elt.focus();
 
   // Only set the focus on the textInput at the start if on desktop.
-  // if(!isTouchDevice){
-  //   textManager.textInput.elt.focus();
-  // }
+  if(!isTouchDevice){
+    textManager.textInput.elt.focus();
+  }
   textManager.buttonsManagerRef = buttonsManager;
 }
 
