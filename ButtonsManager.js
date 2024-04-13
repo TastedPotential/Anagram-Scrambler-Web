@@ -24,7 +24,7 @@ class ButtonsManager{
         this.saveButton = new Button(inputTextManager.textAnchorX - inputTextManager.textBoxWidth / 2 - this.buttonOffsetX - saveButtonOffsetX,
         inputTextManager.textAnchorY - this.buttonOffsetY, this.buttonDiameter, "save");
 
-        
+        // Lock and Group button block
 
         this.groupButton = new Button(this.editButton.posX + this.buttonDiameter * 1.20, this.editButton.posY, this.buttonDiameter, "group");
         
@@ -79,10 +79,37 @@ class ButtonsManager{
         this.buttonOffsetY = inputTextManager.sizeOfText / 4;
 
         let saveButtonOffsetX = inputTextManager.sizeOfText * 1.25;
+        // Mobile layout version of button adjusting.
         if(this.usingMobile == true){
             this.buttonOffsetX = -inputTextManager.sizeOfText;
             this.buttonOffsetY = -inputTextManager.sizeOfText;
             saveButtonOffsetX = -inputTextManager.textBoxWidth / 2 - this.buttonOffsetX;   // this will place it in the middle of the screen on mobile.
+
+            this.scrambleButton.posX = inputTextManager.textAnchorX - inputTextManager.textBoxWidth / 2 - this.buttonOffsetX;
+            this.scrambleButton.posY = inputTextManager.textAnchorY - this.buttonOffsetY;
+            this.scrambleButton.diameter = this.buttonDiameter;
+
+            this.editButton.posX = inputTextManager.textAnchorX + inputTextManager.textBoxWidth / 2 + this.buttonOffsetX;
+            this.editButton.posY = inputTextManager.textAnchorY - this.buttonOffsetY;
+            this.editButton.diameter = this.buttonDiameter;
+
+            this.saveButton.posX = inputTextManager.textAnchorX - inputTextManager.textBoxWidth / 2 - this.buttonOffsetX - saveButtonOffsetX;
+            this.saveButton.posY = inputTextManager.textAnchorY - this.buttonOffsetY;
+            this.saveButton.diameter = this.buttonDiameter;
+
+            // Lock and Group button block
+
+            let scrambleEditXGap = this.editButton.posX - this.scrambleButton.posX;
+
+            this.groupButton.posX = this.scrambleButton.posX + scrambleEditXGap*.25;
+            this.groupButton.posY = this.scrambleButton.posY;
+            this.groupButton.diameter = this.buttonDiameter;
+
+            this.lockButton.posX = this.editButton.posX - scrambleEditXGap*.25;
+            this.lockButton.posY = this.editButton.posY;
+            this.lockButton.diameter = this.buttonDiameter;
+
+            return;
         }
         
         this.scrambleButton.posX = inputTextManager.textAnchorX - inputTextManager.textBoxWidth / 2 - this.buttonOffsetX;
