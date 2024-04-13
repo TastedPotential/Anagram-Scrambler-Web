@@ -6,6 +6,7 @@ class ButtonsManager{
         this.buttonOffsetX = inputTextManager.sizeOfText;
         this.buttonOffsetY = inputTextManager.sizeOfText / 4;
         this.usingMobile = isMobileDevice;
+        this.usingTouchDevice = isTouchDevice;
 
         let saveButtonOffsetX = inputTextManager.sizeOfText * 1.25;
         if(this.usingMobile == true){
@@ -134,6 +135,10 @@ class ButtonsManager{
     }
     
     resetTextCharButtonsBGs(){
+        if((!this.usingTouchDevice))
+            return;
+
+        this.resetTextCharButtonHoverStatuses();
         for(let i = 0; i < this.textCharButtonsArray.length; i++){
             this.textCharButtonsArray[i].setHoverColor(this.bgColor);
         }

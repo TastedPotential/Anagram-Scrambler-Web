@@ -29,6 +29,7 @@ function setup() {
   userDetails = navigator.userAgent;
   mobileDeviceRegExp = /android|iphone|kindle|ipad/i;
   usingMobileDevice = mobileDeviceRegExp.test(userDetails);
+  print(userDetails);
 
   // Touch device detection.
   // Using methods described at https://github.com/processing/p5.js/issues/1815
@@ -78,6 +79,7 @@ function setup() {
   textManager.buttonsManagerRef = buttonsManager;
 }
 
+//MARK: draw
 function draw() {
   //background(255, 251, 161);
   background(bgColor);
@@ -86,15 +88,21 @@ function draw() {
   groupUnderMouse = textManager.checkGroupDeletion();
   buttonsManager.drawButtons(groupUnderMouse);
   textManager.drawText();  
-  // Don't draw anything hovering related on mobile because mobile cannot detect hovering anyway.
-  if(isTouchDevice)
+  // Don't draw anything hovering related on android mobile because mobile cannot detect hovering anyway.
+  if(isTouchDevice && !usingAppleTouchDevice)
     return;
   // Draw the grouping brackets & backgrounds of textChars being hovered over
   if(textManager.groupingText){
+    if(usingAppleTouchDevice && !mouseIsPressed){
+      //buttonsManager.drawGroupChoosingBracket();
+      return;
+    }
     buttonsManager.setHoverStatus();
     buttonsManager.drawGroupChoosingBracket();
   }
   else if(textManager.lockingText){
+    if(usingAppleTouchDevice && !mouseIsPressed)
+      return;
     buttonsManager.setHoverStatus();
   }
 }
@@ -171,7 +179,7 @@ function keyReleased(){
 
 //MARK: mousePressed
 function mousePressed(){
-  if(isTouchDevice){    
+  if(isTouchDevice && !usingAppleTouchDevice){    
     return;
   }
 
@@ -195,12 +203,12 @@ function mousePressed(){
       textManager.groupCreationStartIndex = clickedCharIndex;
     }
   } 
-  // return false; // return false at the end to prevent default behavior such as causing extra double clicks.
+  return false; // return false at the end to prevent default behavior such as causing extra double clicks.
 }
 
 //MARK: mouseReleased
 function mouseReleased(){
-  if(isTouchDevice){
+  if(isTouchDevice && !usingAppleTouchDevice){
     return;
   }
     
@@ -368,14 +376,14 @@ function mouseReleased(){
   // Set all buttons that were clicked on back to false. There's probably a cleaner way to do this.
   buttonsManager.resetButtonsClicked();
   //document.getElementById('textInputID').style.display = 'none';
-  // return false; // return false at the end to prevent default behavior such as causing extra double clicks.
+  return false; // return false at the end to prevent default behavior such as causing extra double clicks.
 }
 
 //MARK: mouseClicked
 // Click only version of everything for android.
 function mouseClicked(){
   // This is only called on mobile/touch devices. It's going to be a reworking of the desktop mousePressed and mouseReleased.
-  if(!isTouchDevice){
+  if(!isTouchDevice || usingAppleTouchDevice){
     return;
   }
 
@@ -552,6 +560,6 @@ function mouseClicked(){
   // Set all buttons that were clicked on back to false. There's probably a cleaner way to do this.
   buttonsManager.resetButtonsClicked();
 
-
+  return false;
 }
 

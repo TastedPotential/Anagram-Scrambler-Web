@@ -455,6 +455,7 @@ class TextManager{
     }
 
     this.updateRelativePositions();  // Reset all relative positions to account for changes in relative order for locked characters.
+    this.buttonsManagerRef.resetTextCharButtonsBGs();
   }
 
   // Returns the group the mouse is hovering in addition to highlighting that group's bracket.
@@ -519,6 +520,7 @@ class TextManager{
       }
     }
     this.updateRelativePositions();  // Reset all relative positions to account for changes in relative order for locked characters.
+    this.buttonsManagerRef.resetTextCharButtonsBGs();
   }
 
   reformGroups(){
@@ -652,6 +654,7 @@ class TextManager{
       }
     }
     this.lockingIndex = -1; // reset this as it is the working variable for a clicked-on character.
+    this.buttonsManagerRef.resetTextCharButtonsBGs();
   }
 
   fixLockedChars(){
