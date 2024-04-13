@@ -61,12 +61,14 @@ class TextManager{
         // rect(windowWidth, windowHeight, this.sizeOfText * 14, this.sizeOfText*4);
 
         // Make the textInput box as wide as the default string plus three characters,
-        let textInputBoxSizeX = (this.startingString.length+4) * (this.widthOfText);
+        this.textInputBoxSizeX = (this.startingString.length+4) * (this.widthOfText);
         //let textInputBoxSizeX = (this.charsArray.length * this.widthOfText) + (this.charsArray.length * this.textGap);
         if(this.usingMobile){
-          textInputBoxSizeX = (this.startingString.length+3) * (this.widthOfText);
+          this.textInputBoxSizeX = (this.startingString.length+3) * (this.widthOfText);
         }
-        this.textInput.size(textInputBoxSizeX, this.sizeOfText);
+        this.textInput.size(this.textInputBoxSizeX, this.sizeOfText);
+
+
         //this.textInput.size(textWidth(this.startingString) + textWidth(this.startingString.substring(0,2)), this.sizeOfText);
         
         //print("textSize is:" + this.sizeOfText);
@@ -97,7 +99,16 @@ class TextManager{
     }
 
     updateTextBoxWidth(){
-      this.textBoxWidth = (this.charsArray.length * this.widthOfText) + ((this.charsArray.length - 1) * this.textGap);
+      // this.textBoxWidth = (this.charsArray.length * this.widthOfText) + ((this.charsArray.length - 1) * this.textGap);
+      
+      // Make the textInput box as wide as the default string plus three characters,
+      this.textInputBoxSizeX = (this.startingString.length+4) * (this.widthOfText);
+      //let textInputBoxSizeX = (this.charsArray.length * this.widthOfText) + (this.charsArray.length * this.textGap);
+      if(this.usingMobile){
+        this.textInputBoxSizeX = (this.startingString.length+3) * (this.widthOfText);
+      }
+      this.textInput.size(this.textInputBoxSizeX, this.sizeOfText);
+      
     }
 
     updateProperties(){
