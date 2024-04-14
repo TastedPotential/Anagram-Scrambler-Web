@@ -46,7 +46,7 @@ function setup() {
   usingAppleTouchDevice = appleTouchDeviceRegExp.test(userDetails);
   if(usingAppleTouchDevice){
     //print('using apple touch device');
-    isTouchDevice = false;
+    //isTouchDevice = false;
   }
 
   // These values will be the percentage of the screen's width to determine the size of said elements.
@@ -180,7 +180,7 @@ function keyReleased(){
 //MARK: mousePressed
 function mousePressed(){
   if(isTouchDevice && !usingAppleTouchDevice){    
-    return;
+    return false;
   }
 
   buttonsManager.setButtonStartedClickOn();
@@ -194,7 +194,7 @@ function mousePressed(){
     // If the click wasn't on a character, abandon and reset group creation.
     if(clickedCharIndex == -1){
       textManager.stopGroupCreation();
-      return;
+      return false;
     }
     // If we clicked on a character, it is NOT in a group (groupID == -1, aka default), start the group creation attempt
     // with this character
@@ -209,7 +209,7 @@ function mousePressed(){
 //MARK: mouseReleased
 function mouseReleased(){
   if(isTouchDevice && !usingAppleTouchDevice){
-    return;
+    return false;
   }
     
 
@@ -226,7 +226,7 @@ function mouseReleased(){
       textManager.defaultMessage = false;
     }
 
-    return;
+    return false;
   }
   // Scramble Button Block
   if(buttonsManager.scrambleButton.isMouseOverButton() && buttonsManager.scrambleButton.startedClickOnThis){
@@ -302,14 +302,14 @@ function mouseReleased(){
     if(groupUnderMouse >= 0){
       // If the mouse is over a group's bracket and left click is released, delete that group.
       textManager.dismantleGroup(groupUnderMouse);
-      return;
+      return false;
     }
     // Group creation block
     // check which textChar was released on
     // Don't attempt to create a group if the start of the current drag was not on a textChar.
     if(textManager.groupCreationStartIndex == -1){
       textManager.stopGroupCreation();
-      return;
+      return false;
     }
       
 
@@ -341,7 +341,7 @@ function mouseReleased(){
       if(buttonsManager.savedScrambleTextButtonsArray[i].isMouseOverButton()){
         // Copy text to clipboard
         navigator.clipboard.writeText(buttonsManager.savedScrambleTextButtonsArray[i].savedScrambleText);
-        return;
+        return false;
       }
     }
 
@@ -353,7 +353,7 @@ function mouseReleased(){
         buttonsManager.savedScrambleTextButtonsArray.splice(i, 1);        
         textManager.updateButtonPositions(buttonsManager);
         textManager.adjustSavedButtonsXOffset(buttonsManager);    
-        return;
+        return false;
       }
     }
 
@@ -384,7 +384,7 @@ function mouseReleased(){
 function mouseClicked(){
   // This is only called on mobile/touch devices. It's going to be a reworking of the desktop mousePressed and mouseReleased.
   if(!isTouchDevice || usingAppleTouchDevice){
-    return;
+    return false;
   }
 
   if(textManager.textInputClickedOn()){
@@ -469,7 +469,7 @@ function mouseClicked(){
     if(groupUnderMouse >= 0){
       // If the mouse is over a group's bracket and left click is released, delete that group.
       textManager.dismantleGroup(groupUnderMouse);
-      return;
+      return false;
     }
     // Get the character clicked on.
     let clickedCharIndex = buttonsManager.getIndexOfClickedChar();
@@ -525,7 +525,7 @@ function mouseClicked(){
       if(buttonsManager.savedScrambleTextButtonsArray[i].isMouseOverButton()){
         // Copy text to clipboard
         navigator.clipboard.writeText(buttonsManager.savedScrambleTextButtonsArray[i].savedScrambleText);
-        return;
+        return false;
       }
     }
 
@@ -537,7 +537,7 @@ function mouseClicked(){
         buttonsManager.savedScrambleTextButtonsArray.splice(i, 1);        
         textManager.updateButtonPositions(buttonsManager);
         textManager.adjustSavedButtonsXOffset(buttonsManager);    
-        return;
+        return false;
       }
     }
 
