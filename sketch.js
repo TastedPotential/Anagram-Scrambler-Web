@@ -46,7 +46,7 @@ function setup() {
   usingAppleTouchDevice = appleTouchDeviceRegExp.test(userDetails);
   if(usingAppleTouchDevice){
     //print('using apple touch device');
-    //isTouchDevice = false;
+    isTouchDevice = false;
   }
 
   // These values will be the percentage of the screen's width to determine the size of said elements.
