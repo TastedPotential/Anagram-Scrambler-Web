@@ -267,15 +267,17 @@ class TextManager{
 
     updateTextCharButtonsArray(){
       // Set the textCharButtonsArray in the buttonsManager to have buttons with the same chars as charsArray
-      this.updateTextBoxWidth(); 
-      let windowCenterTextOffsetX = this.textBoxWidth / 2;
+      this.updateTextBoxWidth();      
+      // Start placing the text at the leftmost point of the calculated width of the entire text.
+      let widthOfMainTextDisplay = this.charsArray.length * this.widthOfText + ((this.charsArray.length - 1)*this.textGap);
+      let windowCenterTextOffsetX = widthOfMainTextDisplay / 2;
 
       this.buttonsManagerRef.textCharButtonsArray.splice(0);  // Clear the textChar buttons array and start a new one.
 
       for(let i = 0; i < this.charsArray.length; i++){
         // this.sizeOfText / 20 is trying to adjust for the slight offset of the drawn text and the textInputBox
         this.buttonsManagerRef.textCharButtonsArray.push(new Button(
-          this.textAnchorX - windowCenterTextOffsetX + (i * this.widthOfText) + (i * this.textGap) + this.widthOfText/2,
+          this.textAnchorX -windowCenterTextOffsetX + (i * this.widthOfText) + (i * this.textGap) + this.widthOfText/2,
           this.textAnchorY - this.sizeOfText/2 + this.sizeOfText / 20, this.widthOfText, "textChar"
         ));
         this.buttonsManagerRef.textCharButtonsArray[this.buttonsManagerRef.textCharButtonsArray.length - 1].savedScrambleText = this.charsArray[i].savedChar;

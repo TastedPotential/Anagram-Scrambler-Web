@@ -124,11 +124,11 @@ class ButtonsManager{
         this.saveButton.posY = inputTextManager.textAnchorY - this.buttonOffsetY;
         this.saveButton.diameter = this.buttonDiameter;
 
-        this.groupButton.posX = this.editButton.posX + this.buttonDiameter * .75;
-        this.groupButton.posY = this.editButton.posY - this.buttonDiameter;
+        this.groupButton.posX = this.editButton.posX + this.buttonDiameter * 1.20;
+        this.groupButton.posY = this.editButton.posY;
         this.groupButton.diameter = this.buttonDiameter;
 
-        this.lockButton.posX = this.editButton.posX + this.buttonDiameter * 1.5;
+        this.lockButton.posX = this.editButton.posX + this.buttonDiameter * 2.40;
         this.lockButton.posY = this.editButton.posY;
         this.lockButton.diameter = this.buttonDiameter;
 
