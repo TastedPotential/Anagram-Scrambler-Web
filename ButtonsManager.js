@@ -41,6 +41,8 @@ class ButtonsManager{
         this.savedScrambleTextButtonsArray = [];
         this.textCharButtonsArray = [];
 
+        this.clickedCharIndex = -1;
+
         this.textManagerRef = inputTextManager;
         this.bracketColor = 'rgb(163, 64, 201)';
         this.bgColor = 'rgb(55, 67, 117)';
@@ -461,6 +463,11 @@ class ButtonsManager{
         }
         else if(this.lockButton.isMouseOverButton()){
             this.lockButton.startedClickOnThis = true;
+        }
+        else{
+            for(let i = 0; i < this.textCharButtonsArray.length; i++){
+
+            }
         }
     }
 }

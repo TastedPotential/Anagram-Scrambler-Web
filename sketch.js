@@ -190,19 +190,22 @@ function mousePressed(){
   }
   else if(textManager.groupingText){
     // check which textChar was clicked on
-    let clickedCharIndex = buttonsManager.getIndexOfClickedChar();
+    buttonsManager.clickedCharIndex = buttonsManager.getIndexOfClickedChar();
     // If the click wasn't on a character, abandon and reset group creation.
-    if(clickedCharIndex == -1){
+    if(buttonsManager.clickedCharIndex == -1){
       textManager.stopGroupCreation();
       return false;
     }
     // If we clicked on a character, it is NOT in a group (groupID == -1, aka default), start the group creation attempt
     // with this character
-    if(clickedCharIndex >= 0 && textManager.charsArray[clickedCharIndex].groupID == -1){
+    if(buttonsManager.clickedCharIndex >= 0 && textManager.charsArray[buttonsManager.clickedCharIndex].groupID == -1){
       //print("clicked on " + textManager.charsArray[clickedCharIndex].savedChar);
-      textManager.groupCreationStartIndex = clickedCharIndex;
+      textManager.groupCreationStartIndex = buttonsManager.clickedCharIndex;
     }
-  } 
+  }
+  else if(textManager.lockingIndex){
+    buttonsManager.clickedCharIndex = buttonsManager.getIndexOfClickedChar();
+  }
   return false; // return false at the end to prevent default behavior such as causing extra double clicks.
 }
 
@@ -265,6 +268,7 @@ function mouseReleased(){
     if(!usingMobileDevice){
       //textManager.textInput.elt.select();
     }
+    return false;
     
   }
 
@@ -296,20 +300,21 @@ function mouseReleased(){
       textManager.defaultMessage = false;
     }
   }
+
   // Group creation/deletion block
   else if(textManager.groupingText){
     // group deletion block
     if(groupUnderMouse >= 0){
       // If the mouse is over a group's bracket and left click is released, delete that group.
       textManager.dismantleGroup(groupUnderMouse);
-      return false;
+      // return false;
     }
     // Group creation block
     // check which textChar was released on
     // Don't attempt to create a group if the start of the current drag was not on a textChar.
     if(textManager.groupCreationStartIndex == -1){
       textManager.stopGroupCreation();
-      return false;
+      // return false;
     }
       
 
@@ -327,6 +332,7 @@ function mouseReleased(){
       textManager.stopGroupCreation();
     }
   }
+
   // Character locking block.
   else if(textManager.lockingText){
     textManager.lockingIndex = buttonsManager.getIndexOfClickedChar();
@@ -334,45 +340,56 @@ function mouseReleased(){
       textManager.toggleCharLock();
     }
   }
+  
   // Check series of buttons
-  else{
-    //Check savedScrambleTextButtonsArray to see if any of those buttons were clicked.
-    for(let i = 0; i < buttonsManager.savedScrambleTextButtonsArray.length; i++){
-      if(buttonsManager.savedScrambleTextButtonsArray[i].isMouseOverButton()){
-        // Copy text to clipboard
-        navigator.clipboard.writeText(buttonsManager.savedScrambleTextButtonsArray[i].savedScrambleText);
-        return false;
-      }
-    }
-
-    //Check savedScrambleDeletionButtonsArray to see if any of those buttons were clicked.
-    for(let i = 0; i < buttonsManager.savedScrambleDeletionButtonsArray.length; i++){
-      if(buttonsManager.savedScrambleDeletionButtonsArray[i].isMouseOverButton()){
-        // Delete that specific saved scramble entry from the saved scrambles array
-        buttonsManager.savedScrambleDeletionButtonsArray.splice(i, 1);
-        buttonsManager.savedScrambleTextButtonsArray.splice(i, 1);        
-        textManager.updateButtonPositions(buttonsManager);
-        textManager.adjustSavedButtonsXOffset(buttonsManager);    
-        return false;
-      }
-    }
-
-    
-    //print("didn't click on any elements");
-    // I think this is where the stored groups are being wiped.
-    // TODO
-    // Determine if groups & locks should all be removed every time text input is made.
-    // Clicked on empty space white text editor is open, aka close the text editor and save the current textInput contents.
-    if(textManager.editingText == true){
-      textManager.setCharsArray(textManager.textInput.elt.value);
-      if(textManager.textInput.elt.value == ''){
-        textManager.defaultMessage = true;
-      }
-      textManager.textInput.hide();
-      textManager.editingText = false;
-    }
-    
+  // If this click started its drag on a character while in grouping mode and released anywhere else (having passed the 
+  // previous grouping checks), don't allow the user to release the drag over anything else and have it activate, such 
+  // as a saved scramble's text to copy to clipboard or deleting a saved scramble. 
+  if((textManager.groupingText || textManager.lockingText) && buttonsManager.clickedCharIndex >= 0){
+    print('started click on a textChar but ended elsewhere, so breaking out of mouseReleased');
+    textManager.stopGroupCreation();
+    buttonsManager.clickedCharIndex = -1;
+    return false;
   }
+    
+
+  //Check savedScrambleTextButtonsArray to see if any of those buttons were clicked.
+  for(let i = 0; i < buttonsManager.savedScrambleTextButtonsArray.length; i++){
+    if(buttonsManager.savedScrambleTextButtonsArray[i].isMouseOverButton()){
+      // Copy text to clipboard
+      navigator.clipboard.writeText(buttonsManager.savedScrambleTextButtonsArray[i].savedScrambleText);
+      return false;
+    }
+  }
+
+  //Check savedScrambleDeletionButtonsArray to see if any of those buttons were clicked.
+  for(let i = 0; i < buttonsManager.savedScrambleDeletionButtonsArray.length; i++){
+    if(buttonsManager.savedScrambleDeletionButtonsArray[i].isMouseOverButton()){
+      // Delete that specific saved scramble entry from the saved scrambles array
+      buttonsManager.savedScrambleDeletionButtonsArray.splice(i, 1);
+      buttonsManager.savedScrambleTextButtonsArray.splice(i, 1);        
+      textManager.updateButtonPositions(buttonsManager);
+      textManager.adjustSavedButtonsXOffset(buttonsManager);    
+      return false;
+    }
+  }
+
+  
+  //print("didn't click on any elements");
+  // I think this is where the stored groups are being wiped.
+  // TODO
+  // Determine if groups & locks should all be removed every time text input is made.
+  // Clicked on empty space white text editor is open, aka close the text editor and save the current textInput contents.
+  if(textManager.editingText == true){
+    textManager.setCharsArray(textManager.textInput.elt.value);
+    if(textManager.textInput.elt.value == ''){
+      textManager.defaultMessage = true;
+    }
+    textManager.textInput.hide();
+    textManager.editingText = false;
+  }
+    
+  
   // Set all buttons that were clicked on back to false. There's probably a cleaner way to do this.
   buttonsManager.resetButtonsClicked();
   //document.getElementById('textInputID').style.display = 'none';
