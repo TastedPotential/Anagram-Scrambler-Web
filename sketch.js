@@ -45,7 +45,7 @@ function setup() {
   let appleTouchDeviceRegExp = /iphone|ipad/i;
   usingAppleTouchDevice = appleTouchDeviceRegExp.test(userDetails);
   if(usingAppleTouchDevice){
-    print('using apple touch device');
+    //print('using apple touch device');
     //isTouchDevice = false;
   }
 
@@ -70,11 +70,11 @@ function setup() {
   textSize(textManager.sizeOfText);
   buttonsManager = new ButtonsManager(textManager, buttonSizePercentOfScreen, usingMobileDevice, isTouchDevice);
   textManager.textInput.show();
-  //textManager.textInput.elt.focus();
+  textManager.textInput.elt.focus();
 
-  // Only set the focus on the textInput at the start if on desktop.
-  if(!usingMobileDevice){
-    textManager.textInput.elt.focus();
+  // Only set the focus on the textInput at the start if on desktop or on android.
+  if(!usingMobileDevice || !usingAppleTouchDevice){
+    //textManager.textInput.elt.focus();
   }
   textManager.buttonsManagerRef = buttonsManager;
 }
