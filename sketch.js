@@ -179,22 +179,25 @@ function keyReleased(){
 }
 
 // Disabling block for iOS devices. Will also be affecting android as well it seems.
-function touchStarted(){
-  return false;
-}
+// function touchStarted(){
+//   return false;
+// }
 
-function touchMoved(){
-  return false;
-}
+// function touchMoved(){
+//   return false;
+// }
 
-function touchEnded(){
-  return false;
-}
+// function touchEnded(){
+//   return false;
+// }
 
 
 //MARK: mousePressed
 function mousePressed(){
   if(isTouchDevice){
+    if(!usingAppleTouchDevice){
+      return;
+    }
     return;
   }
 
@@ -227,6 +230,9 @@ function mousePressed(){
 //MARK: mouseReleased
 function mouseReleased(){
   if(isTouchDevice){
+    if(!usingAppleTouchDevice){
+      return;
+    }
     return;
   }
     
@@ -421,6 +427,9 @@ function mouseClicked(){
 
   // This is only called on mobile/touch devices. It's going to be a reworking of the desktop mousePressed and mouseReleased.
   if(!isTouchDevice){
+    if(usingAppleTouchDevice){
+      return false;
+    }
     return;
   }
 
