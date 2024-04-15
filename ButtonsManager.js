@@ -464,10 +464,10 @@ class ButtonsManager{
         else if(this.lockButton.isMouseOverButton()){
             this.lockButton.startedClickOnThis = true;
         }
-        else{
-            for(let i = 0; i < this.textCharButtonsArray.length; i++){
+        // else{
+        //     for(let i = 0; i < this.textCharButtonsArray.length; i++){
 
-            }
-        }
+        //     }
+        // }
     }
 }

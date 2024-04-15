@@ -71,11 +71,11 @@ function setup() {
   textSize(textManager.sizeOfText);
   buttonsManager = new ButtonsManager(textManager, buttonSizePercentOfScreen, usingMobileDevice, isTouchDevice);
   textManager.textInput.show();
-  textManager.textInput.elt.focus();
+  // textManager.textInput.elt.focus();
 
   // Only set the focus on the textInput at the start if on desktop or on android.
   if(!usingAppleTouchDevice){
-    // textManager.textInput.elt.focus();
+    textManager.textInput.elt.focus();
   }
   textManager.buttonsManagerRef = buttonsManager;
 }
@@ -178,9 +178,10 @@ function keyReleased(){
   }
 }
 
+
 //MARK: mousePressed
 function mousePressed(){
-  if(isTouchDevice && !usingAppleTouchDevice){
+  if(isTouchDevice){
     return;
   }
 
@@ -195,7 +196,7 @@ function mousePressed(){
     // If the click wasn't on a character, abandon and reset group creation.
     if(buttonsManager.clickedCharIndex == -1){
       textManager.stopGroupCreation();
-      return false;
+      return;
     }
     // If we clicked on a character, it is NOT in a group (groupID == -1, aka default), start the group creation attempt
     // with this character
@@ -207,31 +208,33 @@ function mousePressed(){
   else if(textManager.lockingIndex){
     buttonsManager.clickedCharIndex = buttonsManager.getIndexOfClickedChar();
   }
-  return false; // return false at the end to prevent default behavior such as causing extra double clicks.
+  return; // return false at the end to prevent default behavior such as causing extra double clicks.
 }
 
 //MARK: mouseReleased
 function mouseReleased(){
-  if(isTouchDevice && !usingAppleTouchDevice){
+  if(isTouchDevice){
     return;
   }
     
-
   // If a click was started inside the textInput box, but then let go anywhere else, don't change anything.
   // This allows for the user to drag and select text while editing, then is able to let go anywhere outside the box without issues.
   if(textManager.startedClickOnTextInput){
     // Set all buttons that were clicked on back to false. There's probably a cleaner way to do this.
     textManager.startedClickOnTextInput = false;
-    buttonsManager.scrambleButton.startedClickOnThis = false;
-    buttonsManager.editButton.startedClickOnThis = false;
+    buttonsManager.resetButtonsClicked();
 
+    // Clear the default message upon releasing the mouse anywhere.
     if(textManager.defaultMessage){
       textManager.clearInputTextValue();
       textManager.defaultMessage = false;
     }
 
-    return false;
+    return;
   }
+
+
+
   // Scramble Button Block
   if(buttonsManager.scrambleButton.isMouseOverButton() && buttonsManager.scrambleButton.startedClickOnThis){
     if(textManager.editingText){
@@ -269,7 +272,7 @@ function mouseReleased(){
     if(!usingMobileDevice){
       //textManager.textInput.elt.select();
     }
-    return false;
+    return;
     
   }
 
@@ -349,7 +352,7 @@ function mouseReleased(){
     print('started click on a textChar but ended elsewhere, so breaking out of mouseReleased');
     textManager.stopGroupCreation();
     buttonsManager.clickedCharIndex = -1;
-    return false;
+    return;
   }
     
 
@@ -358,7 +361,7 @@ function mouseReleased(){
     if(buttonsManager.savedScrambleTextButtonsArray[i].isMouseOverButton()){
       // Copy text to clipboard
       navigator.clipboard.writeText(buttonsManager.savedScrambleTextButtonsArray[i].savedScrambleText);
-      return false;
+      return;
     }
   }
 
@@ -370,7 +373,7 @@ function mouseReleased(){
       buttonsManager.savedScrambleTextButtonsArray.splice(i, 1);        
       textManager.updateButtonPositions(buttonsManager);
       textManager.adjustSavedButtonsXOffset(buttonsManager);    
-      return false;
+      return;
     }
   }
 
@@ -393,7 +396,7 @@ function mouseReleased(){
   // Set all buttons that were clicked on back to false. There's probably a cleaner way to do this.
   buttonsManager.resetButtonsClicked();
   //document.getElementById('textInputID').style.display = 'none';
-  return false; // return false at the end to prevent default behavior such as causing extra double clicks.
+  return; // return false at the end to prevent default behavior such as causing extra double clicks.
 }
 
 //MARK: mouseClicked
@@ -403,7 +406,7 @@ function mouseClicked(){
   print('clicked on touch device');
 
   // This is only called on mobile/touch devices. It's going to be a reworking of the desktop mousePressed and mouseReleased.
-  if(!isTouchDevice || usingAppleTouchDevice){
+  if(!isTouchDevice){
     return;
   }
 
@@ -411,7 +414,7 @@ function mouseClicked(){
 
   if(textManager.textInputClickedOn()){
     print('clicked in textBox');
-    //return;// should allow text to be selected while in edit mode.
+    return;// should allow text to be selected while in edit mode.
   }
 
   buttonsManager.setButtonStartedClickOn();
@@ -491,7 +494,7 @@ function mouseClicked(){
     if(groupUnderMouse >= 0){
       // If the mouse is over a group's bracket and left click is released, delete that group.
       textManager.dismantleGroup(groupUnderMouse);
-      return false;
+      // return false;
     }
     // Get the character clicked on.
     let clickedCharIndex = buttonsManager.getIndexOfClickedChar();
@@ -541,47 +544,58 @@ function mouseClicked(){
     buttonsManager.resetTextCharButtonHoverStatuses();
   }
   // Check series of buttons
-  else{
-    //Check savedScrambleTextButtonsArray to see if any of those buttons were clicked.
-    for(let i = 0; i < buttonsManager.savedScrambleTextButtonsArray.length; i++){
-      if(buttonsManager.savedScrambleTextButtonsArray[i].isMouseOverButton()){
-        // Copy text to clipboard
-        navigator.clipboard.writeText(buttonsManager.savedScrambleTextButtonsArray[i].savedScrambleText);
-        return false;
-      }
-    }
+  
 
-    //Check savedScrambleDeletionButtonsArray to see if any of those buttons were clicked.
-    for(let i = 0; i < buttonsManager.savedScrambleDeletionButtonsArray.length; i++){
-      if(buttonsManager.savedScrambleDeletionButtonsArray[i].isMouseOverButton()){
-        // Delete that specific saved scramble entry from the saved scrambles array
-        buttonsManager.savedScrambleDeletionButtonsArray.splice(i, 1);
-        buttonsManager.savedScrambleTextButtonsArray.splice(i, 1);        
-        textManager.updateButtonPositions(buttonsManager);
-        textManager.adjustSavedButtonsXOffset(buttonsManager);    
-        return false;
-      }
-    }
+  // // If this click started its drag on a character while in grouping mode and released anywhere else (having passed the 
+  // // previous grouping checks), don't allow the user to release the drag over anything else and have it activate, such 
+  // // as a saved scramble's text to copy to clipboard or deleting a saved scramble. 
+  // if((textManager.groupingText || textManager.lockingText) && buttonsManager.clickedCharIndex >= 0){
+  //   print('started click on a textChar but ended elsewhere, so breaking out of mouseReleased');
+  //   textManager.stopGroupCreation();
+  //   buttonsManager.clickedCharIndex = -1;
+  //   return false;
+  // }
 
-    
-    //print("didn't click on any elements");
-    // I think this is where the stored groups are being wiped.
-    // TODO
-    // Determine if groups & locks should all be removed every time text input is made.
-    // Clicked on empty space white text editor is open, aka close the text editor and save the current textInput contents.
-    if(textManager.editingText == true){
-      textManager.setCharsArray(textManager.textInput.elt.value);
-      if(textManager.textInput.elt.value == ''){
-        textManager.defaultMessage = true;
-      }
-      textManager.textInput.hide();
-      textManager.editingText = false;
+  //Check savedScrambleTextButtonsArray to see if any of those buttons were clicked.
+  for(let i = 0; i < buttonsManager.savedScrambleTextButtonsArray.length; i++){
+    if(buttonsManager.savedScrambleTextButtonsArray[i].isMouseOverButton()){
+      // Copy text to clipboard
+      navigator.clipboard.writeText(buttonsManager.savedScrambleTextButtonsArray[i].savedScrambleText);
+      return;
     }
+  }
+
+  //Check savedScrambleDeletionButtonsArray to see if any of those buttons were clicked.
+  for(let i = 0; i < buttonsManager.savedScrambleDeletionButtonsArray.length; i++){
+    if(buttonsManager.savedScrambleDeletionButtonsArray[i].isMouseOverButton()){
+      // Delete that specific saved scramble entry from the saved scrambles array
+      buttonsManager.savedScrambleDeletionButtonsArray.splice(i, 1);
+      buttonsManager.savedScrambleTextButtonsArray.splice(i, 1);        
+      textManager.updateButtonPositions(buttonsManager);
+      textManager.adjustSavedButtonsXOffset(buttonsManager);    
+      return;
+    }
+  }
+
+  
+  //print("didn't click on any elements");
+  // I think this is where the stored groups are being wiped.
+  // TODO
+  // Determine if groups & locks should all be removed every time text input is made.
+  // Clicked on empty space white text editor is open, aka close the text editor and save the current textInput contents.
+  if(textManager.editingText == true){
+    textManager.setCharsArray(textManager.textInput.elt.value);
+    if(textManager.textInput.elt.value == ''){
+      textManager.defaultMessage = true;
+    }
+    textManager.textInput.hide();
+    textManager.editingText = false;
+  }
     
-  }  
+  
   // Set all buttons that were clicked on back to false. There's probably a cleaner way to do this.
   buttonsManager.resetButtonsClicked();
 
-  return false;
+  return;
 }
 
