@@ -71,12 +71,12 @@ function setup() {
   textSize(textManager.sizeOfText);
   buttonsManager = new ButtonsManager(textManager, buttonSizePercentOfScreen, usingMobileDevice, isTouchDevice);
   textManager.textInput.show();
-  // textManager.textInput.elt.focus();
+  textManager.textInput.elt.focus();
 
   // Only set the focus on the textInput at the start if on desktop or on android.
-  if(!usingAppleTouchDevice){
-    textManager.textInput.elt.focus();
-  }
+  // if(!usingAppleTouchDevice){
+  //   textManager.textInput.elt.focus();
+  // }
   textManager.buttonsManagerRef = buttonsManager;
 }
 
@@ -90,7 +90,7 @@ function draw() {
   buttonsManager.drawButtons(groupUnderMouse);
   textManager.drawText();  
   // Don't draw anything hovering related on android mobile because mobile cannot detect hovering anyway.
-  if(isTouchDevice && !usingAppleTouchDevice)
+  if(isTouchDevice)
     return;
   // Draw the grouping brackets & backgrounds of textChars being hovered over
   if(textManager.groupingText){
@@ -182,7 +182,7 @@ function keyReleased(){
 //MARK: mousePressed
 function mousePressed(){
   if(isTouchDevice){
-    return;
+    return false;
   }
 
   buttonsManager.setButtonStartedClickOn();
@@ -214,7 +214,7 @@ function mousePressed(){
 //MARK: mouseReleased
 function mouseReleased(){
   if(isTouchDevice){
-    return;
+    return false;
   }
     
   // If a click was started inside the textInput box, but then let go anywhere else, don't change anything.
@@ -403,6 +403,7 @@ function mouseReleased(){
 // Click only version of everything for android.
 function mouseClicked(){
 
+  background(255,0,0);
   print('clicked on touch device');
 
   // This is only called on mobile/touch devices. It's going to be a reworking of the desktop mousePressed and mouseReleased.
@@ -561,7 +562,7 @@ function mouseClicked(){
     if(buttonsManager.savedScrambleTextButtonsArray[i].isMouseOverButton()){
       // Copy text to clipboard
       navigator.clipboard.writeText(buttonsManager.savedScrambleTextButtonsArray[i].savedScrambleText);
-      return false;
+      return;
     }
   }
 
@@ -573,7 +574,7 @@ function mouseClicked(){
       buttonsManager.savedScrambleTextButtonsArray.splice(i, 1);        
       textManager.updateButtonPositions(buttonsManager);
       textManager.adjustSavedButtonsXOffset(buttonsManager);    
-      return false;
+      return;
     }
   }
 
@@ -596,6 +597,6 @@ function mouseClicked(){
   // Set all buttons that were clicked on back to false. There's probably a cleaner way to do this.
   buttonsManager.resetButtonsClicked();
 
-  return false;
+  return;
 }
 
