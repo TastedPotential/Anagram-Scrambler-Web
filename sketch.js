@@ -561,7 +561,7 @@ function mouseClicked(){
     if(buttonsManager.savedScrambleTextButtonsArray[i].isMouseOverButton()){
       // Copy text to clipboard
       navigator.clipboard.writeText(buttonsManager.savedScrambleTextButtonsArray[i].savedScrambleText);
-      return;
+      return false;
     }
   }
 
@@ -573,7 +573,7 @@ function mouseClicked(){
       buttonsManager.savedScrambleTextButtonsArray.splice(i, 1);        
       textManager.updateButtonPositions(buttonsManager);
       textManager.adjustSavedButtonsXOffset(buttonsManager);    
-      return;
+      return false;
     }
   }
 
@@ -596,6 +596,6 @@ function mouseClicked(){
   // Set all buttons that were clicked on back to false. There's probably a cleaner way to do this.
   buttonsManager.resetButtonsClicked();
 
-  return;
+  return false;
 }
 
