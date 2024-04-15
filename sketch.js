@@ -182,7 +182,7 @@ function keyReleased(){
 //MARK: mousePressed
 function mousePressed(){
   if(isTouchDevice){
-    return false;
+    return;
   }
 
   buttonsManager.setButtonStartedClickOn();
