@@ -38,6 +38,7 @@ function setup() {
   //print(isTouchDevice);
   // This may catch the detection of being on mobile and allow the PWA version to work on android.
   if(isTouchDevice || windowWidth < windowHeight){
+    print('on touch device');
     //usingMobileDevice = true;
   }
   // Give an exception to the no-dragging version to iOS/iPad devices since they seem to be able to use the desktop version with
@@ -45,7 +46,7 @@ function setup() {
   let appleTouchDeviceRegExp = /iphone|ipad/i;
   usingAppleTouchDevice = appleTouchDeviceRegExp.test(userDetails);
   if(usingAppleTouchDevice){
-    //print('using apple touch device');
+    print('using apple touch device');
     //isTouchDevice = false;
   }
 
@@ -73,8 +74,8 @@ function setup() {
   textManager.textInput.elt.focus();
 
   // Only set the focus on the textInput at the start if on desktop or on android.
-  if(!usingMobileDevice || !usingAppleTouchDevice){
-    //textManager.textInput.elt.focus();
+  if(!usingAppleTouchDevice){
+    // textManager.textInput.elt.focus();
   }
   textManager.buttonsManagerRef = buttonsManager;
 }
@@ -179,8 +180,8 @@ function keyReleased(){
 
 //MARK: mousePressed
 function mousePressed(){
-  if(isTouchDevice && !usingAppleTouchDevice){    
-    return false;
+  if(isTouchDevice && !usingAppleTouchDevice){
+    return;
   }
 
   buttonsManager.setButtonStartedClickOn();
@@ -212,7 +213,7 @@ function mousePressed(){
 //MARK: mouseReleased
 function mouseReleased(){
   if(isTouchDevice && !usingAppleTouchDevice){
-    return false;
+    return;
   }
     
 
@@ -273,8 +274,7 @@ function mouseReleased(){
   }
 
   // Save Button Block
-  else if(buttonsManager.saveButton.isMouseOverButton() && buttonsManager.saveButton.startedClickOnThis && !textManager.defaultMessage
-&& textManager.textInput.value() != ''){
+  else if(buttonsManager.saveButton.isMouseOverButton() && buttonsManager.saveButton.startedClickOnThis && !textManager.defaultMessage && textManager.textInput.value() != ''){
     textManager.saveScramble(buttonsManager);
   }
 
@@ -399,10 +399,15 @@ function mouseReleased(){
 //MARK: mouseClicked
 // Click only version of everything for android.
 function mouseClicked(){
+
+  print('clicked on touch device');
+
   // This is only called on mobile/touch devices. It's going to be a reworking of the desktop mousePressed and mouseReleased.
   if(!isTouchDevice || usingAppleTouchDevice){
-    return false;
+    return;
   }
+
+  
 
   if(textManager.textInputClickedOn()){
     print('clicked in textBox');
