@@ -214,7 +214,7 @@ function mousePressed(){
 //MARK: mouseReleased
 function mouseReleased(){
   if(isTouchDevice){
-    return false;
+    return;
   }
     
   // If a click was started inside the textInput box, but then let go anywhere else, don't change anything.
