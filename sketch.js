@@ -178,6 +178,19 @@ function keyReleased(){
   }
 }
 
+// Disabling block for iOS devices. Will also be affecting android as well it seems.
+function touchStarted(){
+  return false;
+}
+
+function touchMoved(){
+  return false;
+}
+
+function touchEnded(){
+  return false;
+}
+
 
 //MARK: mousePressed
 function mousePressed(){
