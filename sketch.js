@@ -422,21 +422,20 @@ function mouseReleased(){
 // Click only version of everything for android.
 function mouseClicked(){
 
-  background(255,0,0);
-  print('clicked on touch device');
+  // background(255,0,0);
+  // print('clicked on touch device');
 
   // This is only called on mobile/touch devices. It's going to be a reworking of the desktop mousePressed and mouseReleased.
   if(!isTouchDevice){
     if(usingAppleTouchDevice){
       return false;
     }
-    return;
+    return false;
   }
 
   
 
   if(textManager.textInputClickedOn()){
-    print('clicked in textBox');
     return;// should allow text to be selected while in edit mode.
   }
 
@@ -479,6 +478,8 @@ function mouseClicked(){
     if(!usingMobileDevice){
       //textManager.textInput.elt.select();
     }
+
+    return;
     
   }
 
