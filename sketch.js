@@ -94,7 +94,7 @@ function draw() {
   // debugDrawShape();
 
   // Don't draw anything hovering related on android mobile because mobile cannot detect hovering anyway.
-  if(isTouchDevice)
+  if(isTouchDevice && !usingAppleTouchDevice)
     return;
   // Draw the grouping brackets & backgrounds of textChars being hovered over
   if(textManager.groupingText){
@@ -196,6 +196,7 @@ function keyReleased(){
 // }
 
 
+
 //MARK: mousePressed
 function mousePressed(){
   if(isTouchDevice && !usingAppleTouchDevice){
@@ -216,7 +217,7 @@ function mousePressed(){
     // If the click wasn't on a character, abandon and reset group creation.
     if(buttonsManager.clickedCharIndex == -1){
       textManager.stopGroupCreation();
-      return;
+      return false;
     }
     // If we clicked on a character, it is NOT in a group (groupID == -1, aka default), start the group creation attempt
     // with this character
@@ -228,7 +229,7 @@ function mousePressed(){
   else if(textManager.lockingIndex){
     buttonsManager.clickedCharIndex = buttonsManager.getIndexOfClickedChar();
   }
-  return; // return false at the end to prevent default behavior such as causing extra double clicks.
+  return false; // return false at the end to prevent default behavior such as causing extra double clicks.
 }
 
 //MARK: mouseReleased
@@ -253,7 +254,7 @@ function mouseReleased(){
       textManager.defaultMessage = false;
     }
 
-    return;
+    return false;
   }
 
 
@@ -295,7 +296,7 @@ function mouseReleased(){
     if(!usingMobileDevice){
       //textManager.textInput.elt.select();
     }
-    return;
+    return false;
     
   }
 
@@ -375,7 +376,7 @@ function mouseReleased(){
     print('started click on a textChar but ended elsewhere, so breaking out of mouseReleased');
     textManager.stopGroupCreation();
     buttonsManager.clickedCharIndex = -1;
-    return;
+    return false;
   }
     
 
@@ -384,7 +385,7 @@ function mouseReleased(){
     if(buttonsManager.savedScrambleTextButtonsArray[i].isMouseOverButton()){
       // Copy text to clipboard
       navigator.clipboard.writeText(buttonsManager.savedScrambleTextButtonsArray[i].savedScrambleText);
-      return;
+      return false;
     }
   }
 
@@ -396,7 +397,7 @@ function mouseReleased(){
       buttonsManager.savedScrambleTextButtonsArray.splice(i, 1);        
       textManager.updateButtonPositions(buttonsManager);
       textManager.adjustSavedButtonsXOffset(buttonsManager);    
-      return;
+      return false;
     }
   }
 
@@ -419,8 +420,15 @@ function mouseReleased(){
   // Set all buttons that were clicked on back to false. There's probably a cleaner way to do this.
   buttonsManager.resetButtonsClicked();
   //document.getElementById('textInputID').style.display = 'none';
-  return; // return false at the end to prevent default behavior such as causing extra double clicks.
+  return false; // return false at the end to prevent default behavior such as causing extra double clicks.
 }
+
+
+
+
+
+
+
 
 //MARK: mouseClicked
 // Click only version of everything for android.
@@ -648,6 +656,8 @@ function mouseClicked(){
 
   return;
 }
+
+
 
 function debugDrawShape(){  
   if(debugDrawStatus){
