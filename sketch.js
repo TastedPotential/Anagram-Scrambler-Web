@@ -210,6 +210,9 @@ function mousePressed(){
   
   if(textManager.textInputClickedOn()){
     textManager.startedClickOnTextInput = true;
+    if(!isTouchDevice){
+      return;
+    }
   }
   else if(textManager.groupingText){
     // check which textChar was clicked on
@@ -252,6 +255,9 @@ function mouseReleased(){
     if(textManager.defaultMessage){
       textManager.clearInputTextValue();
       textManager.defaultMessage = false;
+    }
+    if(!isTouchDevice){
+      return;
     }
 
     return false;
