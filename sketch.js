@@ -210,10 +210,10 @@ function mousePressed(){
   
   if(textManager.textInputClickedOn()){
     textManager.startedClickOnTextInput = true;
-    // if(!isTouchDevice && !usingAppleTouchDevice){
-    //   // debugDrawStatusToggle();
-    //   return;
-    // }
+    if(!isTouchDevice && !usingAppleTouchDevice){
+      // debugDrawStatusToggle();
+      return;
+    }
   }
   else if(textManager.groupingText){
     // check which textChar was clicked on
@@ -221,7 +221,7 @@ function mousePressed(){
     // If the click wasn't on a character, abandon and reset group creation.
     if(buttonsManager.clickedCharIndex == -1){
       textManager.stopGroupCreation();
-      return false;
+      return;
     }
     // If we clicked on a character, it is NOT in a group (groupID == -1, aka default), start the group creation attempt
     // with this character
@@ -233,7 +233,7 @@ function mousePressed(){
   else if(textManager.lockingIndex == -1){
     buttonsManager.clickedCharIndex = buttonsManager.getIndexOfClickedChar();
   }
-  return false; // return false at the end to prevent default behavior such as causing extra double clicks.
+  return; // return false at the end to prevent default behavior such as causing extra double clicks.
 }
 
 //MARK: mouseReleased
@@ -263,7 +263,7 @@ function mouseReleased(){
     //   return;
     // }
 
-    return false;
+    return;
   }
 
 
