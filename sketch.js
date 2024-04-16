@@ -210,10 +210,10 @@ function mousePressed(){
   
   if(textManager.textInputClickedOn()){
     textManager.startedClickOnTextInput = true;
-    if(!isTouchDevice && !usingAppleTouchDevice){
-      // debugDrawStatusToggle();
-      return;
-    }
+    // if(!isTouchDevice && !usingAppleTouchDevice){
+    //   // debugDrawStatusToggle();
+    //   return;
+    // }
   }
   else if(textManager.groupingText){
     // check which textChar was clicked on
@@ -258,10 +258,10 @@ function mouseReleased(){
       textManager.defaultMessage = false;
     }
 
-    if(!isTouchDevice && !usingAppleTouchDevice){
-      debugDrawStatusToggle();
-      return;
-    }
+    // if(!isTouchDevice && !usingAppleTouchDevice){
+    //   debugDrawStatusToggle();
+    //   return;
+    // }
 
     return false;
   }
