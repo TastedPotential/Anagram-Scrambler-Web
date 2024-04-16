@@ -91,7 +91,7 @@ function draw() {
   buttonsManager.drawButtons(groupUnderMouse);
   textManager.drawText();
 
-  // debugDrawShape();
+  debugDrawShape();
 
   // Don't draw anything hovering related on android mobile because mobile cannot detect hovering anyway.
   if(isTouchDevice && !usingAppleTouchDevice)
@@ -210,7 +210,8 @@ function mousePressed(){
   
   if(textManager.textInputClickedOn()){
     textManager.startedClickOnTextInput = true;
-    if(!isTouchDevice){
+    if(!isTouchDevice && !usingAppleTouchDevice){
+      // debugDrawStatusToggle();
       return;
     }
   }
@@ -229,7 +230,7 @@ function mousePressed(){
       textManager.groupCreationStartIndex = buttonsManager.clickedCharIndex;
     }
   }
-  else if(textManager.lockingIndex){
+  else if(textManager.lockingIndex == -1){
     buttonsManager.clickedCharIndex = buttonsManager.getIndexOfClickedChar();
   }
   return false; // return false at the end to prevent default behavior such as causing extra double clicks.
@@ -256,7 +257,9 @@ function mouseReleased(){
       textManager.clearInputTextValue();
       textManager.defaultMessage = false;
     }
-    if(!isTouchDevice){
+
+    if(!isTouchDevice && !usingAppleTouchDevice){
+      debugDrawStatusToggle();
       return;
     }
 
