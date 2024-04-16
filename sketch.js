@@ -8,6 +8,7 @@ let textColor = 'rgb(253, 253, 249)';
 let groupUnderMouse = -1;
 let isTouchDevice;
 let usingAppleTouchDevice;
+let debugDrawStatus = false;
 
 function preload(){
   // Ultimately returned to CourierPrime for its readability and monospace width.
@@ -88,7 +89,10 @@ function draw() {
   textFont(textManager.sketchFont);
   groupUnderMouse = textManager.checkGroupDeletion();
   buttonsManager.drawButtons(groupUnderMouse);
-  textManager.drawText();  
+  textManager.drawText();
+
+  debugDrawShape();
+
   // Don't draw anything hovering related on android mobile because mobile cannot detect hovering anyway.
   if(isTouchDevice)
     return;
@@ -433,6 +437,8 @@ function mouseClicked(){
     return false;
   }
 
+  debugDrawStatusToggle();
+
   
 
   if(textManager.textInputClickedOn()){
@@ -623,3 +629,12 @@ function mouseClicked(){
   return;
 }
 
+function debugDrawShape(){  
+  if(debugDrawStatus){
+    rect(width / 2, height * .75, width / 6, width / 6);
+  }
+}
+
+function debugDrawStatusToggle(){
+  debugDrawStatus = !debugDrawStatus;
+}
