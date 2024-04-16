@@ -91,7 +91,7 @@ function draw() {
   buttonsManager.drawButtons(groupUnderMouse);
   textManager.drawText();
 
-  debugDrawShape();
+  // debugDrawShape();
 
   // Don't draw anything hovering related on android mobile because mobile cannot detect hovering anyway.
   if(isTouchDevice)
@@ -437,13 +437,33 @@ function mouseClicked(){
     return false;
   }
 
-  debugDrawStatusToggle();
+  // debugDrawStatusToggle();
 
   
 
   if(textManager.textInputClickedOn()){
-    return;// should allow text to be selected while in edit mode.
+    // if(usingAppleTouchDevice){
+    //   return false;
+    // }
+    // return;// should allow text to be selected while in edit mode.
+    textManager.startedClickOnTextInput = true;
   }
+  // If a click was started inside the textInput box, but then let go anywhere else, don't change anything.
+  // This allows the user to drag and select text while editing, then is able to let go anywhere outside the box without issues.
+  if(textManager.startedClickOnTextInput){
+    // Set all buttons that were clicked on back to false. There's probably a cleaner way to do this.
+    textManager.startedClickOnTextInput = false;
+    buttonsManager.resetButtonsClicked();
+
+    // Clear the default message upon releasing the mouse anywhere.
+    if(textManager.defaultMessage){
+      textManager.clearInputTextValue();
+      textManager.defaultMessage = false;
+    }
+
+    return;
+  }
+
 
   buttonsManager.setButtonStartedClickOn();
 
