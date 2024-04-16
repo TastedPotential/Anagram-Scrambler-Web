@@ -198,10 +198,10 @@ function keyReleased(){
 
 //MARK: mousePressed
 function mousePressed(){
-  if(isTouchDevice){
-    if(!usingAppleTouchDevice){
-      return;
-    }
+  if(isTouchDevice && !usingAppleTouchDevice){
+    // if(!usingAppleTouchDevice){
+    //   return;
+    // }
     return;
   }
 
@@ -233,10 +233,10 @@ function mousePressed(){
 
 //MARK: mouseReleased
 function mouseReleased(){
-  if(isTouchDevice){
-    if(!usingAppleTouchDevice){
-      return;
-    }
+  if(isTouchDevice && !usingAppleTouchDevice){
+    // if(!usingAppleTouchDevice){
+    //   return;
+    // }
     return;
   }
     
@@ -430,10 +430,10 @@ function mouseClicked(){
   // print('clicked on touch device');
 
   // This is only called on mobile/touch devices. It's going to be a reworking of the desktop mousePressed and mouseReleased.
-  if(!isTouchDevice){
-    if(usingAppleTouchDevice){
-      return false;
-    }
+  if(!isTouchDevice || usingAppleTouchDevice){
+    // if(usingAppleTouchDevice){
+    //   return false;
+    // }
     return false;
   }
 
