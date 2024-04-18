@@ -828,4 +828,9 @@ class TextManager{
 
   }
 
+  deleteAllSavedScrambles(){
+    this.savedScramblesArray.splice(0);
+  }
+
 }
+

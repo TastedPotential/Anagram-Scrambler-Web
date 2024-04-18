@@ -51,6 +51,12 @@ class ButtonsManager{
         //this.lockColor = 'rgb(66, 200, 227)';
         //this.lockColor = 'rgb(245, 242, 83)';
         this.lockColor = 'rgb(230, 216, 73)';
+
+        // Place delete all scrambles button in bottom right one text unit away from the corner.
+        //this.deleteAllButton = new Button(windowWidth - this.buttonDiameter, 0 + this.buttonDiameter, this.buttonDiameter, "deleteAll");
+        let deleteAllXPos = isTouchDevice ? windowWidth - this.buttonDiameter : this.lockButton.posX;
+        let deleteAllYPos = isTouchDevice ? windowHeight - this.buttonDiameter : this.buttonDiameter * .6;
+        this.deleteAllButton = new Button(deleteAllXPos, deleteAllYPos, this.buttonDiameter, "deleteAll");
     }
 
     drawButtons(inGroupUnderMouse){
@@ -61,6 +67,11 @@ class ButtonsManager{
         }        
         this.drawSavedScrambleTextButtons();
         this.drawSavedScrambleDeletionButtons();
+
+        if(this.savedScrambleTextButtonsArray.length > 0){
+            this.deleteAllButton.drawButton();  // Only draw delete all button when there are saved scrambles.
+        }
+        
         if(this.textManagerRef.editingText == false){
             this.groupButton.drawButton();
             this.lockButton.drawButton();
@@ -111,6 +122,10 @@ class ButtonsManager{
             this.lockButton.posY = this.editButton.posY;
             this.lockButton.diameter = this.buttonDiameter;
 
+            this.deleteAllButton.posX = windowWidth - this.buttonDiameter;
+            this.deleteAllButton.posY = windowHeight - this.buttonDiameter;
+            this.deleteAllButton.diameter = this.buttonDiameter;
+
             return;
         }
         
@@ -133,6 +148,11 @@ class ButtonsManager{
         this.lockButton.posX = this.editButton.posX + this.buttonDiameter * 2.40;
         this.lockButton.posY = this.editButton.posY;
         this.lockButton.diameter = this.buttonDiameter;
+
+        
+        this.deleteAllButton.posX = this.lockButton.posX;
+        this.deleteAllButton.posY = this.buttonDiameter * .6;
+        this.deleteAllButton.diameter = this.buttonDiameter;
 
         //TODO
         // Update savedScrambleTextButtonsArray and savedScrambleDeletionButtonsArray sizes.
@@ -464,10 +484,18 @@ class ButtonsManager{
         else if(this.lockButton.isMouseOverButton()){
             this.lockButton.startedClickOnThis = true;
         }
+        else if(this.deleteAllButton.isMouseOverButton()){
+            this.deleteAllButton.startedClickOnThis = true;
+        }
         // else{
         //     for(let i = 0; i < this.textCharButtonsArray.length; i++){
 
         //     }
         // }
+    }
+
+    deleteAllSavedScrambleButtons(){
+        this.savedScrambleTextButtonsArray.splice(0);
+        this.savedScrambleDeletionButtonsArray.splice(0);
     }
 }

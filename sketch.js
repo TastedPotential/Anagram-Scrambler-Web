@@ -326,6 +326,12 @@ function mouseReleased(){
     textManager.groupingText = false;
   }
 
+  // Delete All Saved Scrambles Block
+  else if(buttonsManager.deleteAllButton.isMouseOverButton() && buttonsManager.deleteAllButton.startedClickOnThis){
+    textManager.deleteAllSavedScrambles();
+    buttonsManager.deleteAllSavedScrambleButtons();
+  }
+
   // Text Input Box Block
   else if(textManager.textInputClickedOn()){
     //print("clicked in the textInput box");
@@ -541,6 +547,12 @@ function mouseClicked(){
   else if(buttonsManager.lockButton.isMouseOverButton() && textManager.editingText == false && buttonsManager.lockButton.startedClickOnThis){
     textManager.lockingText = !textManager.lockingText;
     textManager.groupingText = false;
+  }
+
+  // Delete All Saved Scrambles Block
+  else if(buttonsManager.deleteAllButton.isMouseOverButton() && buttonsManager.deleteAllButton.startedClickOnThis){
+    textManager.deleteAllSavedScrambles();
+    buttonsManager.deleteAllSavedScrambleButtons();
   }
 
   // Text Input Box Block

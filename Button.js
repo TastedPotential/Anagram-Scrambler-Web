@@ -203,6 +203,7 @@ class Button{
             fill(this.buttonFillColor);
             circle(this.posX, this.posY, this.diameter);
             stroke(this.buttonIconColor);
+            strokeWeight(this.diameter/12);
 
             let arrowHead = this.diameter * .22;
             let arrowShaft = this.diameter * .40;
@@ -248,6 +249,25 @@ class Button{
             fill(this.buttonFillColor);
             circle(this.posX, this.posY, this.diameter);
             stroke(this.buttonIconColor);            
+        }
+
+        else if (this.buttonType === "deleteAll"){
+            fill(this.buttonFillColor);
+            circle(this.posX, this.posY, this.diameter);
+            stroke(this.buttonIconColor);
+            strokeWeight(this.diameter/10);
+
+            // Draw a small X in the upper third of the circle.
+            //angleMode(DEGREES);
+            push();
+            translate(this.posX, this.posY);
+            let spoke = this.diameter/4.5;
+            //rotate(45);
+            line(-spoke, spoke, spoke, -spoke);
+            //rotate(90);
+            line(-spoke, -spoke, spoke, spoke);
+            pop();
+
         }
     }
     
