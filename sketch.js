@@ -580,6 +580,11 @@ function mouseClicked(){
       textManager.stopGroupCreation();
 
       buttonsManager.resetTextCharButtonHoverStatuses();
+    } 
+    // Reset group creation if a valid character wasn't clicked on.
+    else{
+      textManager.stopGroupCreation();
+      buttonsManager.resetTextCharButtonHoverStatuses();
     }
 
     // if(textManager.groupCreationStartIndex == -1){

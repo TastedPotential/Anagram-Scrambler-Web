@@ -173,7 +173,17 @@ class TextManager{
         if(this.usingMobile){
           textSize(this.sizeOfText);
         }
-        text("grouping mode", this.textAnchorX, this.textAnchorY + this.sizeOfText * 1);
+
+        let groupingModeStatusText = 'grouping mode';
+        // This will change the group mode status text to let users on android with the one click at a time
+        // group creation know they need to tap again to set the end unit of their attempted group.
+        //TODO
+        // Maybe only display this for android, and for other devices show "drag to create group".
+        if(this.groupCreationStartIndex >= 0 && this.groupCreationEndIndex == -1){
+          groupingModeStatusText = 'set group range';
+        }
+
+        text(groupingModeStatusText, this.textAnchorX, this.textAnchorY + this.sizeOfText * 1);
         //return;
        }
        else if(this.lockingText){
