@@ -52,10 +52,12 @@ class ButtonsManager{
         //this.lockColor = 'rgb(245, 242, 83)';
         this.lockColor = 'rgb(230, 216, 73)';
 
-        // Place delete all scrambles button in bottom right one text unit away from the corner.
+        // Place delete all scrambles button in bottom left one text unit away from the corner.
         //this.deleteAllButton = new Button(windowWidth - this.buttonDiameter, 0 + this.buttonDiameter, this.buttonDiameter, "deleteAll");
-        let deleteAllXPos = isTouchDevice ? windowWidth - this.buttonDiameter : this.lockButton.posX;
-        let deleteAllYPos = isTouchDevice ? windowHeight - this.buttonDiameter : this.buttonDiameter * .6;
+        let deleteAllXPos = isTouchDevice ? this.buttonDiameter * .6: this.lockButton.posX;
+        let deleteAllYPos = isTouchDevice ? windowHeight - this.buttonDiameter * .6 : this.buttonDiameter * .6;
+        // deleteAllXPos = windowWidth - this.buttonDiameter * .6;
+        // deleteAllYPos = 0 + this.buttonDiameter * .6;
         this.deleteAllButton = new Button(deleteAllXPos, deleteAllYPos, this.buttonDiameter, "deleteAll");
     }
 
