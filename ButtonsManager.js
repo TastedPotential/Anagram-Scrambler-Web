@@ -54,7 +54,7 @@ class ButtonsManager{
 
         // Place delete all scrambles button in bottom left one text unit away from the corner.
         //this.deleteAllButton = new Button(windowWidth - this.buttonDiameter, 0 + this.buttonDiameter, this.buttonDiameter, "deleteAll");
-        let deleteAllXPos = isTouchDevice ? this.buttonDiameter * .6: this.lockButton.posX;
+        let deleteAllXPos = isTouchDevice ? this.buttonDiameter * .7 : this.lockButton.posX;
         let deleteAllYPos = isTouchDevice ? windowHeight - this.buttonDiameter * .6 : this.buttonDiameter * .6;
         // deleteAllXPos = windowWidth - this.buttonDiameter * .6;
         // deleteAllYPos = 0 + this.buttonDiameter * .6;
@@ -70,8 +70,8 @@ class ButtonsManager{
         this.drawSavedScrambleTextButtons();
         this.drawSavedScrambleDeletionButtons();
 
-        if(this.savedScrambleTextButtonsArray.length > 0){
-            this.deleteAllButton.drawButton();  // Only draw delete all button when there are saved scrambles.
+        if(!this.usingMobile && this.savedScrambleTextButtonsArray.length > 0){
+            this.deleteAllButton.drawButton();
         }
         
         if(this.textManagerRef.editingText == false){
@@ -164,13 +164,28 @@ class ButtonsManager{
     drawSavedScrambleDeletionButtons(){
         for(let i = 0; i < this.savedScrambleDeletionButtonsArray.length; i++){
             this.savedScrambleDeletionButtonsArray[i].drawButton();
+            
         }
     }
 
     drawSavedScrambleTextButtons(){
         for(let i = 0; i < this.savedScrambleTextButtonsArray.length; i++){
             this.savedScrambleTextButtonsArray[i].drawButton();
+        }        
+        // Draw the deleteAll saved scrambles button to the left of the last saved scramble.
+        // Do this by setting the posY of the deleteAll button to be the same as the last (or only) saved scramble's posY.
+        if(this.usingTouchDevice && this.savedScrambleTextButtonsArray.length > 0){
+            // this.deleteAllButton.posY = this.savedScrambleTextButtonsArray[this.savedScrambleTextButtonsArray.length - 1].posY;
+            // Instead going to draw the delete all button next to the first/topmost saved scramble. I prefer all the UI buttons close to one another.
+            this.deleteAllButton.posY = this.savedScrambleTextButtonsArray[0].posY;
+            // Max possible width of a saved scramble is:
+            let maxWidth = (this.textManagerRef.scrambleMaxLength * this.textManagerRef.widthOfText) +
+            ((this.textManagerRef.scrambleMaxLength - 1) * this.textManagerRef.textGap);
+            // Get the midpoint of the left of the widest possible scramble and the left edge of the screen.
+            this.deleteAllButton.posX = ((width/2) - (maxWidth / 2))/2;
+            this.deleteAllButton.drawButton();  // Only draw delete all button when there are saved scrambles.
         }
+        
     }
     
     drawTextCharButtons(){
