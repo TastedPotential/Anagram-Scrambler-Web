@@ -186,6 +186,13 @@ class ButtonsManager{
             // this.deleteAllButton.posX = ((width/2) - (maxWidth / 2))/2;
             // this.deleteAllButton.drawButton();  // Only draw delete all button when there are saved scrambles.
 
+
+            // Draw the delete all scrambles button centered underneath the last saved scramble.
+            this.deleteAllButton.posY = this.savedScrambleTextButtonsArray[this.savedScrambleTextButtonsArray.length - 1].posY
+            + (this.deleteAllButton.diameter * 1.15);
+            this.deleteAllButton.posX = width / 2;
+            this.deleteAllButton.drawButton();
+
             // Max possible width of a saved scramble is:
             let maxWidth = (this.textManagerRef.scrambleMaxLength * this.textManagerRef.widthOfText) +
             ((this.textManagerRef.scrambleMaxLength - 1) * this.textManagerRef.textGap);
@@ -204,11 +211,7 @@ class ButtonsManager{
             line(this.deleteAllButton.posX + maxWidth / 2, this.deleteAllButton.posY,
             this.deleteAllButton.posX + maxWidth / 2, this.deleteAllButton.posY - barHeight);
 
-            // Draw the delete all scrambles button centered underneath the last saved scramble.
-            this.deleteAllButton.posY = this.savedScrambleTextButtonsArray[this.savedScrambleTextButtonsArray.length - 1].posY
-            + (this.deleteAllButton.diameter * 1.25);
-            this.deleteAllButton.posX = width / 2;
-            this.deleteAllButton.drawButton();
+            
 
             
         }

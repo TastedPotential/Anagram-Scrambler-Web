@@ -111,11 +111,11 @@ function draw() {
     buttonsManager.setHoverStatus();
   }
 
-  // check on android if saved text is over the limit.
-  // Have to check separately because android doesn't seem to be picking up keyReleased when entering text.
-  if(!textManager.defaultMessage && textManager.textInput.elt.value.length > textManager.scrambleMaxLength){
-    textManager.textInput.elt.value = textManager.textInput.elt.value.substring(0, textManager.scrambleMaxLength);
-  }
+  // // check on android if saved text is over the limit.
+  // // Have to check separately because android doesn't seem to be picking up keyReleased when entering text.
+  // if(!textManager.defaultMessage && textManager.textInput.elt.value.length > textManager.scrambleMaxLength){
+  //   textManager.textInput.elt.value = textManager.textInput.elt.value.substring(0, textManager.scrambleMaxLength);
+  // }
 }
 
 function windowResized(){
@@ -141,12 +141,12 @@ function keyPressed(){
 function keyReleased(){
   //print(keyCode);
 
-  // Cull the addition of extra characters beyond the maximum here
-  if(keyCode >= 44 && keyCode <= 93 || (keyCode >= 186 && keyCode <= 222)){
-    if(textManager.textInput.elt.value.length > textManager.scrambleMaxLength){
-      textManager.textInput.elt.value = textManager.textInput.elt.value.substring(0, textManager.scrambleMaxLength);
-    }
-  }
+  // // Cull the addition of extra characters beyond the maximum here
+  // if(keyCode >= 44 && keyCode <= 93 || (keyCode >= 186 && keyCode <= 222)){
+  //   if(textManager.textInput.elt.value.length > textManager.scrambleMaxLength){
+  //     textManager.textInput.elt.value = textManager.textInput.elt.value.substring(0, textManager.scrambleMaxLength);
+  //   }
+  // }
 
   // Reset display of default text if all text is removed.
   if(textManager.textInput.elt.value == '' || keyCode == BACKSPACE && textManager.defaultMessage){
