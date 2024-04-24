@@ -342,9 +342,12 @@ class TextManager{
         return;
       }    
 
+      // How much to lower the saved scrambles array below the main text.
+      // let savedTextYOffset = this.usingMobile ? 5 : -10;
       let savedTextYOffset = 2;
+      
       if(this.usingMobile){
-        savedTextYOffset = 6;
+        savedTextYOffset = 5;
       }
 
       // Set the width of the text button depending on whether text is being edited or not.
