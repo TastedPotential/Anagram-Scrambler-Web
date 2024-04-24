@@ -44,7 +44,8 @@ class ButtonsManager{
         this.clickedCharIndex = -1;
 
         this.textManagerRef = inputTextManager;
-        this.bracketColor = 'rgb(163, 64, 201)';
+        // this.bracketColor = 'rgb(163, 64, 201)';
+        this.bracketColor = 'rgb(178, 85, 250)';
         this.bgColor = 'rgb(55, 67, 117)';
         //this.lockColor = 'rgb(255, 25, 25)';
         //this.lockColor = 'rgb(37, 151, 217)';

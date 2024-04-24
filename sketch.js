@@ -67,7 +67,7 @@ function setup() {
   
 
 
-  textManager = new TextManager(sketchFont, textSizePercentOfScreen, usingMobileDevice, bgColor, textColor);
+  textManager = new TextManager(sketchFont, textSizePercentOfScreen, usingMobileDevice, bgColor, textColor, usingAppleTouchDevice);
   textFont(textManager.sketchFont);
   textSize(textManager.sizeOfText);
   buttonsManager = new ButtonsManager(textManager, buttonSizePercentOfScreen, usingMobileDevice, isTouchDevice);
@@ -109,6 +109,12 @@ function draw() {
     if(usingAppleTouchDevice && !mouseIsPressed)
       return;
     buttonsManager.setHoverStatus();
+  }
+
+  // check on android if saved text is over the limit.
+  // Have to check separately because android doesn't seem to be picking up keyReleased when entering text.
+  if(!textManager.defaultMessage && textManager.textInput.elt.value.length > textManager.scrambleMaxLength){
+    textManager.textInput.elt.value = textManager.textInput.elt.value.substring(0, textManager.scrambleMaxLength);
   }
 }
 
@@ -251,6 +257,7 @@ function mouseReleased(){
     // Set all buttons that were clicked on back to false. There's probably a cleaner way to do this.
     textManager.startedClickOnTextInput = false;
     buttonsManager.resetButtonsClicked();
+    buttonsManager.resetTextCharButtonsBGs();
 
     // Clear the default message upon releasing the mouse anywhere.
     if(textManager.defaultMessage){
@@ -389,9 +396,15 @@ function mouseReleased(){
   // as a saved scramble's text to copy to clipboard or deleting a saved scramble. 
   if((textManager.groupingText || textManager.lockingText) && buttonsManager.clickedCharIndex >= 0){
     print('started click on a textChar but ended elsewhere, so breaking out of mouseReleased');
+    buttonsManager.resetTextCharButtonsBGs();
     textManager.stopGroupCreation();
     buttonsManager.clickedCharIndex = -1;
     return false;
+  }
+
+  // Don't change the background color of any characters when clicking on them except for when locking or grouping. 
+  if(!textManager.groupingText || !textManager.lockingText){
+    buttonsManager.resetTextCharButtonsBGs();
   }
     
 
@@ -434,6 +447,7 @@ function mouseReleased(){
   
   // Set all buttons that were clicked on back to false. There's probably a cleaner way to do this.
   buttonsManager.resetButtonsClicked();
+  buttonsManager.resetTextCharButtonsBGs();
   //document.getElementById('textInputID').style.display = 'none';
   return false; // return false at the end to prevent default behavior such as causing extra double clicks.
 }

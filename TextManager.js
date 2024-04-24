@@ -1,6 +1,6 @@
 class TextManager{
 
-    constructor(inputFont, inputTextSizePercentage, inUsingMobile, textBoxBGColor, inTextColor){
+    constructor(inputFont, inputTextSizePercentage, inUsingMobile, textBoxBGColor, inTextColor, inUsingAppleTouchDevice){
         this.charsArray = [];
         this.textSizePercentage = inputTextSizePercentage;
         this.sizeOfText = windowWidth * this.textSizePercentage;
@@ -17,6 +17,7 @@ class TextManager{
         
         this.sketchFont = inputFont;
         this.usingMobile = inUsingMobile;
+        this.usingAppleTouchDevice = inUsingAppleTouchDevice;
         this.textColor = inTextColor;
 
         this.startingString = "enter your scramble";
@@ -163,40 +164,56 @@ class TextManager{
         inButtonsManager.drawSavedScrambleDeletionButtons();
       }
       */
+
+      let interactString = 'Click';
+      if(this.usingMobile){
+        interactString = 'Tap';
+      }
       
-       if(this.groupingText){
-        //fill(166, 58, 72);
-        fill(this.buttonsManagerRef.bracketColor);
-        noStroke();
-        textAlign(CENTER);
-        textSize(this.sizeOfText / 2);
-        if(this.usingMobile){
-          textSize(this.sizeOfText);
-        }
+      if(this.groupingText){
+      //fill(166, 58, 72);
+      fill(this.buttonsManagerRef.bracketColor);
+      noStroke();
+      textAlign(CENTER);
+      textSize(this.sizeOfText / 2);
+      if(this.usingMobile){
+        textSize(this.sizeOfText / 1.75);
+      }
 
-        let groupingModeStatusText = 'grouping mode';
-        // This will change the group mode status text to let users on android with the one click at a time
-        // group creation know they need to tap again to set the end unit of their attempted group.
-        //TODO
-        // Maybe only display this for android, and for other devices show "drag to create group".
-        if(this.groupCreationStartIndex >= 0 && this.groupCreationEndIndex == -1){
-          groupingModeStatusText = 'set group range';
+      let groupingModeStatusText = interactString + ' and drag to create a group.\n' + interactString + ' a bracket to ungroup.';
+      if(this.usingMobile && !this.usingAppleTouchDevice){
+        groupingModeStatusText = interactString + ' to start a new group.\n' + interactString + ' a bracket to ungroup.';
+      }
+      // This will change the group mode status text to let users on android with the one click at a time
+      // group creation know they need to tap again to set the end unit of their attempted group.
+      //TODO
+      // Maybe only display this for android, and for other devices show "drag to create group".
+      if(this.groupCreationStartIndex >= 0 && this.groupCreationEndIndex == -1){
+        groupingModeStatusText = 'Release to set group range.';
+        if(this.usingMobile && !this.usingAppleTouchDevice){
+          groupingModeStatusText = 'Tap again to set group range.';
         }
+      }
 
-        text(groupingModeStatusText, this.textAnchorX, this.textAnchorY + this.sizeOfText * 1);
-        //return;
-       }
-       else if(this.lockingText){
-        //fill(166, 58, 72);
-        fill(this.buttonsManagerRef.lockColor);
-        noStroke();
-        textAlign(CENTER);
-        textSize(this.sizeOfText / 2);
-        if(this.usingMobile){
-          textSize(this.sizeOfText);
-        }
-        text("locking mode", this.textAnchorX, this.textAnchorY + this.sizeOfText * 1);
-       }
+      text(groupingModeStatusText, this.textAnchorX, this.textAnchorY + this.sizeOfText * 1);
+      //return;
+      }
+      else if(this.lockingText){
+      //fill(166, 58, 72);
+      fill(this.buttonsManagerRef.lockColor);
+      noStroke();
+      textAlign(CENTER);
+      textSize(this.sizeOfText / 2);
+      if(this.usingMobile){
+        textSize(this.sizeOfText / 1.75);
+      }
+
+      let lockingModeStatusText = interactString + ' a character or group\nto lock/unlock it.';
+      // if(this.usingMobile){
+      //   lockingModeStatusText = 'Tap a character or group\nto lock/unlock it.';
+      // }
+      text(lockingModeStatusText, this.textAnchorX, this.textAnchorY + this.sizeOfText * 1);
+      }
         
 
       // this.buttonsManagerRef.drawTextCharButtons();
