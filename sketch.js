@@ -530,13 +530,14 @@ function mouseClicked(){
       // TODO
       // I think the white bar on the right is happening here on android.
       textManager.setTextInputValue();
+      textManager.resetTextInputPosition()  // Reset textInput position on android here.
       textManager.textInput.show();
       textManager.textInput.elt.focus();
       textManager.defaultMessage = false;
       textManager.editingText = true;
       textManager.groupingText = false;
       textManager.lockingText = false;
-      // textManager.resetTextInputPosition()  // Reset textInput position on android here.
+      
     }
     //TODO
     // Determine if it's a better UX to have the text all selected when clicking the edit button, or instead
