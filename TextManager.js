@@ -99,7 +99,8 @@ class TextManager{
         this.textInput.style('white-space', '0em');
         this.textInput.id('textInputID');
         this.textInput.attribute('maxlength', this.scrambleMaxLength);
-        this.textInput.attribute('max-width', this.textInput.width/2);
+        this.textInput.style('min-width', this.textInput.width/2);
+        this.textInput.style('max-width', this.textInput.width/2);
         //this.textInput.hide();
 
     }
