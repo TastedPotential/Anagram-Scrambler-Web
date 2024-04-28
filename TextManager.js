@@ -78,6 +78,9 @@ class TextManager{
         //this.textInput.position("center");
         //this.textInput.position(this.textAnchorX - (this.textInputBoxWidth + this.widthOfText/4) / 2, this.textAnchorY - this.textInputOffsetY);
         this.textInput.position(this.textAnchorX - this.textInput.width/2, this.textAnchorY - this.textInputOffsetY);
+        if(this.usingMobile && !this.usingAppleTouchDevice){
+          this.textInput.position(this.textAnchorX - this.textInputBoxWidth/2, this.textAnchorY - this.textInputOffsetY);
+        }
         
         
 
@@ -851,6 +854,10 @@ class TextManager{
 
   deleteAllSavedScrambles(){
     this.savedScramblesArray.splice(0);
+  }
+
+  resetTextInputPosition(){
+    this.textInput.position(this.textAnchorX - this.textInput.width/2, this.textAnchorY - this.textInputOffsetY);
   }
 
 }
