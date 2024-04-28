@@ -101,6 +101,7 @@ class TextManager{
         this.textInput.attribute('maxlength', this.scrambleMaxLength);
         // this.textInput.attribute('min-width', floor(this.textInput.width/2));
         // this.textInput.attribute('max-width', floor(this.textInput.width/2));
+        this.textInput.style('position:absolute');
         this.textInput.style('display:flex');
         this.textInput.style('justify-content:center');
         this.textInput.style('align-items:center');
