@@ -78,9 +78,12 @@ class TextManager{
         //this.textInput.position("center");
         //this.textInput.position(this.textAnchorX - (this.textInputBoxWidth + this.widthOfText/4) / 2, this.textAnchorY - this.textInputOffsetY);
         this.textInput.position(this.textAnchorX - this.textInput.width/2, this.textAnchorY - this.textInputOffsetY);
-        // if(this.usingMobile && !this.usingAppleTouchDevice){
-        //   this.textInput.position(this.textAnchorX - this.textInputBoxWidth/2, this.textAnchorY - this.textInputOffsetY);
-        // }
+        // Special condition for android where the xPosition is set statically.
+        // I think there was an issue when setting the width based on the potentially dynamic width of the text Input box.
+        this.textInputBoxWidthHalf = this.textInput.width/2;
+        if(this.usingMobile && !this.usingAppleTouchDevice){
+          this.textInput.position(this.textAnchorX - this.textInputBoxWidthHalf, this.textAnchorY - this.textInputOffsetY);
+        }
         
         
 
@@ -101,10 +104,10 @@ class TextManager{
         this.textInput.attribute('maxlength', this.scrambleMaxLength);
         // this.textInput.attribute('min-width', floor(this.textInput.width/2));
         // this.textInput.attribute('max-width', floor(this.textInput.width/2));
-        this.textInput.style('position:absolute');
-        this.textInput.style('display:flex');
-        this.textInput.style('justify-content:center');
-        this.textInput.style('align-items:center');
+        // this.textInput.style('position:absolute');
+        // this.textInput.style('display:flex');
+        // this.textInput.style('justify-content:center');
+        // this.textInput.style('align-items:center');
 
     }
 
