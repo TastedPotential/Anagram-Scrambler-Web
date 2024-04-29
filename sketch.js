@@ -546,7 +546,7 @@ function mouseClicked(){
       //textManager.textInput.elt.select();
     }
 
-    return;
+    return false;
     
   }
 
