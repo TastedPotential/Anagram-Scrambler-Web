@@ -137,7 +137,11 @@ class TextManager{
 
       // Update the text input box
       //this.textInput.position(this.textAnchorX - this.textBoxWidth/2 - this.textGap/2, this.textAnchorY - this.textInputOffsetY);
-      this.textInput.position(this.textAnchorX - (this.textInputBoxWidth + this.widthOfText/4) / 2, this.textAnchorY - this.textInputOffsetY);
+
+      // This was the weird textInput position I was updating earlier.
+      // this.textInput.position(this.textAnchorX - (this.textInputBoxWidth + this.widthOfText/4) / 2, this.textAnchorY - this.textInputOffsetY);
+
+      this.textInput.position(this.textAnchorX - this.textInput.width/2, this.textAnchorY - this.textInputOffsetY);
       //this.textInput.size(this.textInputBoxWidth + this.widthOfText/4);
       //this.textInput.size(windowWidth - this.widthOfText * 4);
       //this.textInput.size(windowWidth * 2);    
