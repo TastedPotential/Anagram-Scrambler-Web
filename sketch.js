@@ -120,6 +120,7 @@ function draw() {
 
 function windowResized(){
   resizeCanvas(windowWidth, windowHeight);
+  background(bgColor);
   textManager.updateProperties();
   buttonsManager.updateProperties(textManager);
   //print("window was resized");
@@ -546,7 +547,7 @@ function mouseClicked(){
       //textManager.textInput.elt.select();
     }
 
-    return false;
+    return;
     
   }
 

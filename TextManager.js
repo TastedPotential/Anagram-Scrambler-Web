@@ -142,6 +142,7 @@ class TextManager{
       // this.textInput.position(this.textAnchorX - (this.textInputBoxWidth + this.widthOfText/4) / 2, this.textAnchorY - this.textInputOffsetY);
 
       this.textInput.position(this.textAnchorX - this.textInput.width/2, this.textAnchorY - this.textInputOffsetY);
+      
       //this.textInput.size(this.textInputBoxWidth + this.widthOfText/4);
       //this.textInput.size(windowWidth - this.widthOfText * 4);
       //this.textInput.size(windowWidth * 2);    
