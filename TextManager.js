@@ -136,13 +136,17 @@ class TextManager{
       this.textInputBoxWidth = (this.charsArray.length * this.widthOfText) + (this.charsArray.length * this.textGap);
 
       // Update the text input box
-      // Make the textInput box as wide as the default string plus three characters,
-      let textInputBoxSizeX = (this.startingString.length+4) * (this.widthOfText);
-      //let textInputBoxSizeX = (this.charsArray.length * this.widthOfText) + (this.charsArray.length * this.textGap);
-      if(this.usingMobile){
-        textInputBoxSizeX = (this.startingString.length+3) * (this.widthOfText);
-      }
-      this.textInput.size(textInputBoxSizeX, this.sizeOfText);
+
+
+      // // Make the textInput box as wide as the default string plus three characters,
+      // let textInputBoxSizeX = (this.startingString.length+4) * (this.widthOfText);
+      // //let textInputBoxSizeX = (this.charsArray.length * this.widthOfText) + (this.charsArray.length * this.textGap);
+      // if(this.usingMobile){
+      //   this.textInputBoxSizeX = (this.startingString.length+3) * (this.widthOfText);
+      // }
+      // this.textInput.size(textInputBoxSizeX, this.sizeOfText);
+
+
       //this.textInput.position(this.textAnchorX - this.textBoxWidth/2 - this.textGap/2, this.textAnchorY - this.textInputOffsetY);
 
       // This was the weird textInput position I was updating earlier.
