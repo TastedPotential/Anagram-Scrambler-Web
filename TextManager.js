@@ -406,7 +406,7 @@ class TextManager{
     updateButtonPositions(inButtonsManager){
       let savedTextYOffset = 2;
       if(this.usingMobile){
-        savedTextYOffset = 6;
+        savedTextYOffset = 5;
       }
 
       for(let i  = 0; i < inButtonsManager.savedScrambleTextButtonsArray.length; i++){
