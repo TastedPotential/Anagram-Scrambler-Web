@@ -80,10 +80,10 @@ class TextManager{
         this.textInput.position(this.textAnchorX - this.textInput.width/2, this.textAnchorY - this.textInputOffsetY);
         // Special condition for android where the xPosition is set statically.
         // I think there was an issue when setting the width based on the potentially dynamic width of the text Input box.
-        this.textInputBoxWidthHalf = this.textInput.width/2;
-        if(this.usingMobile && !this.usingAppleTouchDevice){
-          this.textInput.position(this.textAnchorX - this.textInputBoxWidthHalf, this.textAnchorY - this.textInputOffsetY);
-        }
+        // this.textInputBoxWidthHalf = this.textInput.width/2;
+        // if(this.usingMobile && !this.usingAppleTouchDevice){
+        //   this.textInput.position(this.textAnchorX - this.textInputBoxWidthHalf, this.textAnchorY - this.textInputOffsetY);
+        // }
         
         
 
