@@ -119,6 +119,9 @@ function draw() {
 }
 
 function windowResized(){
+  if(usingMobileDevice && !usingAppleTouchDevice){
+    return;
+  }
   resizeCanvas(windowWidth, windowHeight);
   textManager.updateProperties();
   buttonsManager.updateProperties(textManager);
