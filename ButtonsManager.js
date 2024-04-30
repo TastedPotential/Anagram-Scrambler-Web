@@ -16,25 +16,25 @@ class ButtonsManager{
         }
 
         this.scrambleButton = new Button(inputTextManager.textAnchorX - inputTextManager.textInputBoxSizeX / 2 - this.buttonOffsetX,
-        inputTextManager.textAnchorY - this.buttonOffsetY, this.buttonDiameter, "scramble");
+        inputTextManager.textAnchorY - this.buttonOffsetY, this.buttonDiameter, "scramble", this.usingMobile);
 
         this.editButton = new Button(inputTextManager.textAnchorX + inputTextManager.textInputBoxSizeX / 2 + this.buttonOffsetX,
-        inputTextManager.textAnchorY - this.buttonOffsetY, this.buttonDiameter, "edit");
+        inputTextManager.textAnchorY - this.buttonOffsetY, this.buttonDiameter, "edit", this.usingMobile);
 
         this.saveButton = new Button(inputTextManager.textAnchorX - inputTextManager.textInputBoxSizeX / 2 - this.buttonOffsetX - saveButtonOffsetX,
-        inputTextManager.textAnchorY - this.buttonOffsetY, this.buttonDiameter, "save");
+        inputTextManager.textAnchorY - this.buttonOffsetY, this.buttonDiameter, "save", this.usingMobile);
 
         // Lock and Group button block
 
-        this.groupButton = new Button(this.editButton.posX + this.buttonDiameter * 1.20, this.editButton.posY, this.buttonDiameter, "group");
+        this.groupButton = new Button(this.editButton.posX + this.buttonDiameter * 1.20, this.editButton.posY, this.buttonDiameter, "group", this.usingMobile);
         
-        this.lockButton = new Button(this.editButton.posX + this.buttonDiameter * 2.40, this.editButton.posY, this.buttonDiameter, "lock");
+        this.lockButton = new Button(this.editButton.posX + this.buttonDiameter * 2.40, this.editButton.posY, this.buttonDiameter, "lock", this.usingMobile);
 
         let scrambleEditXGap = this.editButton.posX - this.scrambleButton.posX;
 
         if(this.usingMobile){
-            this.groupButton = new Button(this.scrambleButton.posX + scrambleEditXGap*.25, this.scrambleButton.posY, this.buttonDiameter, "group");
-            this.lockButton = new Button(this.editButton.posX - scrambleEditXGap*.25, this.editButton.posY, this.buttonDiameter, "lock");            
+            this.groupButton = new Button(this.scrambleButton.posX + scrambleEditXGap*.25, this.scrambleButton.posY, this.buttonDiameter, "group", this.usingMobile);
+            this.lockButton = new Button(this.editButton.posX - scrambleEditXGap*.25, this.editButton.posY, this.buttonDiameter, "lock", this.usingMobile);            
         }
 
         this.savedScrambleDeletionButtonsArray = [];
@@ -54,12 +54,12 @@ class ButtonsManager{
         this.lockColor = 'rgb(230, 216, 73)';
 
         // Place delete all scrambles button in bottom left one text unit away from the corner.
-        //this.deleteAllButton = new Button(windowWidth - this.buttonDiameter, 0 + this.buttonDiameter, this.buttonDiameter, "deleteAll");
+        //this.deleteAllButton = new Button(windowWidth - this.buttonDiameter, 0 + this.buttonDiameter, this.buttonDiameter, "deleteAll", this.usingMobile);
         let deleteAllXPos = isTouchDevice ? this.buttonDiameter * .7 : this.lockButton.posX;
         let deleteAllYPos = isTouchDevice ? windowHeight - this.buttonDiameter * .6 : this.buttonDiameter * .6;
         // deleteAllXPos = windowWidth - this.buttonDiameter * .6;
         // deleteAllYPos = 0 + this.buttonDiameter * .6;
-        this.deleteAllButton = new Button(deleteAllXPos, deleteAllYPos, this.buttonDiameter, "deleteAll");
+        this.deleteAllButton = new Button(deleteAllXPos, deleteAllYPos, this.buttonDiameter, "deleteAll", this.usingMobile);
     }
 
     drawButtons(inGroupUnderMouse){

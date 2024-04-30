@@ -327,7 +327,7 @@ class TextManager{
         // this.sizeOfText / 20 is trying to adjust for the slight offset of the drawn text and the textInputBox
         this.buttonsManagerRef.textCharButtonsArray.push(new Button(
           this.textAnchorX -windowCenterTextOffsetX + (i * this.widthOfText) + (i * this.textGap) + this.widthOfText/2,
-          this.textAnchorY - this.sizeOfText/2 + this.sizeOfText / 20, this.widthOfText, "textChar"
+          this.textAnchorY - this.sizeOfText/2 + this.sizeOfText / 20, this.widthOfText, "textChar", this.usingMobile
         ));
         this.buttonsManagerRef.textCharButtonsArray[this.buttonsManagerRef.textCharButtonsArray.length - 1].savedScrambleText = this.charsArray[i].savedChar;
       }
@@ -380,7 +380,7 @@ class TextManager{
       // Add the text button to the savedTextButtonsArray
       inButtonsManager.savedScrambleTextButtonsArray.push(
         new Button(this.textAnchorX, this.textAnchorY + this.sizeOfText * (savedTextYOffset + inButtonsManager.savedScrambleTextButtonsArray.length),
-        textButtonWidth, "savedScrambleText")
+        textButtonWidth, "savedScrambleText", this.usingMobile)
       );
       inButtonsManager.savedScrambleTextButtonsArray[inButtonsManager.savedScrambleTextButtonsArray.length - 1].textHeight = this.sizeOfText;
       // Set the saved scramble text depending on whether text is being edited or not.
@@ -394,7 +394,7 @@ class TextManager{
       inButtonsManager.savedScrambleDeletionButtonsArray.push(
         new Button(this.textAnchorX + (textButtonWidth / 2) + (this.widthOfText * 1.5), 
         this.textAnchorY + this.sizeOfText * (savedTextYOffset + inButtonsManager.savedScrambleDeletionButtonsArray.length),
-        this.widthOfText, "savedScrambleDeletion")        
+        this.widthOfText, "savedScrambleDeletion", this.usingMobile)        
       );
       
 

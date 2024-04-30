@@ -1,5 +1,5 @@
 class Button{
-    constructor(inX, inY, inDiameter, buttonType){
+    constructor(inX, inY, inDiameter, buttonType, inIsMobileDevice){
         this.posX = inX;
         this.posY = inY;
         this.diameter = inDiameter;
@@ -15,6 +15,7 @@ class Button{
         this.textGap = this.diameter / 6;
         this.isBeingHoveredOver = false;
         this.hoverColor = 'rgb(163, 64, 201)';
+        this.usingMobile = inIsMobileDevice;
     }
 
     isMouseOverButton(){
@@ -30,6 +31,9 @@ class Button{
         }
         // Square check for deletion buttons.
         else if(this.buttonType === "savedScrambleDeletion"){
+            //TODO
+            // Add in some extra buffer space for the deletion Xs. May also require saved scrambles to either be larger
+            // or spaced further apart to avoid deletion X hitbox overlap.
             if(mouseX <= this.posX + this.diameter / 2 && mouseX >= this.posX - this.diameter / 2
             && mouseY <= this.posY + (this.diameter / 4) + (this.diameter / 2)
             && mouseY >= this.posY + (this.diameter / 4) - (this.diameter / 2)){
@@ -171,14 +175,23 @@ class Button{
         else if(this.buttonType === "savedScrambleDeletion"){
             //stroke(196, 22, 45, 128);
             stroke(184, 59, 50);
+            // wider stroke for X on mobile
+            let deletionXStrokeWeight = this.usingMobile ? this.diameter / 4 : this.diameter/6;
+            strokeWeight(deletionXStrokeWeight);  // 1/6 is fine for desktop, maybe thicker like 1/4 or 1/5 for mobile.
             angleMode(DEGREES);
             push();
+            // Add this.diameter/4 vertical offset to the red X to make it more visually centered with the main text.
             translate(this.posX, this.posY + this.diameter/4);
             //rotate(45);
             line(-this.diameter/2, this.diameter/2, this.diameter/2, -this.diameter/2);
             //rotate(90);
             line(-this.diameter/2, -this.diameter/2, this.diameter/2, this.diameter/2);
             pop();
+
+            //strokeWeight(1);
+            // rectMode(CENTER);
+            // noFill();
+            // rect(this.posX, this.posY + this.diameter/4, this.diameter, this.diameter);
         }
 
         else if(this.buttonType === "savedScrambleText"){
