@@ -34,9 +34,10 @@ class Button{
             //TODO
             // Add in some extra buffer space for the deletion Xs. May also require saved scrambles to either be larger
             // or spaced further apart to avoid deletion X hitbox overlap.
-            if(mouseX <= this.posX + this.diameter / 2 && mouseX >= this.posX - this.diameter / 2
-            && mouseY <= this.posY + (this.diameter / 4) + (this.diameter / 2)
-            && mouseY >= this.posY + (this.diameter / 4) - (this.diameter / 2)){
+            let hitboxExtra = this.diameter * .30;
+            if(mouseX <= this.posX + (this.diameter / 2) + hitboxExtra && mouseX >= this.posX - (this.diameter / 2) - hitboxExtra
+            && mouseY <= this.posY + (this.diameter / 4) + (this.diameter / 2) + hitboxExtra
+            && mouseY >= this.posY + (this.diameter / 4) - (this.diameter / 2) - hitboxExtra){
                 return true;
             }
             else{
@@ -183,15 +184,37 @@ class Button{
             // Add this.diameter/4 vertical offset to the red X to make it more visually centered with the main text.
             translate(this.posX, this.posY + this.diameter/4);
             //rotate(45);
-            line(-this.diameter/2, this.diameter/2, this.diameter/2, -this.diameter/2);
+            // line(-this.diameter/2, this.diameter/2, this.diameter/2, -this.diameter/2);
+            let deletionXVertical = tan(45) * (this.diameter / 2);
+            let deletionXHorizontal = this.diameter / 2;
+            line(-deletionXHorizontal, - deletionXVertical, deletionXHorizontal, deletionXVertical);
             //rotate(90);
-            line(-this.diameter/2, -this.diameter/2, this.diameter/2, this.diameter/2);
+            // line(-this.diameter/2, -this.diameter/2, this.diameter/2, this.diameter/2);
+            line(-deletionXHorizontal, deletionXVertical, deletionXHorizontal, - deletionXVertical);
             pop();
 
-            //strokeWeight(1);
+            // Chunk of debugging lines to work out the extra hitbox distances.
+            // let hitBoxExtra = this.diameter * .30;
+            // strokeWeight(1);
             // rectMode(CENTER);
             // noFill();
-            // rect(this.posX, this.posY + this.diameter/4, this.diameter, this.diameter);
+            // rect(this.posX, this.posY + this.diameter/4, this.diameter + hitBoxExtra, this.diameter + hitBoxExtra);
+            // stroke(0,255,0);
+            // line(0, this.posY+ this.diameter/4, width, this.posY+ this.diameter/4);
+            // line(this.posX, 0, this.posX, height);
+
+            // stroke(252, 102, 3);
+            // let hitBoxLeft =  this.posX - (this.diameter / 2) - hitBoxExtra;
+            // let hitBoxRight = this.posX + (this.diameter / 2) + hitBoxExtra;
+            // let hitBoxTop = this.posY + (this.diameter / 4) - (this.diameter / 2) - hitBoxExtra;
+            // let hitBoxBottom = this.posY + (this.diameter / 4) + (this.diameter / 2) + hitBoxExtra;
+
+            // line(hitBoxLeft, hitBoxTop, hitBoxRight, hitBoxTop);
+            // line(hitBoxRight, hitBoxTop, hitBoxRight, hitBoxBottom);
+            // line(hitBoxRight, hitBoxBottom, hitBoxLeft, hitBoxBottom);
+            // line(hitBoxLeft, hitBoxBottom, hitBoxLeft, hitBoxTop);
+        
+
         }
 
         else if(this.buttonType === "savedScrambleText"){
