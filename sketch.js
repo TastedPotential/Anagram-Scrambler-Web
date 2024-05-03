@@ -153,6 +153,10 @@ function keyReleased(){
 
   // Reset display of default text if all text is removed.
   if(textManager.textInput.elt.value == '' || keyCode == BACKSPACE && textManager.defaultMessage){
+    // Don't clear the text on android.
+    if(usingMobileDevice && !usingAppleTouchDevice){
+      return;
+    }
     textManager.textInput.elt.value = textManager.startingString;
     textManager.defaultMessage = true;
   } 
@@ -525,7 +529,9 @@ function mouseClicked(){
       textManager.setCharsArray(textManager.textInput.elt.value);
       textManager.textInput.hide();
       textManager.editingText = false;
+      // If the edit button was clicked and the inputText in blank, reset it to display the default text.
       if(textManager.textInput.elt.value == ''){
+        textManager.textInput.elt.value = textManager.startingString;
         textManager.defaultMessage = true;
       }
     }
@@ -690,7 +696,9 @@ function mouseClicked(){
   // Clicked on empty space white text editor is open, aka close the text editor and save the current textInput contents.
   if(textManager.editingText == true){
     textManager.setCharsArray(textManager.textInput.elt.value);
+    // If the click was made anywhere not on a button while editing text and the field was blank, reset to default text.
     if(textManager.textInput.elt.value == ''){
+      textManager.textInput.elt.value = textManager.startingString;
       textManager.defaultMessage = true;
     }
     textManager.textInput.hide();
