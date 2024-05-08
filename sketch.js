@@ -420,6 +420,10 @@ function mouseReleased(){
     if(buttonsManager.savedScrambleTextButtonsArray[i].isMouseOverButton()){
       // Copy text to clipboard
       navigator.clipboard.writeText(buttonsManager.savedScrambleTextButtonsArray[i].savedScrambleText);
+      // Display animation of "Copied to clipboard" only on non-android.
+      if(!isTouchDevice || usingAppleTouchDevice){
+        textManager.startClipboardToastAnimation();
+      }
       return false;
     }
   }

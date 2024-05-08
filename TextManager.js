@@ -31,6 +31,11 @@ class TextManager{
         this.lockingText = false;
         this.lockingIndex = -1;
 
+        this.clipboardCopyToastDuration = 2000.0;
+        this.clipboardCopyToastCurrent = -1.0;
+        this.clipboardCopyToastArray = [];
+        this.clipboardToastString = 'Copied to clipboard';
+
         for(let i = 0; i < this.startingString.length; i++){
           this.charsArray.push(new TextChar(this.startingString.charAt(i)));
         }
@@ -236,29 +241,10 @@ class TextManager{
       // }
       text(lockingModeStatusText, this.textAnchorX, this.textAnchorY + this.sizeOfText * 1);
       }
-        
 
-      // this.buttonsManagerRef.drawTextCharButtons();
-
-      /*
-      for(let i = 0; i < this.charsArray.length; i++){      
-        noStroke();
-        if(this.defaultMessage)
-          fill(this.textColor);
-        else
-          fill(this.textColor);
-        textAlign(LEFT, BASELINE);
-        text(this.charsArray[i].savedChar, this.textAnchorX - windowCenterTextOffsetX + (i * this.widthOfText) + (i * this.textGap), this.textAnchorY + yOffset);
+      this.drawClipboardToast();
       
-
-        
-        // stroke(0,0,0);
-        // strokeWeight(1);
-        // line(this.textAnchorX - windowCenterTextOffsetX + (i * this.widthOfText) + i * this.textGap,
-        // 0, this.textAnchorX - windowCenterTextOffsetX + (i * this.widthOfText) + i * this.textGap, windowHeight);
-        
-      }
-      */
+      
 
       
     }
@@ -876,6 +862,37 @@ class TextManager{
 
   resetTextInputPosition(){
     this.textInput.position(this.textAnchorX - this.textInput.width/2, this.textAnchorY - this.textInputOffsetY);
+  }
+
+  startClipboardToastAnimation(){
+    this.clipboardCopyToastCurrent = this.clipboardCopyToastDuration;
+    //this.clipboardCopyToastArray.push(clickedScrambleIndex);
+  }
+
+  drawClipboardToast(){
+    // Display "copied to clipboard" if set.
+    // Using the implementation of deltaTime from here: https://erraticgenerator.com/blog/p5js-animate-with-deltatime/
+    rectMode(CENTER);      
+    
+    if(this.clipboardCopyToastCurrent > 0){
+      this.clipboardCopyToastCurrent -= deltaTime;
+      noStroke();
+      let fillString = this.buttonsManagerRef.bracketColor.substring(0, 3) + 'a' +
+      this.buttonsManagerRef.bracketColor.substring(3, this.buttonsManagerRef.bracketColor.length - 1) + ', ';
+      
+      let currentPercentOfToast = this.clipboardCopyToastCurrent / this.clipboardCopyToastDuration;
+      fillString += currentPercentOfToast + ')';
+      fill(fillString);
+      rect(width * 0.50, height * 0.80, this.clipboardToastString.length * (this.sizeOfText/2), this.sizeOfText * 1.1, width * 0.05);
+
+      textSize(this.sizeOfText * 0.75);
+      fill('rgba(255,255,255,' + currentPercentOfToast + ')');
+      text(this.clipboardToastString, width * 0.50 - this.clipboardToastString.length / 2 , height * .80);
+    }
+    else{
+      this.clipboardCopyToastCurrent = -1;
+    }
+
   }
 
 }
