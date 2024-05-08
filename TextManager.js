@@ -876,12 +876,12 @@ class TextManager{
     
     if(this.clipboardCopyToastCurrent > 0){
       this.clipboardCopyToastCurrent -= deltaTime;
+      // don't allow the current step of the animation value to get to negative values otherwise it does the whiteout fill and other issues.
+      this.clipboardCopyToastCurrent = constrain(this.clipboardCopyToastCurrent, 0, this.clipboardCopyToastDuration);
       noStroke();
       let fillString = this.buttonsManagerRef.bracketColor.substring(0, 3) + 'a' +
       this.buttonsManagerRef.bracketColor.substring(3, this.buttonsManagerRef.bracketColor.length - 1) + ', ';
-      
       let currentPercentOfToast = this.clipboardCopyToastCurrent / this.clipboardCopyToastDuration;
-      currentPercentOfToast = constrain(currentPercentOfToast, 0, 1); // don't allow the alpha value to get to -1 otherwise it does the whiteout fill
       fillString += currentPercentOfToast + ')';
 
       fill(fillString);
