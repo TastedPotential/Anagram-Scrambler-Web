@@ -881,13 +881,17 @@ class TextManager{
       this.buttonsManagerRef.bracketColor.substring(3, this.buttonsManagerRef.bracketColor.length - 1) + ', ';
       
       let currentPercentOfToast = this.clipboardCopyToastCurrent / this.clipboardCopyToastDuration;
+      currentPercentOfToast = constrain(currentPercentOfToast, 0, 1); // don't allow the alpha value to get to -1 otherwise it does the whiteout fill
       fillString += currentPercentOfToast + ')';
+
       fill(fillString);
       rect(width * 0.50, height * 0.80, this.clipboardToastString.length * (this.sizeOfText/2), this.sizeOfText * 1.1, width * 0.05);
 
+      textAlign(CENTER, CENTER);
       textSize(this.sizeOfText * 0.75);
       fill('rgba(255,255,255,' + currentPercentOfToast + ')');
-      text(this.clipboardToastString, width * 0.50 - this.clipboardToastString.length / 2 , height * .80);
+      text(this.clipboardToastString, width / 2 , height * .80 - (this.sizeOfText * 0.08));
+
     }
     else{
       this.clipboardCopyToastCurrent = -1;
