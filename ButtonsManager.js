@@ -476,7 +476,9 @@ class ButtonsManager{
         }
         // If not deleting, draw a lock at the center of the group.
         else{
-            this.drawLock(leftEndpointX + (bracketWidth / 2), this.textCharButtonsArray[groupHeadIndex].posY - charGroupLockYOffset, inBracketColor, false);
+            // Update input xPosition of lock based on shaking animation if needed.
+            let lockXPosToDraw = this.updateLockShakeAnimation(groupHeadIndex, leftEndpointX + (bracketWidth / 2));
+            this.drawLock(lockXPosToDraw, this.textCharButtonsArray[groupHeadIndex].posY - charGroupLockYOffset, inBracketColor, false);
         }
 
     }
@@ -500,7 +502,9 @@ class ButtonsManager{
                 }
                 // Draw locks for any locked non-grouped textChars.
                 else if(this.textManagerRef.charsArray[i].groupOrder == -1){
-                    this.drawLock(this.textCharButtonsArray[i].posX, this.textCharButtonsArray[i].posY - charLockYOffset, this.lockColor, false);
+                    // Update input xPosition of lock based on shaking animation if needed.
+                    let lockXPosToDraw = this.updateLockShakeAnimation(i, this.textCharButtonsArray[i].posX);
+                    this.drawLock(lockXPosToDraw, this.textCharButtonsArray[i].posY - charLockYOffset, this.lockColor, false);
                 }
                 
             }
@@ -544,5 +548,39 @@ class ButtonsManager{
     deleteAllSavedScrambleButtons(){
         this.savedScrambleTextButtonsArray.splice(0);
         this.savedScrambleDeletionButtonsArray.splice(0);
+    }
+
+    updateLockShakeAnimation(charIndex, xToUpdate){
+        // Don't change anything if the lock isn't shaking.
+        if(this.textManagerRef.charsArray[charIndex].isShaking == false){
+            return xToUpdate;
+        }
+
+        // print('updating lock shake amount');
+        // print('starting shake position:' + xToUpdate);
+
+        let updatedXPos = xToUpdate + this.textManagerRef.charsArray[charIndex].distanceFromLockCenter;
+        // Increment the XPos by the shaking speed.
+        let shakeAmount = this.textManagerRef.charsArray[charIndex].shakeSpeed * this.textManagerRef.charsArray[charIndex].shakeDirection;
+        updatedXPos += shakeAmount;
+        // print('shake amount:' + shakeAmount);
+        // print('updated shake position:' + updatedXPos);
+
+        this.textManagerRef.charsArray[charIndex].distanceFromLockCenter += shakeAmount;
+
+        if(abs(this.textManagerRef.charsArray[charIndex].distanceFromLockCenter) > this.textManagerRef.charsArray[charIndex].shakeDistanceMax){
+            this.textManagerRef.charsArray[charIndex].shakeDirection *= -1; // Reverse shake direction.
+        }
+
+        this.textManagerRef.charsArray[charIndex].animTimeRemaining -= deltaTime;
+
+        // Stop the shaking if the animation time has completed.
+        if(this.textManagerRef.charsArray[charIndex].animTimeRemaining <= 0){
+            this.textManagerRef.stopLockShaking(charIndex);
+            updatedXPos = xToUpdate;
+        }
+
+        return updatedXPos;
+
     }
 }

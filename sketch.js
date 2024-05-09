@@ -361,7 +361,10 @@ function mouseReleased(){
   else if(textManager.groupingText){
     // group deletion block
     if(groupUnderMouse >= 0){
-      // If the mouse is over a group's bracket and left click is released, delete that group.
+      // Check if the group is currently locked. If it is locked, do NOT dismantle the group.
+      //if(groupUnderMouse)
+      
+        // If the mouse is over a group's bracket and left click is released, delete that group.
       textManager.dismantleGroup(groupUnderMouse);
       // return false;
     }
@@ -375,9 +378,9 @@ function mouseReleased(){
       
 
     let clickedCharIndex = buttonsManager.getIndexOfClickedChar();
-    // If 1) we clicked on a character, 2) it is NOT in a group (groupID == -1, aka default), 3) did not end the drag over the same starting character
-    //start the group creation attempt with this character
-    if(clickedCharIndex >= 0 && textManager.charsArray[clickedCharIndex].groupID == -1 && clickedCharIndex != textManager.groupCreationStartIndex){
+    // If 1) we clicked on a character, 2) did not end the drag over the same starting character start the group creation attempt with this character.
+    // Removed the check that the attempted character was not single since it will now be stopped later in the createGroup() method.
+    if(clickedCharIndex >= 0 && clickedCharIndex != textManager.groupCreationStartIndex){
       //print("clicked on " + textManager.charsArray[clickedCharIndex].savedChar);
       textManager.groupCreationEndIndex = clickedCharIndex;
       textManager.createGroup();

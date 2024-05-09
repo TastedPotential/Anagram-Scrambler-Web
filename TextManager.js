@@ -475,6 +475,26 @@ class TextManager{
     // indicate that action isn't supported.
     for(let i = this.groupCreationStartIndex; i <= this.groupCreationEndIndex; i++){
       if(this.charsArray[i].groupID >= 0 || this.charsArray[i].isLocked){
+        // Only do a lock shaking animation if the attempt was on a LOCKED group or single LOCKED character.
+        if(this.charsArray[i].isLocked){
+          // Find the group head for the locked group member (head included) attempted to be grouped.
+          if(this.charsArray[i].groupID >= 0){
+            for(let j = 0; j < this.charsArray.length; j++){
+              // Found the head of the locked group attempted locking on. Start shaking it.
+              if(this.charsArray[j].groupID === this.charsArray[i].groupID && this.charsArray[j].groupOrder === 0){
+                this.startLockShaking(j);
+              }            
+            }
+          }
+          // Start shaking the single locked character.
+          else if(this.charsArray[i].groupID == -1){
+            this.startLockShaking(i);
+          }
+
+          
+        }
+
+        // After starting the lock shaking (if needed), stop group creation.
         this.stopGroupCreation();
         return;
       }
@@ -897,6 +917,22 @@ class TextManager{
       this.clipboardCopyToastCurrent = -1;
     }
 
+  }
+
+  startLockShaking(charIndex){
+    this.charsArray[charIndex].isShaking = true;
+    this.charsArray[charIndex].animTimeRemaining = this.charsArray[charIndex].animDurationMillis;
+    this.charsArray[charIndex].shakeDirection = 1;
+    this.charsArray[charIndex].shakeDistanceMax = this.sizeOfText / 15;
+    this.charsArray[charIndex].shakeSpeed = this.sizeOfText / 20;
+    this.charsArray[charIndex].distanceFromLockCenter = 0;
+
+  }
+
+  stopLockShaking(charIndex){
+    this.charsArray[charIndex].isShaking = false;
+    this.charsArray[charIndex].animTimeRemaining = -1;
+    this.charsArray[charIndex].shakeDirection = 1;
   }
 
 }
