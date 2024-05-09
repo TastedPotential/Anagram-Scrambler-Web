@@ -361,12 +361,26 @@ function mouseReleased(){
   else if(textManager.groupingText){
     // group deletion block
     if(groupUnderMouse >= 0){
+      let groupHeadBeingCheckedIndex = -1;
       // Check if the group is currently locked. If it is locked, do NOT dismantle the group.
-      //if(groupUnderMouse)
-      
+      for(let i = 0; i < textManager.charsArray.length; i++){
+        if(textManager.charsArray[i].groupID === groupUnderMouse){
+          groupHeadBeingCheckedIndex = i;
+          break;
+        }
+      }
+
+      // Shake the lock of the group the user attempted to ungroup.
+      if(textManager.charsArray[groupHeadBeingCheckedIndex].isLocked){
+        textManager.startLockShaking(groupHeadBeingCheckedIndex);
+      }
+      else{
         // If the mouse is over a group's bracket and left click is released, delete that group.
-      textManager.dismantleGroup(groupUnderMouse);
-      // return false;
+        textManager.dismantleGroup(groupUnderMouse);
+        // return false;
+      }
+      
+      
     }
     // Group creation block
     // check which textChar was released on
