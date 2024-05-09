@@ -11,7 +11,7 @@ class ButtonsManager{
         let saveButtonOffsetX = inputTextManager.sizeOfText * 1.25;
         if(this.usingMobile == true){
             this.buttonOffsetX = -inputTextManager.sizeOfText;
-            this.buttonOffsetY = -inputTextManager.sizeOfText * 3;
+            this.buttonOffsetY = -inputTextManager.sizeOfText * 3.25;
             saveButtonOffsetX = -inputTextManager.textInputBoxSizeX / 2 - this.buttonOffsetX;   // this will place it in the middle on mobile.
         }
 

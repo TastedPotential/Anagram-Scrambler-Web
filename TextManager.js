@@ -196,53 +196,57 @@ class TextManager{
       if(this.usingMobile){
         interactString = 'Tap';
       }
+
+      // Put mode status text slightly lower on mobile to make room for grouping brackets.
+      let modeStatusTextYOffset = this.usingMobile ? this.sizeOfText * 1.25 : this.sizeOfText * 1;
+      
       
       if(this.groupingText){
-      //fill(166, 58, 72);
-      fill(this.buttonsManagerRef.bracketColor);
-      noStroke();
-      textAlign(CENTER);
-      textSize(this.sizeOfText / 2);
-      if(this.usingMobile){
-        textSize(this.sizeOfText / 1.75);
-      }
-
-      let groupingModeStatusText = interactString + ' and drag to create a group.\n' + interactString + ' a bracket to ungroup.';
-      if(this.usingMobile && !this.usingAppleTouchDevice){
-        groupingModeStatusText = interactString + ' to start a new group.\n' + interactString + ' a bracket to ungroup.';
-      }
-      // This will change the group mode status text to let users on android with the one click at a time
-      // group creation know they need to tap again to set the end unit of their attempted group.
-      //TODO
-      // Maybe only display this for android, and for other devices show "drag to create group".
-      if(this.groupCreationStartIndex >= 0 && this.groupCreationEndIndex == -1){
-        groupingModeStatusText = 'Release to set group range.';
-        if(this.usingMobile && !this.usingAppleTouchDevice){
-          groupingModeStatusText = 'Tap again to set group range.';
+        //fill(166, 58, 72);
+        fill(this.buttonsManagerRef.bracketColor);
+        noStroke();
+        textAlign(CENTER);
+        textSize(this.sizeOfText / 2);
+        if(this.usingMobile){
+          textSize(this.sizeOfText / 1.75);
         }
-      }
 
-      text(groupingModeStatusText, this.textAnchorX, this.textAnchorY + this.sizeOfText * 1);
-      //return;
+        let groupingModeStatusText = interactString + ' and drag to create a group.\n' + interactString + ' a bracket to ungroup.';
+        if(this.usingMobile && !this.usingAppleTouchDevice){
+          groupingModeStatusText = interactString + ' to start a new group.\n' + interactString + ' a bracket to ungroup.';
+        }
+        // This will change the group mode status text to let users on android with the one click at a time
+        // group creation know they need to tap again to set the end unit of their attempted group.
+        //TODO
+        // Maybe only display this for android, and for other devices show "drag to create group".
+        if(this.groupCreationStartIndex >= 0 && this.groupCreationEndIndex == -1){
+          groupingModeStatusText = 'Release to set group range.';
+          if(this.usingMobile && !this.usingAppleTouchDevice){
+            groupingModeStatusText = 'Tap again to set group range.';
+          }
+        }
+
+        text(groupingModeStatusText, this.textAnchorX, this.textAnchorY + modeStatusTextYOffset);
+        //return;
       }
       else if(this.lockingText){
-      //fill(166, 58, 72);
-      fill(this.buttonsManagerRef.lockColor);
-      noStroke();
-      textAlign(CENTER);
-      textSize(this.sizeOfText / 2);
-      if(this.usingMobile){
-        textSize(this.sizeOfText / 1.75);
-      }
+        //fill(166, 58, 72);
+        fill(this.buttonsManagerRef.lockColor);
+        noStroke();
+        textAlign(CENTER);
+        textSize(this.sizeOfText / 2);
+        if(this.usingMobile){
+          textSize(this.sizeOfText / 1.75);
+        }
 
-      let lockingModeStatusText = interactString + ' a character or group\nto lock/unlock it.';
-      // if(this.usingMobile){
-      //   lockingModeStatusText = 'Tap a character or group\nto lock/unlock it.';
-      // }
-      text(lockingModeStatusText, this.textAnchorX, this.textAnchorY + this.sizeOfText * 1);
-      }
+        let lockingModeStatusText = interactString + ' a character or group\nto lock/unlock it.';
+        // if(this.usingMobile){
+        //   lockingModeStatusText = 'Tap a character or group\nto lock/unlock it.';
+        // }
+        text(lockingModeStatusText, this.textAnchorX, this.textAnchorY + modeStatusTextYOffset);
+        }
 
-      this.drawClipboardToast();
+        this.drawClipboardToast();
       
       
 
@@ -359,11 +363,18 @@ class TextManager{
       }
 
       // Set the width of the text button depending on whether text is being edited or not.
+      //TODO
+      // If I really need to change the size of the saved scramble text, here is where to do part of it, but it'll be a real pain
+      // to make all the updates throughout.
+      //let savedScrambleTextWidth = this.usingMobile ? this.sizeOfText * 1 : this.sizeOfText * 0.80;
+
       let textButtonWidth = this.getCharsArrayAsString().length * this.widthOfText + (this.getCharsArrayAsString().length - 1) * this.textGap;
       if(this.editingText)
         textButtonWidth = this.textInput.value().length * this.widthOfText + (this.textInput.value().length - 1) * this.textGap;
       
       // Add the text button to the savedTextButtonsArray
+      
+
       inButtonsManager.savedScrambleTextButtonsArray.push(
         new Button(this.textAnchorX, this.textAnchorY + this.sizeOfText * (savedTextYOffset + inButtonsManager.savedScrambleTextButtonsArray.length),
         textButtonWidth, "savedScrambleText", this.usingMobile)
