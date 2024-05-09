@@ -381,7 +381,8 @@ function mouseReleased(){
       }
       
       
-    }
+    } // End of group deletion
+
     // Group creation block
     // check which textChar was released on
     // Don't attempt to create a group if the start of the current drag was not on a textChar.
@@ -619,10 +620,32 @@ function mouseClicked(){
     groupUnderMouse = textManager.checkGroupDeletion();
     // group deletion block
     if(groupUnderMouse >= 0){
-      // If the mouse is over a group's bracket and left click is released, delete that group.
-      textManager.dismantleGroup(groupUnderMouse);
-      // return false;
-    }
+
+      // Check to not ungroup a locked group. Also shake the lock if attempted.
+      let groupHeadBeingCheckedIndex = -1;
+      // Check if the group is currently locked. If it is locked, do NOT dismantle the group.
+      for(let i = 0; i < textManager.charsArray.length; i++){
+        if(textManager.charsArray[i].groupID === groupUnderMouse){
+          groupHeadBeingCheckedIndex = i;
+          break;
+        }
+      }
+
+      // Shake the lock of the group the user attempted to ungroup.
+      if(textManager.charsArray[groupHeadBeingCheckedIndex].isLocked){
+        textManager.startLockShaking(groupHeadBeingCheckedIndex);
+      }
+      else{
+        // If the mouse is over a group's bracket and left click is released, delete that group.
+        textManager.dismantleGroup(groupUnderMouse);
+        // return false;
+      }
+
+
+
+      
+    } // End of group deletion
+
     // Get the character clicked on.
     let clickedCharIndex = buttonsManager.getIndexOfClickedChar();
     
@@ -634,7 +657,7 @@ function mouseClicked(){
     }
     // Otherwise check if a valid group ending index was clicked. If so, create a group with those two characters.
     else if(clickedCharIndex != textManager.groupCreationStartIndex && textManager.groupCreationStartIndex >= 0 &&
-      clickedCharIndex >= 0 && textManager.charsArray[clickedCharIndex].groupID == -1){
+      clickedCharIndex >= 0){
       textManager.groupCreationEndIndex = clickedCharIndex;
       textManager.createGroup();
       textManager.stopGroupCreation();
